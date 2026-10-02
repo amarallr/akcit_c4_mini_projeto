@@ -1,0 +1,36 @@
+.env
+.env.*
+!.env.example
+.Renviron
+.Rhistory
+.RData
+.Rproj.user/
+dados/
+saidas/
+checkpoints/
+logs/
+tmp/
+.R-library/
+tools/github-cli/
+*.part
+# Regras preservadas do repositorio remoto existente.
+.Rapp.history
+.RDataTmp
+.Ruserdata
+*-Ex.R
+/*.tar.gz
+/*.Rcheck/
+vignettes/*.html
+vignettes/*.pdf
+.httr-oauth
+*_cache/
+/cache/
+*.utf8.md
+*.knit.md
+docs/
+po/*~
+rsconnect/
+
+# Originais pessoais e pacotes gerados permanecem locais.
+/locais/
+/prompts/*.zip

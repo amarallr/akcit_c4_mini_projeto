@@ -1,0 +1,378 @@
+PROMPT 02 — LIB — REGRAS COMPARTILHADAS
+Versão: v2026-10-02 — incrementos autorizados e arquitetura DFD
+Prompt responsável: P02
+
+C — CONTEXT (CONTEXTO)
+Este é um mini projeto didático no âmbito da Especialização em Engenharia
+de Software com IA Generativa. Utiliza R, RStudio, Codex, Git e GitHub.
+Todo o ciclo de desenvolvimento é conduzido com IA generativa: definição
+de requisitos, planejamento, preparação, implementação, testes, revisão,
+documentação e versionamento, com decisões e validação humanas. Aplicam-se
+práticas modernas de engenharia de software: incrementos pequenos,
+modularidade simples, contratos, rastreabilidade, testes, revisão de código,
+controle de versão, segurança e documentação reproduzível.
+O ponto de partida obrigatório para uma nova reprodução são SOMENTE os sete
+prompts atuais. Não presumir código, scripts, projeto .Rproj, repositório Git,
+README, RETOMADA, catálogo, matriz ou registro de testes preexistentes.
+Todos esses artefatos serão criados ao longo dos incrementos, com apoio
+da IA generativa e revisão humana. Não exigir clonagem do repositório de
+referência nem scripts externos. Fontes públicas e dados serão consultados
+nas etapas pertinentes. Registros de uma execução anterior não equivalem
+à validação do ambiente de outro leitor.
+A orientação ao leitor parte de ambiente local limpo: R, RStudio, Git,
+Codex, pacotes e autenticações não são presumidos existentes. Instalar e
+configurar recursos necessários antes de usá-los. Em ambiente já preparado,
+reutilizar o que estiver confirmado; a hipótese didática não apaga evidências.
+P02 é a biblioteca documental compartilhada por todas as etapas do projeto
+FIDC. Seus requisitos tratam de simplicidade, rastreabilidade, segurança,
+publicação de arquivos, hashes, políticas de execução, testes e continuidade.
+A biblioteca não exige transformar o protótipo em pacote R ou framework.
+Utilitários são implementados apenas quando uma etapa precisa deles e
+mantêm seus IDs e responsabilidade P02, mesmo em arquivos consumidores.
+
+O — OBJECTIVE (OBJETIVO)
+A entrega deve ensinar a reproduzir o incremento no ambiente próprio do
+leitor e tornar explícitas a participação da IA e a revisão humana.
+Manter contratos comuns consistentes, evitando regras duplicadas ou
+contraditórias entre etapas. Definir como preservar arquivos válidos,
+identificar mudanças relevantes, testar comportamentos e registrar provas.
+Aplicar somente os contratos pertinentes ao incremento; itens futuros
+continuam planejados até implementação e validação efetivas.
+
+S — STYLE (ESTILO)
+Descrever procedimentos passo a passo para ambiente inicialmente limpo,
+com separação entre navegador, PowerShell, console RStudio e interação
+com Codex. Explicar a finalidade da ação e como confirmar sua conclusão.
+Descrever cada contrato com comportamento esperado, entradas, saídas,
+efeitos e critério de verificação. Usar exemplos pequenos e identificados
+como simulados. Comentários de código devem explicar a decisão e citar
+IDs, em vez de apenas traduzir a sintaxe. Preferir funções pequenas,
+R legível e dependências escolhidas por necessidade comprovada.
+
+T — TONE (TOM)
+Ser preciso nas regras e didático nas justificativas. Explicar o motivo de
+um contrato e as limitações da plataforma sem tratar recomendações como
+obrigações inexistentes. Não inventar resultados nem encobrir pendências;
+reconhecer quando uma política ainda é especificação e não código disponível.
+
+A — AUDIENCE (PÚBLICO)
+O público inclui alunos da especialização, leitores com conhecimentos
+básicos de análise de dados e revisores do trabalho acadêmico. O executor
+pode ter conhecimento intermediário em R, mas a documentação não pressupõe
+R, RStudio, Git, Codex, pacotes, contas, logins ou códigos já configurados.
+Um leitor deve conseguir preparar seu próprio computador a partir do zero
+e reproduzir cada entrega disponível. Identificar pré-requisitos, fonte
+oficial, instalação, local de execução, comando, resultado esperado e
+tratamento de falhas. Explicar conceitos de terminal, projeto, dependência,
+commit e autenticação quando utilizados. Para etapas ainda planejadas,
+indicar explicitamente o que ainda não existe ou não foi validado.
+
+R — RESPONSE (RESPOSTA)
+Registrar pré-requisitos, passos de preparação quando necessários,
+resultados esperados e observados, contribuição da IA e validação humana.
+Alegar reprodução em máquina limpa somente após execução e evidência real.
+Na etapa consumidora, informar quais contratos P02 foram aplicados, quais
+utilitários foram criados ou alterados e quais testes comuns foram executados.
+Registrar IDs, caminhos reais, evidências e limitações. Identificar o que
+permanece previsto e atualizar a continuidade. A resposta deve acompanhar
+o incremento em curso; carregar P02 não cria uma etapa independente de dados.
+
+CONTRATOS COMUNS
+- Configuração contém somente parâmetros suportados; dependências ausentes
+  são informadas. data.table pode ser escolhido por utilidade nos exemplos;
+  confirmar instalação/carregamento e justificar. curl/httr2/digest/testthat
+  são candidatos, não obrigação de instalar todos. renv é opcional.
+- Originais são imutáveis até atualização validada; cada unidade tem estado
+  persistido. Checkpoint não significa que arquivo remoto esteja atualizado.
+- Usar checkpoints FALSE refaz consolidação, preserva downloads válidos e
+  grava manifestos. Atualizar TRUE faz nova consulta/download selecionado;
+  mesmos bytes permitem reaproveitamento. Forçar TRUE refaz ambos, mesmo
+  se bytes iguais. Mudança só na transformação não força download.
+- Assinatura da unidade considera somente parâmetros que mudam sua saída;
+  parâmetros globais não relevantes não invalidam todas as unidades.
+  Saída final usa lista atual de unidades; ordem de leitura não escolhe versão.
+- Manifestações de falha/indisponibilidade e relatório parcial preservam
+  motivos e datas; saídas atuais têm identificação da execução e seleção.
+- RDS tipado e CSV temporal por leiaute/flat são obrigatórios, com formato documentado.
+  Não alterar para Parquet obrigatoriamente por ter sido usado em outro projeto.
+- Histórico de ambiente não é mínimo nem prova atual. Não publicar dados
+  locais/segredos. Login Codex, GitHub e CVM são coisas distintas.
+
+COMENTÁRIOS DE CÓDIGO EXIGIDOS
+Exemplo de cabeçalho para a função proposta, ainda não implementada:
+# Módulo: P05-MOD-001 | Prompt responsável: P05 — Download e retomada
+# Função: P05-FUN-001 — baixar_unidade_fidc
+# Requisitos: P05-RF-001, P05-RF-002, P05-RF-003; comuns P02-RF-002
+# Finalidade: baixar uma unidade e publicar somente após validação.
+# Entradas: unidade, política, transporte; saída: resultado e manifesto.
+# Efeitos: rede e gravação em disco; falhas preservam original válido.
+# Testes: P05-TST-001, P05-TST-002.
+# Trecho principal | P05-FUN-001 | P05 | P05-RF-001:
+# Validar ZIP temporário antes de substituir o arquivo final.
+Comentário deve explicar o comportamento e a decisão, não repetir sintaxe.
+Auxiliares novas/aninhadas ganham ID FUN próprio e contrato no catálogo.
+Trechos principais referenciam o ID FUN ou MOD e requisito, sem precisar
+inventar um novo identificador para cada linha. Mover função muda responsável
+apenas por migração registrada; não renumerar catálogo silenciosamente.
+
+RASTREABILIDADE
+Na primeira execução, criar catalogo.csv, matriz_rastreabilidade.csv e
+registro_testes.csv a partir dos IDs e contratos dos sete prompts; iniciar
+itens como planejados e testes como não executados. Esses arquivos não são
+pré-requisitos nem provas importadas de outra máquina.
+catalogo.csv contém itens e responsáveis; matriz_rastreabilidade.csv contém
+ligações propostas entre requisitos, módulos, funções e testes. Estados e evidências vigentes constam dos CSVs; itens sem evidência permanecem planejados.
+Na implementação registrar caminho real, estado (planejado/implementado/
+validado/falhou/bloqueado), comando/evidência e commit. Evidência por teste
+fica em registro_testes.csv; requisito só é validado após evidência pertinente.
+Uma revisão documental/manual pode verificar RNF, desde que identificada.
+Não escrever teste superficial que apenas confirma o comentário esperado;
+usar revisão de cobertura e testes comportamentais onde fizer sentido.
+
+CONCLUSÃO DA LIB
+Contratos comuns conhecidos e catálogo consistente. Os utilitários surgem
+nas etapas consumidoras (ex.: escrita atômica em P05), mantendo dono P02.
+Cada etapa executa os testes comuns dos utilitários que introduziu/alterou.
+
+REQUISITOS DESTE PROMPT — CATÁLOGO NORMATIVO
+P02-RF-001 | RF | Usar IDs globais exclusivos Pnn-RF/RNF/MOD/FUN/TST-nnn; cada item tem um único prompt responsável. Referenciar requisitos compartilhados sem recodificá-los. Não reutilizar IDs excluídos; cadastrar novos itens antes de implementá-los.
+
+P02-RF-002 | RF | Centralizar escrita validada com publicação atômica de manifestos, intermediários e saídas; temporário no diretório de destino; verificar êxito da operação e preservar versão válida na falha. Documentar limitações de rename/substituição no Windows/OneDrive.
+
+P02-RF-003 | RF | Gerar hashes de conteúdo e assinaturas determinísticas de parâmetros relevantes e versão explícita da transformação; registrar algoritmo, normalização e critérios de equivalência.
+
+P02-RF-004 | RF | Disponibilizar comando único de testes e seleção por etapa; dados pequenos simulados, relógio/rede controláveis e testes unitários sem rede nem credenciais. Separar integração real e verificações manuais.
+
+P02-RF-005 | RF | Atualizar README desde a primeira etapa: objetivo, escopo, pré-requisitos, dependências, estrutura, fontes, configuração, execução RStudio, saídas, regras, rastreabilidade, retomada, parâmetros, testes, limitações, problemas comuns e melhorias futuras.
+
+P02-RF-006 | RF | Aplicar usar_checkpoints=TRUE, atualizar_downloads=FALSE, forcar_reprocessamento=FALSE. Checkpoints controlam somente intermediários; manifestos sempre persistem. Forçar prevalece e refaz download/consolidação selecionados. Atualizar consulta a fonte, inicialmente por download completo. Conteúdo idêntico permite reaproveitar intermediários salvo força. Preservar unidades fora da seleção.
+
+P02-RNF-001 | RNF | Protótipo didático em R/RStudio, com funções simples e dependências justificadas. CI Windows/Linux e fixação renv autorizadas neste incremento; outros fundos e GUI continuam fora do escopo.
+
+P02-RNF-002 | RNF | Cada módulo, função, auxiliar aninhada e trecho principal terá comentário claro com ID, prompt responsável, finalidade, requisitos, entradas/saídas e efeitos; registrar decisões e limitações. Não basta um cabeçalho genérico para o arquivo inteiro.
+
+P02-RNF-003 | RNF | Não inventar URLs, esquemas, resultados, downloads, verificações, commits ou identificação de pessoas. Referenciar documentação oficial e distinguir evidência observada, histórico, inferência e simulação.
+
+P02-RNF-004 | RNF | Guardar segredos necessários em .env; versionar apenas .env.example fictício. Reutilizar autenticação gerenciada, sem copiar tokens; CVM pública sem credenciais. Ignorar dados, saídas, checkpoints, logs, temporários, .R-library e .Rproj.user; nunca publicar caminhos pessoais ou valores sensíveis.
+
+P02-RNF-005 | RNF | Ao concluir etapa: revisar diferenças, executar verificações pertinentes, selecionar apenas alterações do projeto, conferir segredos, commit pequeno Conventional Commits e push; confirmar hash local/remoto. Sem commits vazios, push forçado, descarte ou reescrita. Falha remota preserva commit e permite trabalho local; execução rotineira dos dados não faz commit/push.
+
+P02-RNF-006 | RNF | Processar por origem e persistir progresso, sem carregar todo o histórico obrigatoriamente na memória. Não fixar meta de desempenho sem medição; demonstrar consumo viável no período curto e documentar limites.
+
+
+P02-RNF-007 | RNF | Mini projeto didático da Especialização em Engenharia de Software com IA Generativa: aplicar IA em todo o ciclo com revisão e decisões humanas; registrar contribuição, comandos e evidências. Explicar práticas de requisitos, incrementos, contratos, testes, revisão e versionamento sem alegar técnicas ou etapas não executadas.
+
+P02-RNF-008 | RNF | Nomear scripts próprios com pNN_nome_da_funcao.ext pelo prompt responsável e testes com test-pNN-finalidade.R; documentar dependências e preservar IDs. Ao renomear, atualizar chamadas, wrappers, testes, comandos, catálogo e matriz e validar a execução existente; não implementar etapas futuras apenas para nomear scripts.
+
+P02-RNF-009 | RNF | Gerar e manter Fases do Ciclo de Desenvolvimento de Software SWEBOK.md com etapas enumeradas e explicadas e aplicação ao projeto. Distinguir áreas SWEBOK da adaptação didática, citar edição/fontes oficiais e separar estados e provas; documento é saída dos sete prompts, não pré-requisito nem prova de conclusão integral.
+
+P02-RNF-010 | RNF | Manter ARQUITETURA.md com somente um DFD, fluxos nomeados, depósitos, transformações, limites e relação com P01-P07. Conferir contra os scripts; revisão textual não equivale a renderização.
+
+MÓDULO E FUNÇÕES PROPOSTOS — NÃO IMPLEMENTADOS NESTA ENTREGA
+P02-MOD-001 | Arquivo proposto: scripts/p02_utilitarios.R
+P02-FUN-001 | gravar_validado_atomico
+Contrato: Recebe objeto/caminho/validador; publica validado ou preserva anterior; retorna caminho/hash e estado.
+Requisitos: P02-RF-002
+
+P02-FUN-002 | calcular_hash_assinatura
+Contrato: Recebe arquivo ou parâmetros canonizados e versão; retorna hash e metadados determinísticos.
+Requisitos: P02-RF-003
+
+P02-FUN-003 | resolver_politica_execucao
+Contrato: Recebe três booleanos; devolve baixar/atualizar/refazer/reutilizar, sem efeitos.
+Requisitos: P02-RF-006
+
+P02-FUN-004 | validar_rastreabilidade
+Contrato: Recebe catálogo/ligacoes; identifica IDs duplicados, referências ausentes, funções sem comentários e requisitos sem teste.
+Requisitos: P02-RF-001 P02-RNF-002
+
+
+TESTES PRÓPRIOS PREVISTOS — A EXECUTAR NA IMPLEMENTAÇÃO
+P02-TST-001 | Tipo: unitario
+Verificar: Escrita interrompida ou validador falho não publica temporário nem destrói versão válida; plataforma sem substituição atômica informa limitação.
+Requisitos: P02-RF-002
+Funções: P02-FUN-001
+
+P02-TST-002 | Tipo: unitario
+Verificar: Conteúdo/parâmetros iguais em ordem distinta geram assinatura igual; alteração relevante ou versão gera assinatura diferente.
+Requisitos: P02-RF-003
+Funções: P02-FUN-002
+
+P02-TST-003 | Tipo: unitario
+Verificar: Oito combinações dos booleanos: checkpoints FALSE não força download; atualizar consulta; forçar refaz ambos; unidades externas preservadas.
+Requisitos: P02-RF-006
+Funções: P02-FUN-003
+
+P02-TST-004 | Tipo: unitario
+Verificar: Duplicar ID, remover referência e função sem requisito/comentário produz diagnóstico; catálogo íntegro passa.
+Requisitos: P02-RF-001 P02-RNF-002
+Funções: P02-FUN-004
+
+P02-TST-005 | Tipo: integracao_local
+Verificar: Runner seleciona etapa e suíte completa; testes unitários passam sem rede/credenciais e sem esperas reais.
+Requisitos: P02-RF-004
+Funções: verificação do módulo/documentação/fluxo
+
+P02-TST-006 | Tipo: revisao
+Verificar: Revisar README e código para simplicidade, dependências justificadas, fontes, classificação de evidências e processamento por unidade; conferir todos os tópicos exigidos.
+Requisitos: P02-RF-005 P02-RNF-001 P02-RNF-003 P02-RNF-006 P02-RNF-007
+Funções: verificação do módulo/documentação/fluxo
+
+P02-TST-007 | Tipo: integracao_local
+Verificar: Revisar diff/index Git e logs: exclusões e .env.example correto, ausência de segredos, commits pertinentes; rotina de dados não chama Git.
+Requisitos: P02-RNF-004 P02-RNF-005
+Funções: verificação do módulo/documentação/fluxo
+
+ENCERRAMENTO DA ETAPA
+Atualizar registro_projeto.txt, matriz_rastreabilidade.csv e registro_testes.csv.
+Registrar decisões, arquivos, comandos, resultados realmente observados,
+pendências, commit e situação de push. Não registrar teste como aprovado
+porque foi especificado aqui. Informar próximo passo sem iniciar etapa
+seguinte automaticamente, salvo sequência já autorizada pelo usuário.
+
+ATUALIZAÇÃO DOCUMENTAL DE P03 — 01/10/2026
+P02-MOD-002 | Arquivo implementado: scripts/p02_testar.R
+Contrato: runner sem rede, com P01, P03 ou todas; etapa não implementada é rejeitada.
+Requisitos: P02-RF-004. Teste: P02-TST-005 aprovado para a suíte atual (P03).
+P02-FUN-001/002/003/004 continuam previstos. Consulte catálogo e registro_testes.
+
+NOMENCLATURA E REFERÊNCIAS ENTRE SCRIPTS — P02-RNF-008
+Nomear cada script pelo prompt responsável e pela finalidade: pNN_nome_da_funcao.ext,
+em minúsculas, com nomes descritivos separados por sublinhado. Exemplos:
+scripts/p01_executar.R (coordenação), scripts/p02_testar.R (runner comum),
+scripts/p03_verificar_ambiente.R (ambiente). Testes: test-pNN-finalidade.R,
+como tests/testthat/test-p03-ambiente.R. A extensão corresponde à linguagem.
+P01 coordena; P02 fornece recursos comuns; P03 a P07 implementam suas etapas.
+O prefixo identifica responsabilidade estável, não toda a cadeia de dependências.
+Um script P05 que usa P02 permanece p05_; documentar as dependências no
+cabeçalho, chamadas e matriz. Registrar prompt, IDs pertinentes, entradas,
+saídas e efeitos; preservar IDs de requisitos, módulos e funções ao renomear.
+Atualizar conjuntamente source(), wrappers, runner, testes, comandos de uso,
+catálogo e matriz. Validar destinos existentes e execução das etapas já
+implementadas. Scripts futuros citados são propostas, não entregas realizadas.
+Bibliotecas, executáveis de terceiros e artefatos que não são scripts próprios
+não recebem esse prefixo. Não iniciar uma etapa só para criar seu script.
+
+P02-TST-008 | Tipo: revisao_execucao_local
+Verificar: Inventariar scripts próprios, conferir prefixos e destinos de chamadas; verificar ausência de referências operacionais aos nomes substituídos. Executar diagnóstico, seleção P03 e todas e confirmar rejeição de P04 sem implementação ou execução dessa etapa. Preservar IDs e evidências históricas.
+Requisitos: P02-RNF-008
+Funções: verificação do módulo/documentação/fluxo
+
+CICLO DE DESENVOLVIMENTO E SWEBOK — P01-RF-004 / P02-RNF-009
+Usar o SWEBOK v4.0a como referência de áreas de conhecimento; ele não define
+os sete prompts como fases nem uma sequência oficial das dez etapas abaixo.
+Adotar, didaticamente: (1) concepção, planejamento e viabilidade;
+(2) requisitos; (3) arquitetura e projeto; (4) preparação do ambiente;
+(5) construção; (6) verificação, validação e testes;
+(7) entrega, implantação local e aceite; (8) operação e acompanhamento;
+(9) manutenção e evolução; (10) encerramento/retirada e preservação.
+Essas etapas podem ser revisitadas por incremento; testes, gestão, qualidade,
+segurança, versionamento e documentação são atividades transversais.
+
+Gerar na raiz Fases do Ciclo de Desenvolvimento de Software SWEBOK.md:
+enumerar e explicar as etapas; depois detalhar como cada uma será atendida
+neste mini projeto, com prompts/IDs, artefatos, IA e revisão humana,
+evidências, critérios, estados e pendências. Informar edição, fontes oficiais
+e data de consulta; distinguir o conteúdo do SWEBOK da adaptação do projeto.
+Fontes: https://www.computer.org/education/bodies-of-knowledge/software-engineering
+https://www.computer.org/education/bodies-of-knowledge/software-engineering/topics
+https://ieeecs-media.computer.org/media/education/swebok/swebok-v4.pdf
+O documento é uma saída a produzir, não entrada obrigatória: na primeira
+reprodução, partir somente dos sete prompts atuais e das fontes oficiais.
+
+Em cada fechamento, registrar fases relacionadas, contribuição da IA,
+revisão humana, artefatos e provas efetivas. Atualizar mapa e RETOMADA quando
+o incremento alterar seu estado; separar planejado, implementado, validado
+e não aplicável. Documento criado não significa fase concluída; publicação
+Git não comprova implantação/aceite, diagnóstico não comprova máquina limpa,
+e acompanhamento de P01 não comprova operação do pipeline FIDC.
+Não iniciar etapas de dados nem criar uma nova etapa P08 para preencher o mapa.
+Aplicação neste prompt: P02 mantém o contrato SWEBOK comum e a rastreabilidade, evitando duplicar IDs; revisar coerência de fontes, fases, critérios e estados sem exigir conformidade integral ou certificação SWEBOK.
+
+P02-TST-009 | Tipo: revisao_documental
+Verificar: Documento na raiz enumera dez etapas da adaptação didática, explica cada uma e sua aplicação com prompts, artefatos, IA/revisão humana, evidências e estados; fontes oficiais e edição SWEBOK v4.0a identificadas. Sete prompts contêm a regra comum e aplicação própria; documento não é pré-requisito inicial. RETOMADA e CSVs coerentes; P04–P07 continuam sem iniciar e P03-TST-004 cancelado por mudança de escopo. Não declarar implantação, operação, aceite ou ciclo integral concluídos.
+Requisitos: P01-RF-004 P02-RNF-009
+Funções: verificação do módulo/documentação/fluxo
+
+ARQUITETURA TÉCNICA E INCORPORAÇÃO DE PEDIDOS — P01-RF-005 / P02-RNF-010
+Sempre incorporar novos pedidos e decisões do usuário aos requisitos dos
+prompts responsáveis quando alterarem contratos, antes da implementação
+dependente. Cadastrar IDs novos quando necessário, preservar IDs existentes,
+atualizar catálogo/matriz/testes e registrar decisões. Preferências de
+comunicação devem constar das orientações e continuidade. Referenciar regras
+comuns sem duplicar IDs. Pedidos não autorizam automaticamente outras etapas.
+
+Gerar e manter ARQUITETURA.md na raiz: explicar objetivo e limites, papel de
+R, Rscript, RStudio, Codex/IA, PowerShell, Git, GitHub, GitHub CLI e pacotes;
+componentes, dependências, chamadas, interfaces, entradas/saídas, efeitos,
+organização de arquivos, persistência, erros e condições de retomada.
+Incluir somente um DFD Mermaid, com fluxos de dados nomeados, legenda e
+explicação coesa da relação entre os processos e P01-P07. Identificar o significado das setas e o que existe,
+é condicional ou ainda depende de implementação. Não misturar geração com
+IA, chamada de função, testes e publicação como se fossem uma rotina única.
+
+Conferir chamadas contra scripts reais e atualizar diagramas quando mudarem.
+Na implementação histórica opcional, P01 chama funções P03; o roteiro atual não exige essas chamadas. P01 não chama automaticamente runner, instalação ou Git.
+P02 tem runner separado; P03 tem entradas próprias. P04 a P07 têm entrada explícita p01_pipeline_fidc.R e funções por etapa; conferir a versão implementada e suas dependências antes de executar. Retornos pendentes e limitações devem
+aparecer nos diagramas e texto. Não atribuir atomicidade, autenticação,
+processamento de dados ou aceite a componentes que não os implementam.
+O documento é saída dos sete prompts atuais, não material preexistente
+obrigatório. Não instalar ferramentas de diagramas nem iniciar módulos
+futuros só para documentar a arquitetura. Registrar o alcance da verificação:
+revisão textual/estrutural não equivale a renderização ou teste de execução.
+Aplicação arquitetural neste prompt: P02 mantém contratos de arquitetura, nomenclatura, rastreabilidade e qualidade comuns. Runner é entrada independente, não chamada implícita de P01. Separar dependências atuais de utilitários futuros.
+
+P02-TST-010 | Tipo: revisao_documental
+Verificar: ARQUITETURA.md explica ferramentas, contratos, persistência, erros e limites; tem quatro diagramas legíveis em Mermaid com descrição textual. Chamadas atuais conferem com source/sys.source, wrapper, runner e funções reais; fluxo futuro identificado como planejado. Sete prompts incorporam pedidos e exigem atualização arquitetural; IDs, fontes e estados coerentes. Não confundir revisão estrutural com renderização executada. P04–P07 sem iniciar.
+Requisitos: P01-RF-005 P02-RNF-010
+Funções: verificação do módulo/documentação/fluxo
+
+Complemento de P02-RNF-010: Sintaxe Mermaid: em mensagens de sequenceDiagram, não usar ponto e vírgula literal; preferir vírgula ou escape #59;. Conferir sintaxe com a documentação oficial; revisão estrutural não comprova renderização.
+
+ESCOPO VIGENTE DE P03 — REVISÃO DE 01/10/2026
+P03 entrega somente um roteiro documental de preparação do ambiente, gerado
+a partir dos sete prompts atuais. Não pressupor ferramentas, contas, código
+ou documentos preexistentes. Explicar R, RStudio, Codex, Git, GitHub e os
+recursos auxiliares, com fontes oficiais, ordem, finalidade e alternativas
+para leitor sem credenciais administrativas. Não instalar, criar VM, executar
+scripts, testar o roteiro nem exigir evidências de execução para concluir P03.
+P03-TST-005 significa revisão documental, sem teste de execução.
+P03-RF-006 e P03-TST-004 estão cancelados por mudança de escopo, não pendentes.
+Scripts e testes P03 existentes são histórico opcional do escopo anterior.
+Sua preservação não os torna pré-requisitos da entrega vigente.
+Não iniciar P04–P07 automaticamente. Executar somente o incremento expressamente autorizado; testes funcionais dessas etapas continuam previstos.
+O roteiro não comprova ambiente instalado: avaliar pré-requisitos efetivos
+somente quando uma etapa de execução for expressamente autorizada.
+Sempre registrar novos pedidos nos prompts, arquitetura, SWEBOK e retomada.
+Informar plano e status a cada dez segundos durante o trabalho e indicar
+explicitamente se a bola está com o agente ou com o usuário.
+
+BASE OBRIGATÓRIA DA IMPLEMENTAÇÃO
+A implementação deve utilizar somente os comandos e requisitos dos sete prompts atuais. As consultas oficiais explicitamente previstas nesses prompts servem para confirmar dados e contratos; aplicar as instruções específicas posteriores do usuário, mantendo os requisitos revisados como contrato da implementação.
+
+AUTORIZAÇÃO VIGENTE — IMPLEMENTAÇÃO P04 A P07
+Implementar P04–P07 para julho/agosto de 2026. Junção por CNPJ e competência, preservando origens em colunas próprias. CSV temporal por leiaute e CSV flat único são entregas obrigatórias. Múltiplas linhas são preservadas em posições técnicas por leiaute no flat, sem somar, escolher completude ou multiplicar joins; registrar limites, chaves de identidade e conflitos. Inspeção/download e piloto real estão autorizados. P03 continua somente documental. Instruções específicas posteriores do usuário prevalecem sobre os limites de incrementos anteriores.
+
+CONTRATOS ADICIONAIS
+P02-FUN-005 | FUN | carregar_pipeline | Carrega módulos P02/P04/P05/P06/P07 em ambiente isolado, sem executar etapas.
+P02-FUN-006 | FUN | validar_destino | Verifica contenção de caminhos e impede escrita fora da raiz ou por links.
+
+Refinamento P02-RNF-002: auxiliares nomeadas têm ID próprio; lambdas puras curtas internas herdam o ID da função e comentário de contexto. Não tratá-las como módulo independente; manter finalidade, entradas/saídas e efeitos documentados. Esse refinamento não dispensa IDs das funções públicas.
+
+INCREMENTO AUTORIZADO — 02/10/2026
+P02-RF-007 | RF | Fixar R e dependencias com renv.lock e biblioteca local, registrar ambiente e executar CI Windows/Linux com fixtures sem rede CVM ou credenciais.
+P02-MOD-003 | MOD | scripts/p02_dependencias.R
+P02-FUN-009 | FUN | assinatura_codigo
+P02-FUN-010 | FUN | registrar_ambiente
+P02-FUN-011 | FUN | gerenciar_dependencias
+P02-TST-011 | TST | Verificar comportamentos reais com fixtures e falhas controladas.
+
+INCREMENTO AUTORIZADO — 02/10/2026
+P02-RF-008 | RF | Recuperar rollback validado, preservar arquivos corrompidos e falhas de escrita, sem anunciar sucesso anterior; conservar limites de rename no Windows/OneDrive.
+P02-MOD-001 | MOD | scripts/p02_utilitarios.R
+P02-FUN-007 | FUN | recuperar_rollback
+P02-FUN-008 | FUN | ler_rds_recuperavel
+P02-TST-012 | TST | Verificar comportamentos reais com fixtures e falhas controladas.
+
+DECISOES VIGENTES — 02/10/2026
+Arquitetura apresenta somente um DFD, com fluxos de dados e explicacao da relacao com P01-P07; substitui pedidos anteriores de multiplos diagramas. P03 continua documental, sem reativar VM/reproducao independente. O modo temporal sem flat tem aceite proprio e nao substitui o piloto completo. CI e renv estao autorizados neste incremento. A instrucao final do usuario autoriza substituir o historico local/remoto por um unico versão de referência somente apos validar; fora desse fechamento, nao reescrever nem publicar sem pedido. doit significa ler tmp/tmp.txt.

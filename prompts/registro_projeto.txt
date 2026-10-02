@@ -1,0 +1,541 @@
+FECHAMENTO VIGENTE — PUBLICAÇÃO CONFIRMADA — 2026-10-01T21:56:45.3168246-03:00
+Código/documentação enviados: 6e91ee098695175f2468a08a372aa2e4fadc1715, HEAD local/remoto iguais e árvore limpa. Aceite local e critérios remotos do piloto atendidos. Registrar esta confirmação em commit documental e conferir seu envio. Bola com usuário para revisão/novo incremento, nenhuma pendência necessária ao trabalho autorizado.
+
+RESUMO VIGENTE — IMPLEMENTAÇÃO E ACEITE LOCAL P04–P07 — 01/10/2026
+Autorização atual substitui limite de leitura do dicionário: implementar piloto julho/agosto, CNPJ/competência e origem; CSV temporal por leiaute e flat obrigatórios. P01/P02/P04–P06 implementados/validados no piloto; P03 roteiro documental concluído, sem instalações/VM/teste de execução; P07 aceite local aprovado, sincronização em conferência final.
+2 ZIPs oficiais/36 CSVs, 18 temporais CSV/RDS, flat 8783 linhas/14749 colunas, cedentes 7004. União exata das chaves e detalhes preservados por pivot técnico, sem agregação/completude/produto cartesiano. Interrupção/processo novo e repetição com 36 checkpoints reutilizados; 20 CSVs idênticos por SHA-256. Suíte 22 casos/210 verificações, zero falhas. Esquema observado: 11 ocorrências novas/5 ausentes; semânticas/escala não inferidas.
+README/RETOMADA/arquitetura/SWEBOK/prompts/IDs e relatório P07 atualizados. Dados/resultados/logs/tmp ignorados; publicar apenas código/documentação e evidências agregadas. Após envio confirmado, bola com usuário para revisar resultados e decidir eventual melhoria, sem pendência necessária ao incremento autorizado.
+HISTÓRICO ABAIXO — RESUMOS E LIMITES ANTERIORES SUPERADOS PELA AUTORIZAÇÃO VIGENTE
+RESUMO VIGENTE — DICIONÁRIO P04 E PILOTO CONFIRMADO — 01/10/2026
+Usuário confirmou 2026-07-01 a 2026-08-31 e autorizou somente ler o dicionário. ZIP oficial de metadados: 15.942 bytes; 18 textos; 455 definições; oito descrições vazias. Evidência/hash e limites em P04_LEITURA_DICIONARIO_CVM.md; inventário documental P04_CAMPOS_DECLARADOS_DICIONARIO.csv. Original local ignorado pelo Git. Nenhum informe mensal baixado, implementação ou teste funcional executado. P04 parcial; P03 documental concluído; P05–P07 não iniciados. Bola com usuário após publicação para escolher escopo de tabelas/contratos provisórios. Resumos anteriores abaixo são históricos.
+
+RESUMO VIGENTE — LEVANTAMENTO INICIAL P04 — 01/10/2026
+Item 1 autorizado: páginas oficiais consultadas, ZIPs não baixados, dicionário somente localizado. Evidência: P04_LEVANTAMENTO_FONTES_CVM.md. P04 parcial, período piloto não selecionado, contratos e implementação pendentes. P04-TST-004 consulta manual parcial, não aprovado como teste funcional. P03 documental concluído; P05–P07 não iniciados. Bola com usuário após fechamento para escolher próximo incremento. Estados anteriores abaixo são históricos.
+
+ORIENTAÇÃO VIGENTE — BASE DA IMPLEMENTAÇÃO — 01/10/2026
+A implementação deve utilizar somente os comandos e requisitos dos sete prompts atuais. As consultas oficiais explicitamente previstas nesses prompts servem para confirmar dados e contratos; seguir requisitos atualizados e instruções específicas posteriores do usuário.
+P03 permanece documental; P04–P07 não iniciados. Documentação e pacote revisados.
+
+RESUMO VIGENTE — P03 EXCLUSIVAMENTE DOCUMENTAL — 01/10/2026
+Decisão do usuário: sem credenciais administrativas, P03 deverá apresentar
+somente roteiro de preparação do ambiente, sem testar a execução.
+Roteiro atualizado; requisitos RF-001 a RF-005 migrados para documentação.
+P03-MOD-002: guia. P03-TST-005: revisão documental, sem execução.
+P03-RF-006 e P03-TST-004 cancelados; teste limpo nunca executado/aprovado.
+Scripts/funções/testes anteriores preservados como história opcional.
+P01/P02 parciais; P03 documental concluído; P04–P07 não iniciados.
+Documentação e pacote atualizados; sincronização GitHub autorizada.
+Nenhuma instalação, VM, script ou teste do produto executado nesta revisão.
+Após publicação, bola com usuário para escolher próximo incremento.
+
+HISTÓRICO ABAIXO — ESTADOS E PLANOS ANTIGOS NÃO SÃO REQUISITOS VIGENTES
+
+RESUMO VIGENTE — PLANEJAMENTO DA VALIDAÇÃO LIMPA
+
+## Planejamento da validação independente de P03
+
+Concluído somente o item 1 autorizado: preparar roteiro de validação. Criado VALIDACAO_P03_AMBIENTE_LIMPO.md, com decisões futuras, condição inicial, 12 etapas incrementais, resultados/evidências, critérios de aceite, tratamento de falhas e limites. Criado prompts/modelo_evidencias_P03-TST-004.csv com 12 controles não executados, sem resultados observados ou aprovações importados.
+
+Requisito P03-RF-005 registrado e regra incorporada aos sete prompts. P03-TST-005 aprovado como revisão documental do planejamento; não executa nem aprova P03-TST-004. Modelo de evidências é apoio do avaliador e deve ser gerado na reprodução, sem virar entrada adicional aos sete prompts. A preparação anterior ao primeiro uso do Codex depende de leitura humana dos prompts/fontes oficiais, não de Codex preinstalado.
+
+Nenhuma máquina/VM escolhida ou criada, nenhuma ferramenta instalada, nenhuma conta configurada, nenhum outro projeto gerado e nenhuma rotina P04–P07 iniciada. Nenhum script alterado; testes automatizados não repetidos nesta mudança documental. Cinco testes e 89 verificações da execução do autor são evidências anteriores, não aprovação do novo ambiente.
+
+Status global: P01 coordenador local P03 validado com integrações futuras e reprodução independente pendentes; P02 parcial; base local P03 e diagnóstico de repositório parametrizado validados; planejamento da reprodução limpa concluído; execução independente P03-TST-004 não iniciada; P04, P05, P06-A/B/C/D e P07 não iniciados.
+
+Próximo incremento recomendado: escolher o ambiente de validação e os responsáveis, confirmar restrições e local de evidências. A escolha não autoriza automaticamente criação de VM, instalações ou execução integral. Após publicação deste roteiro, a bola fica com o usuário para indicar esse próximo incremento. Não há decisão necessária para fechar o planejamento já autorizado.
+
+Pacote local de prompts atualizado para 17 documentos de apoio/contratos, incluindo o modelo vazio; o roteiro de validação permanece na raiz do repositório, versionado separadamente.
+--- Registros anteriores preservados ---
+RESUMO VIGENTE — DIAGNÓSTICO DE REPOSITÓRIO PARAMETRIZADO
+
+## Diagnóstico de repositório parametrizado — P03-RF-003
+
+P03-FUN-003, verificar_repositorio(), recebe agora repositorio_esperado no formato conta/projeto. A referência é explícita e independente do remoto observado, sem nome de conta fixo na implementação. Ausência gera pendência; formato inválido gera erro. Compara remoto HTTPS (com/sem .git), SSH git@github.com: e ssh://git@github.com/; comparação ignora caixa. Observações de sessão/repositório/visibilidade continuam separadas e não são inferidas.
+
+O remoto real deste projeto continua https://github.com/amarallr/akcit_c4_mini_projeto.git, consultado somente para leitura. Para diagnosticar esta execução, informar repositorio_esperado = 'amarallr/akcit_c4_mini_projeto'. Isso é configuração desta chamada, não padrão embutido para outros leitores. Nenhum remoto, login, visibilidade ou credencial foi alterado. P01 continua sem chamar verificar_repositorio automaticamente.
+
+P03-TST-003 ampliado: repositório do autor e repositório próprio simulado, quatro formatos de remoto, divergência, referência ausente, observações desconhecidas, formato inválido, argumentos inválidos e comparação de caixa. Suíte completa aprovada: dois testes P01 com 46 verificações e três P03 com 43; total cinco testes e 89 verificações. Aviso de compilação de testthat em R 4.5.3 permanece sem falha no R 4.5.1. Sem consultas/autenticação reais nos testes.
+
+Requisito P03-RF-003, contrato e testes preservam IDs e recebem detalhes atualizados. CSVs, README, arquitetura, SWEBOK e roteiro atualizados. A validação parametrizada local está concluída; P03-TST-004 (reprodução limpa independente e publicação própria) continua não executado. As evidências anteriores de 24/70 verificações permanecem históricas; os números atuais são 43/89.
+
+Status global: P01 coordenador local P03 validado, integrações futuras e reprodução independente pendentes; P02 parcial; base local P03 validada com diagnóstico de repositório parametrizado, máquina limpa pendente; P04 a P07 não iniciados.
+
+Após publicação, a bola fica com o usuário para indicar o próximo incremento. Próxima pendência recomendada: planejar e realizar P03-TST-004 em ambiente independente, por etapas. Não iniciar P04 automaticamente.
+--- Evidências anteriores preservadas ---
+RESUMO VIGENTE — ARQUITETURA TÉCNICA DETALHADA
+
+## Detalhamento técnico da arquitetura — revisão documental
+
+Criado ARQUITETURA.md na raiz, com quatro diagramas Mermaid: ambiente e ferramentas; dependências e chamadas atuais; sequência P01; fluxo de dados futuro planejado. O texto explica R/Rscript, RStudio, Codex/IA, PowerShell, Git/GitHub, GitHub CLI e pacotes, separando desenvolvimento de execução local e publicação.
+
+Contratos atuais conferidos nos scripts: P01 carrega funções P03, não chama runner, instalação, Git ou etapas futuras; criação do plano é condicional à ausência de pendências; continuidade é opcional e não transacional entre matriz operacional e registro. Wrapper, diagnóstico, console e testes têm entradas próprias. Diagnóstico de remoto do autor e reprodução limpa permanecem limites pendentes.
+
+Requisitos: P01-RF-005 registra a regra permanente de incorporar novos pedidos/decisões nos prompts responsáveis e na rastreabilidade; P02-RNF-010 exige arquitetura detalhada, diagramas, interfaces, efeitos, persistência e limites. Sete prompts atualizados com aplicação específica. P02-TST-010 aprovado como revisão documental inicial, não como teste do pipeline futuro.
+
+Verificação dos diagramas: revisão textual e estrutural e comparação com scripts. Não houve renderização local; Mermaid será interpretado por leitor compatível. Nenhum script foi alterado neste incremento; testes de execução não foram repetidos por uma mudança documental. Os cinco testes automatizados existentes continuam com evidência anterior de 70 verificações, separada desta revisão.
+
+README liga para a arquitetura, preservando SWEBOK como quarto parágrafo. Documento do ciclo SWEBOK liga ao detalhamento da fase de projeto. Mapa e legendas distinguem chamadas, relações de ferramentas, condições e dependências futuras; P06-A/B/C/D são incrementos de desenvolvimento, não uma ordem rígida de chamadas do produto.
+
+Status global preservado: P01 coordenador local P03 validado, integrações futuras e reprodução independente pendentes; P02 parcial; base P03 local validada, P03-TST-004 não executado; P04, P05, P06-A/B/C/D e P07 não iniciados. Não houve consulta/download de dados CVM nesta revisão. Documentos são saídas a gerar a partir somente dos sete prompts, sem materiais prévios obrigatórios.
+
+Comunicação: manter avisos a cada 10 segundos durante trabalho ativo com itens previstos e estados; retomar após retorno de ferramentas que retiverem o controle. Após publicação, a bola fica com o usuário para indicar o próximo incremento. Nenhuma decisão adicional é necessária para esta revisão.
+--- Registros anteriores preservados ---
+RESUMO VIGENTE — CICLO DIDÁTICO SWEBOK
+
+## Ciclo de desenvolvimento baseado no SWEBOK — revisão documental
+
+Criado na raiz o documento Fases do Ciclo de Desenvolvimento de Software SWEBOK.md. Referência consultada: SWEBOK v4.0a da IEEE Computer Society. O guia organiza áreas de conhecimento; as dez etapas do documento são adaptação didática do mini projeto, sem impor execução linear nem equivalência entre prompts e fases.
+
+Etapas: 1 concepção/planejamento/viabilidade; 2 requisitos; 3 arquitetura/projeto; 4 preparação; 5 construção; 6 verificação/validação/testes; 7 entrega/implantação local/aceite; 8 operação/acompanhamento; 9 manutenção/evolução; 10 encerramento/retirada/preservação. Cada etapa tem explicação, aplicação ao projeto, atuação da IA e revisão humana, artefatos, critérios, áreas relacionadas e estado.
+
+Requisitos P01-RF-004 e P02-RNF-009 registrados; P02-TST-009 revisa a existência e coerência documental, não o atendimento integral do ciclo. Os sete prompts contêm regra comum e orientação específica. O documento deve ser gerado na reprodução a partir somente dos sete prompts; não é um oitavo material inicial obrigatório. O coordenador R não atualiza esse mapa automaticamente: atualização é parte do fechamento humano com IA.
+
+Status global preservado: P01 tem coordenador local P03 validado, com integrações futuras e reprodução independente pendentes; P02 parcial; base P03 local validada, mas P03-TST-004 não executado; P04, P05, P06-A/B/C/D e P07 não iniciados. Publicação de documentos não equivale a implantação/aceite completo. Acompanhamento de P01 não comprova operação do processamento FIDC. Encerramento acadêmico e eventual retirada são distintos; retirada é condicional, sem nova etapa P08.
+
+Preferência de comunicação do usuário: durante trabalho ativo, informar a cada 10 segundos os itens previstos para a interação e o status de cada um. Em chamadas de ferramenta que retiverem o controle, retomar a comunicação imediatamente após seu retorno. Indicar sempre com quem está a bola. Não manter atualizações automáticas depois de terminar a interação.
+
+Após a publicação desta revisão, a bola fica com o usuário para indicar o próximo incremento. Nenhuma decisão adicional é necessária para criar o documento e atualizar os prompts.
+--- Registros anteriores preservados ---
+RESUMO VIGENTE — COORDENADOR P01 IMPLEMENTADO
+
+## Incremento P01 — coordenador local implementado
+
+scripts/p01_executar.R implementa executar_etapa(). Carregar o arquivo não executa a etapa. A execução explícita verifica dependências e usa as funções P03 já geradas, sem instalação, rede, autenticação ou Git. P04 a P07 retornam nao_implementada, mesmo quando solicitadas; não são chamadas automaticamente.
+
+```powershell
+Rscript --vanilla scripts/p01_executar.R P03
+Rscript --vanilla scripts/p02_testar.R P01
+Rscript --vanilla scripts/p02_testar.R
+```
+
+No console RStudio, após abrir o projeto:
+
+```r
+source('scripts/p01_executar.R', encoding = 'UTF-8')
+resumo <- executar_etapa('P03', list(registrar = FALSE))
+resumo$pendencias
+```
+
+Configuração opcional: raiz, registrar, pacotes, observacoes, plano, commit e decisoes. observacoes é destinado a testes ou evidências efetivas do ambiente, nunca à remoção fictícia de pendências. O padrão registra continuidade; registrar = FALSE permite somente diagnóstico/retorno sem gravar registros. Um plano de preparação só é aplicado quando o diagnóstico não tem pendências, preservando arquivos existentes.
+
+A continuidade acrescenta evidências a prompts/registro_projeto.txt e a logs/p01/matriz_execucoes.csv, que fica fora do Git. A matriz operacional registra chamadas; a matriz normativa em prompts/ permanece atualizada no fechamento com revisão humana. Não há promoção automática de requisitos, testes ou sincronização remota. As duas escritas não são uma transação atômica; revisar divergências se houver interrupção.
+
+Validação: P01-TST-001/002 aprovados com 46 verificações; P03 mantém três testes e 24 verificações. Suíte completa: cinco testes, 70 verificações. Runner aceita P01, P03 ou todas e rejeita P04. Execução real do coordenador para P03 retornou pendente (código 1), pois o diagnóstico em lote exige evidência manual atual do console RStudio; a pendência foi registrada, sem criar arquivos do plano ou avançar. O aviso já conhecido de compilação de testthat em outra versão de R não impediu os testes.
+
+Status global: P01 tem coordenador local implementado e validado, com integração das etapas futuras e reprodução independente de P01-RF-003 ainda pendentes; P02 permanece parcial; base local P03 validada, mas reprodução limpa P03-TST-004 não executada; P04, P05, P06-A/B/C/D e P07 não iniciados. P01 não instala ferramentas nem gera código autonomamente: os módulos são construídos com IA em incrementos de preparação. O sucesso de um diagnóstico não equivale ao aceite completo do ambiente.
+
+Próximo movimento após publicação: usuário indica o próximo incremento. Nenhuma decisão do usuário é necessária para fechar a implementação local de P01. Não iniciar P04 automaticamente.
+--- Registros anteriores preservados ---
+RESUMO VIGENTE — NOMENCLATURA APLICADA
+
+## Nomenclatura aprovada e aplicada — 01/10/2026
+
+Padrão vigente: pNN_nome_da_funcao.ext para scripts próprios; test-pNN-finalidade.R para testes. O prefixo identifica o prompt responsável; os cabeçalhos e a matriz registram dependências. IDs foram preservados. Regra normativa P02-RNF-008 incorporada aos sete prompts; verificação P02-TST-008 aprovada.
+
+| Script anterior | Script atual |
+|---|---|
+| verificar_ambiente.R | scripts/p03_verificar_ambiente.R |
+| preparar_projeto.R | scripts/p03_preparar_projeto.R |
+| preparar_ambiente.R | scripts/p03_preparar_ambiente.R |
+| diagnosticar_ambiente.R | scripts/p03_diagnosticar_ambiente.R |
+| testar.R | scripts/p02_testar.R |
+| ambiente.ps1 | scripts/p03_ambiente.ps1 |
+| gh.ps1 | scripts/p03_gh.ps1 |
+| entrada manual na raiz | scripts/p03_verificar_sessao.R |
+| teste P03 | tests/testthat/test-p03-ambiente.R |
+
+Chamadas source(), wrapper PowerShell, runner, documentos e CSVs atualizados. Os nomes antigos da tabela são apenas o mapa da migração. Referências de caminhos nos registros foram atualizadas para uso atual; datas, resultados e commits anteriores continuam evidências da execução original. Backups locais permanecem preservados.
+
+Validação: diagnóstico R e seis pacotes carregados, UTF-8 confirmado, leitura de .env simulado aprovada; console RStudio continua exigindo evidência manual da sessão. Suítes P03 e todas aprovadas com três testes e 24 verificações cada; seleção P04 rejeitada antes de executar. O aviso preexistente de compilação de testthat em R 4.5.3 permanece, sem falha no R 4.5.1.
+
+Status: P01/P02 parciais; base local P03 validada; reprodução em máquina limpa P03-TST-004 ainda não executada; P04 a P07 não iniciados. O novo requisito de nomenclatura está validado, sem alterar esses status.
+
+Após o fechamento e publicação deste incremento, a bola fica com o usuário para indicar a próxima etapa. Nenhuma instalação ou decisão adicional é necessária para esta renomeação.
+--- Registro anterior ---
+RESUMO VIGENTE — REVISÃO DIDÁTICA E REPRODUÇÃO DO ZERO
+
+## Atualização vigente — reprodução a partir somente dos prompts
+
+O projeto é didático, no âmbito da especialização em Engenharia de Software com IA Generativa, usando R, RStudio, Codex, Git e GitHub. A IA acompanha todo o ciclo com revisão humana. A primeira reprodução recebe somente P01 a P07: instalar/configurar ferramentas e contas próprias e gerar progressivamente código, projeto, documentos, registros e testes. Não exigir materiais anteriores nem clonagem. O roteiro de apoio está em prompts/AMBIENTE_DO_ZERO.md.
+
+Status global vigente: P01 parcial; P02 parcial; base local de P03 validada, com roteiro do zero documentado e validação independente pendente; P04, P05, P06-A/B/C/D e P07 não iniciados. Os quatro testes anteriormente aprovados permanecem registrados. P03-TST-004, a nova reprodução em máquina/VM limpa, está **não executado**. O diagnóstico atual de remoto ainda usa o repositório do autor; sua adaptação ao repositório do leitor e validação fazem parte do escopo ampliado pendente. Nenhuma instalação ou execução CVM foi realizada nesta revisão documental.
+
+Novos requisitos: P01-RF-003 (partida somente dos prompts), P02-RNF-007 (método acadêmico com IA e revisão humana) e P03-RF-004 (preparação e reprodução do zero). Os CSVs distinguem o escopo anterior validado das novas verificações planejadas.
+
+Responsável pelo próximo movimento após publicação desta revisão: usuário, para revisar o roteiro e indicar o próximo incremento. A recomendação é tratar a validação independente de P03 em uma etapa própria. Isso não autoriza avançar para P04. Não há instalação solicitada ao usuário neste fechamento.
+--- Registro anterior da execução do autor ---
+
+REGISTRO PÚBLICO REVISADO — 01/10/2026
+Situação vigente: P03 concluída; P01/P02 parciais; P04 a P07 não iniciados.
+Implementação P03: 6a8de17a6b779312f3dcc6ddf771eb02b30aa443.
+Fechamento documental: f174a103657e18c3528d667590e0a9f3f50b5000,
+com igualdade local/remota confirmada na publicação anterior.
+Verificações: RStudio por saída fornecida pelo usuário; diagnóstico local,
+24 verificações de P03 e runner aprovados; GitHub revalidado.
+Versões revisadas publicadas em 4a9562085e00854cbce806041539b8e556a4c508; hash local/remoto confirmado. Fechamento documental em registro posterior.
+Responsável pelo próximo movimento: usuário, para indicar o primeiro incremento de P04. Não há pendência para a publicação atual.
+O texto abaixo conserva o histórico em ordem de registro. Declarações de
+pendência anteriores foram superadas pelos fechamentos ao final; este bloco
+resume o estado vigente. E-mail real substituído por exemplo fictício.
+Originais preservados em locais/, excluída do Git. Consulte RETOMADA.md.
+REGISTRO DO PROJETO — v2026-10-01
+ATUALIZAÇÃO P03 — CONSOLE RSTUDIO — 01/10/2026
+Evidência: saída dos quatro comandos fornecida pelo usuário nesta conversa;
+verificação manual, sem execução direta pelo agente no console.
+R.version.string: R version 4.5.1 (2025-06-13 ucrt).
+Sys.getlocale(): categorias Portuguese_Brazil.utf8; LC_NUMERIC=C.
+l10n_info(): MBCS TRUE; UTF-8 TRUE; Latin-1 FALSE; codepage e system.codepage 65001.
+getwd(): corresponde à raiz do projeto nesta sessão; caminho pessoal omitido aqui.
+Resultado: confirmação de R, locale UTF-8 e diretório no RStudio concluída.
+Esta atualização supera a pendência do console descrita no levantamento abaixo.
+P03 permanece em andamento: contratos, testes e verificações remotas restantes
+não foram concluídos. Não aprovar automaticamente os testes P03 por essa evidência.
+
+SITUAÇÃO ATUAL — LEVANTAMENTO P03 — 01/10/2026 09:14 -03:00
+Este bloco registra observações históricas do levantamento local.
+Escopo autorizado: levantamento e continuidade; sem implementação das próximas
+etapas, instalações, commit ou push neste incremento. P03 permanece em andamento.
+Prompt vigente: P01/P02 e etapas P03 a P07 em prompts/.
+Projeto real acessível nesta sessão. Dataset definido: FIDC — Informe Mensal.
+Período julho/agosto de 2026 é proposta, ainda não confirmado.
+
+CONFIRMADO LOCALMENTE
+- C4-Mini-projeto.Rproj, README, .gitignore, .env.example e quatro scripts
+  de preparação existentes. scripts/p03_verificar_sessao.R preservado; contém setwd pessoal e não
+  deve ser selecionado automaticamente para publicação.
+- Comando: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/p03_ambiente.ps1
+  Resultado: código 0; R 4.5.1; locale Portuguese_Brazil.utf8, UTF-8 validado;
+  testthat 3.3.2, curl 7.0.0, httr2 1.3.0, digest 0.6.39, readr 2.2.0,
+  dotenv 1.0.3 carregados; leitura de .env simulado aprovada sem valores expostos.
+  Nenhuma instalação realizada. Isso é diagnóstico existente, não aprovação
+  dos testes P03-TST-001/002/003 ou da suíte de processamento.
+- RStudio 2024.04.0+735 instalado; cinco processos observados. Versão de R,
+  locale e diretório dentro do console RStudio ainda não confirmados.
+- Git 2.55.0.windows.4, branch main; remoto origin configurado para
+  https://github.com/amarallr/akcit_c4_mini_projeto.git.
+- HEAD e referência LOCAL origin/main iguais:
+  8915bb376f82f95a3d934189b77b9977530ce156.
+  Não foi feita consulta remota; igualdade local não comprova sincronização atual.
+- GitHub CLI portátil 2.102.0 executável. Autenticação e visibilidade atuais
+  não consultadas; confirmação anterior permanece evidência histórica.
+- git check-ignore confirmou exclusões de .env, dados/, saidas/, checkpoints/,
+  logs/, tmp/, .R-library/ e .Rproj.user/. .env.example é rastreado e fictício.
+- git status --short observou .Rproj modificado e RETOMADA.md/scripts/p03_verificar_sessao.R/prompts/ não rastreados no levantamento. Alterações preservadas.
+
+LACUNAS E PRÓXIMO INCREMENTO A DISCUTIR
+- README e RETOMADA.md apresentavam seleção do dataset pendente; atualização documental prevista naquele levantamento.
+- Scripts atuais são preparação anterior; não implementam integralmente os
+  contratos/IDs P03-FUN-001/002 nem demonstram os testes novos.
+- Não existem scripts/p02_testar.R, scripts/p01_executar.R ou módulos R/ previstos;
+  testes da hierarquia permanecem não executados e matriz permanece planejada.
+- Confirmar no console RStudio R.version.string, Sys.getlocale(), l10n_info()
+  e getwd(); revalidar GitHub somente quando necessário à etapa.
+- Nenhum download, consolidação ou checkpoint de processamento observado.
+- Próximo passo: discutir atualização documental e pendências de P03 antes
+  de implementar componentes ausentes. Não avançar automaticamente para P04.
+
+ATUALIZAÇÃO DE ESCOPO AUTORIZADA PELO USUÁRIO
+Dataset inicial: informes mensais dos FIDCs (definido pelo usuário).
+Período piloto sugerido: 2026-07-01 a 2026-08-31; confirmar na implementação.
+Implantação: por etapas, seguindo P01 e biblioteca P02.
+Situação: hierarquia documental criada; implementação/testes R não executados.
+Repositório informado: https://github.com/amarallr/akcit_c4_mini_projeto.
+Visibilidade atual/autenticação/hashes: não revalidados nesse levantamento documental.
+A indicação pública no histórico não é confirmação atual nem autorização
+para mudar visibilidade. A pasta do projeto real não foi fornecida como
+repositório acessível nesta sessão.
+
+HISTÓRICO DA PREPARAÇÃO — OBSERVAÇÕES DATADAS
+Os fatos de preparação abaixo são observações datadas do ambiente.
+Dataset "a definir" no histórico foi superado pela decisão FIDC acima.
+Versões, login e commits não foram conferidos no ambiente do usuário.
+Este registro contém e-mail/caminhos pessoais: manter local, ou publicar
+somente cópia revisada sem informações pessoais. Não versionar anexos
+originais automaticamente. Atualizar status sem apagar o histórico.
+
+DECISÕES E CONFIGURAÇÃO
+Preencha os campos pendentes antes de executar as ações que dependem deles.
+Se um campo não impedir o avanço, prossiga e registre a pendência.
+- Dataset inicial: [a definir; apresentar opções oficiais se necessário].
+- Período de demonstração: [data inicial e data final, em AAAA-MM-DD].
+  Escolher um intervalo curto, mas com pelo menos duas unidades de origem
+  para demonstrar interrupção e retomada da consolidação.
+- Pasta do projeto: diretório de trabalho atual do ambiente fornecido.
+- Diretório de dados: dados/, relativo à raiz do projeto.
+- Repositório GitHub: https://github.com/amarallr/akcit_c4_mini_projeto.
+- Visibilidade: público, confirmada na API do GitHub.
+- Identidade Git local: amarallr; e-mail email@example.invalid, definido pelo
+  usuário. O endereço configurado será visível nos metadados públicos dos commits;
+  o endereço acima é um exemplo fictício, não a identidade real.
+- Restrições adicionais: [prazo, armazenamento, pacotes permitidos ou nenhuma].
+- Instalação de pacotes e ferramentas: seguir as permissões disponíveis no
+  ambiente e registrar dependências ausentes.
+- Formato de saída: RDS como padrão inicial; CSV como opção configurável.
+
+AMBIENTE EXISTENTE E PREPARAÇÃO
+Este registro descreve verificações realizadas em 30/09/2026. Revalidar
+quando o ambiente mudar; versões observadas não são requisitos mínimos.
+Reutilizar instalações e autenticações existentes. Não reinstalar nem
+alterar configurações globais sem necessidade. Os comandos abaixo são
+instruções de preparação; sua presença no prompt não significa que todas
+as ações futuras já tenham sido executadas.
+
+1. Sistema, terminal e pasta de trabalho
+   Ambiente Windows com PowerShell. A pasta atual está no OneDrive.
+   Usar caminhos relativos à raiz do projeto e aspas em caminhos com
+   espaços. Não copiar caminhos pessoais para documentação publicada.
+   Comandos PowerShell para conferir a pasta e os executáveis:
+   Get-Location
+   Get-ChildItem -Force
+   Get-Command Rscript,git,codex,gh -ErrorAction SilentlyContinue
+   Para entrar na pasta em outro terminal, substituir o exemplo:
+   Set-Location -LiteralPath 'C:\caminho\do\projeto'
+   Executar comandos de terminal no PowerShell ou no terminal do RStudio;
+   executar código R no console R ou em scripts .R.
+
+2. R e locale: funcionamento confirmado
+   R 4.5.1 (2025-06-13 ucrt), com Rscript.exe disponível no PATH.
+   O comando R no PowerShell resolve para um alias, por isso usar Rscript
+   para execução em lote; para o console interativo, usar o RStudio.
+   Foram observados LANG, LC_ALL e LC_CTYPE = C.UTF-8 no processo herdado,
+   sem valores dessas variáveis nos níveis User e Machine. Essa configuração
+   produziu avisos de locale na inicialização do R nesta execução.
+   A remoção apenas no processo PowerShell de diagnóstico foi validada:
+   Remove-Item Env:LANG,Env:LC_ALL,Env:LC_CTYPE -ErrorAction SilentlyContinue
+   Rscript --vanilla -e 'print(R.version.string); print(Sys.getlocale()); print(l10n_info())'
+   Resultado após a remoção: categorias locais Portuguese_Brazil.utf8,
+   LC_NUMERIC=C e UTF-8=TRUE. Isso não altera variáveis persistentes do
+   Windows nem processos RStudio já abertos. Repetir no terminal usado
+   para iniciar o R se o problema reaparecer. Não impor C.UTF-8 no Windows.
+   Para código com várias linhas ou aspas complexas, preferir arquivo .R
+   a uma expressão extensa em -e. Salvar scripts e textos em UTF-8.
+
+3. RStudio: instalação e execução observadas
+   Versão instalada: 2024.04.0+735, executável em
+   C:\Program Files\RStudio\rstudio.exe; processos rstudio estavam abertos.
+   Não foi confirmada a versão do R selecionada dentro do console RStudio.
+   Verificar nesse console:
+   R.version.string
+   Sys.getlocale()
+   l10n_info()
+   getwd()
+   sessionInfo()
+   Foi criado C4-Mini-projeto.Rproj, com UTF-8, sem restauração automática
+   de workspace e sem salvar histórico ou workspace. Abrir esse arquivo
+   no RStudio. A pasta .Rproj.user/ está excluída pelo .gitignore.
+   Reutilizar a pasta; preservar scripts/p03_verificar_sessao.R. O scripts/p03_verificar_sessao.R atual contém setwd() com
+   caminho pessoal e anotações de erro do Codex: revisá-lo durante a
+   implementação e usar o diretório definido pelo projeto .Rproj.
+   Com o projeto aberto, scripts podem ser executados por source() ou
+   selecionando linhas e usando Ctrl+Enter. Exemplo futuro, após existir:
+   source('scripts/p01_executar.R', encoding = 'UTF-8')
+
+4. Pacotes R disponíveis
+   installed.packages() confirmou: testthat 3.3.2; curl 7.0.0;
+   httr2 1.3.0; digest 0.6.39; readr 2.2.0; dplyr 1.2.1;
+   jsonlite 2.0.0; renv 1.2.3. Isso confirma instalação, não testes de
+   carregamento nem compatibilidade de todos esses pacotes.
+   dotenv 1.0.3 foi instalado do CRAN na biblioteca local .R-library/,
+   ignorada pelo Git. scripts/p03_preparar_ambiente.R reutiliza pacotes já
+   disponíveis e instala somente ausentes nessa biblioteca.
+   scripts/p03_verificar_ambiente.R confirmou carregamento de testthat, curl,
+   httr2, digest, readr e dotenv; verificou UTF-8 e leitura de um .env
+   temporário simulado sem exposição de valores.
+   Não tornar todos os pacotes instalados dependências obrigatórias.
+   Para verificar os pacotes efetivamente escolhidos, executar no R:
+   requireNamespace('testthat', quietly = TRUE)
+   packageVersion('testthat')
+   Se faltar uma dependência, instalar somente a necessária, por exemplo:
+   install.packages('testthat', repos = 'https://cloud.r-project.org')
+   Esse exemplo de instalação não foi executado nesta revisão.
+   renv está instalado, mas ainda não há ambiente renv ou lockfile
+   confirmado para o projeto; sua adoção é opcional no protótipo.
+
+5. Git e GitHub
+   git --version confirmou Git 2.55.0.windows.4 no PATH.
+   Git local foi inicializado com git init -b main. .gitignore foi criado
+   e as exclusões foram verificadas, preservando .env.example como
+   versionável. Remoto origin configurado para o repositório público
+   amarallr/akcit_c4_mini_projeto, já existente. Histórico remoto consultado:
+   commit inicial f3b688d na branch main, com README e .gitignore. Preservar
+   esse histórico e as regras de exclusão existentes, preservados na publicação.
+   Commit de preparação realizado: d3007d9, mensagem
+   chore(ambiente): prepara projeto RStudio e integracao GitHub.
+   Push concluído para origin/main, preservando o commit inicial. Hash
+   local e remoto confirmados iguais: d3007d9f492f4458e5f1e3f93ae965bc94365d97.
+   Este registro se refere ao commit de preparação; commits posteriores
+   de documentação devem ter sua sincronização verificada separadamente.
+   O instalador MSI do GitHub CLI via winget retornou cancelamento (1602).
+   Foi instalada no projeto a distribuição oficial portátil 2.102.0,
+   com SHA-256 verificado contra os checksums oficiais da mesma versão:
+   tools/github-cli/bin/gh.exe. Essa pasta está ignorada pelo Git.
+   Usar o caminho explícito ou o wrapper scripts/p03_gh.ps1; não depende de
+   alterações globais do PATH. Comandos PowerShell:
+   & './tools/github-cli/bin/gh.exe' --version
+   & './tools/github-cli/bin/gh.exe' auth status
+   Login oficial foi iniciado com:
+   & './tools/github-cli/bin/gh.exe' auth login --hostname github.com --git-protocol https --web
+   Confirmação humana concluída. Login da conta amarallr confirmado por
+   gh auth status e consulta autenticada à API do GitHub. Credenciais
+   armazenadas no keyring; protocolo Git HTTPS configurado. Não registrar
+   códigos temporários ou credenciais neste prompt. Login do Codex é
+   independente. No sandbox, o proxy local bloqueou a consulta e gerou
+   indicação enganosa de token inválido; a verificação com acesso de rede
+   autorizado confirmou autenticação válida, sem refazer o login.
+   Identidade Git local configurada conforme instrução do usuário:
+   git config --local user.name amarallr
+   git config --local user.email email@example.invalid
+   Autenticação Git pelo GitHub CLI configurada com gh auth setup-git.
+   scripts/p03_verificar_sessao.R será preservado localmente e excluído
+   da seleção de arquivos para publicação devido aos caminhos pessoais.
+   Comandos para conferir o repositório local:
+   git status --short
+   git remote -v
+   git diff --cached
+   git check-ignore .env dados/ .Rproj.user/
+   Repositório, visibilidade e identidade definidos; confirmar hashes local
+   e remoto após cada push antes de declarar sincronização concluída.
+
+6. Codex: comandos e autenticação confirmados
+   codex-cli 0.159.2 disponível no PATH. codex login status confirmou
+   autenticação usando ChatGPT. A sessão atual consegue ler e editar
+   arquivos do projeto e executar comandos PowerShell conforme permissões.
+   Comandos de diagnóstico executados:
+   codex --version
+   codex --help
+   codex login status
+   codex mcp list
+   Foram observados avisos de acesso negado ao limpar temporários e criar
+   aliases em .codex/tmp/arg0 dentro do sandbox; os comandos acima ainda
+   retornaram resultados. Não assumir que a CLI interativa foi validada.
+   scripts/p03_verificar_sessao.R registra erro anterior do servidor em segundo plano. A opção
+   --no-daemon foi confirmada em codex --help e pode ser usada, se esse
+   erro reaparecer, no terminal do usuário:
+   codex --no-daemon
+   Para retomar a última sessão interativa, quando necessário:
+   codex --no-daemon resume --last
+   Esses comandos interativos não foram executados nesta revisão.
+   Quando necessário, conferir o diretório do projeto antes de iniciar
+   uma sessão; não desativar sandbox ou aprovação para resolver acesso.
+
+7. MCP OpenAI Docs: configurado e habilitado
+   Servidor global: openaiDeveloperDocs.
+   Endpoint: https://developers.openai.com/mcp
+   Registro concluído com codex mcp add e confirmado como enabled por
+   codex mcp list. Não foi realizado teste de busca/leitura via MCP nesta
+   sessão, pois suas ferramentas ainda não aparecem no inventário atual.
+   Configuração habilitada não comprova conexão operacional nesta conversa.
+   Fonte oficial: https://developers.openai.com/learn/docs-mcp
+   Comando para conferir a configuração existente:
+   codex mcp list
+   Somente se ausente, usar o comando documentado de registro:
+   codex mcp add openaiDeveloperDocs --url https://developers.openai.com/mcp
+   Não repetir o registro nem modificar a configuração global sem precisar.
+   Para dúvidas sobre OpenAI e Codex, priorizar esse MCP quando suas
+   ferramentas estiverem disponíveis e a skill openai-docs, já instalada.
+   Enquanto indisponível nesta sessão, consultar documentação oficial por
+   busca web. Para dados da CVM, usar as fontes oficiais da CVM.
+
+8. Preparação executada e verificações restantes
+   Criados C4-Mini-projeto.Rproj, README.md, .gitignore, .env.example e
+   scripts/p03_preparar_ambiente.R, scripts/p03_verificar_ambiente.R,
+   scripts/p03_ambiente.ps1 e scripts/p03_gh.ps1. scripts/p03_verificar_sessao.R foi preservado.
+   Comando único de preparação (PowerShell, na raiz do projeto):
+   powershell -NoProfile -ExecutionPolicy Bypass -File scripts/p03_ambiente.ps1 -Instalar
+   Esse comando foi executado com sucesso: dependências carregadas,
+   locale UTF-8 validado e leitura de .env simulado aprovada.
+   Para conferir sem instalar:
+   powershell -NoProfile -ExecutionPolicy Bypass -File scripts/p03_ambiente.ps1
+   O script ajusta locale apenas no processo e restaura as variáveis ao
+   terminar. ExecutionPolicy Bypass vale apenas para o processo iniciado.
+   No RStudio, executar da raiz do projeto:
+   source('scripts/p03_preparar_ambiente.R', encoding = 'UTF-8')
+   source('scripts/p03_verificar_ambiente.R', encoding = 'UTF-8')
+   Confirmar R e locale dentro do RStudio; definir dataset e período.
+   Identidade Git, repositório e visibilidade definidos. Login GitHub concluído e
+   confirmado; não repetir autenticação válida.
+   Nenhum download real da CVM foi executado nesta preparação. Registrar
+   separadamente os commits e a confirmação do push da preparação.
+   Documentar um comando único de testes quando a suíte existir, por exemplo:
+   Rscript --vanilla scripts/p02_testar.R
+   scripts/p02_testar.R é uma proposta e ainda não existe. A verificação do
+   ambiente não substitui os testes normativos do processamento.
+   A sessão permite gravações no projeto; alterações fora dessa pasta e
+   certas operações de rede podem exigir aprovação do ambiente.
+
+
+MODELO DE CONTINUIDADE POR ETAPA
+Data/hora e ambiente:
+Prompt e situação (não iniciado/em andamento/concluído/bloqueado):
+IDs de requisitos e decisões:
+Dataset/tabelas/período efetivos:
+Arquivos e funções:
+Testes (IDs, comandos, evidências, aprovado/falhou/não executado):
+Commit local e confirmação hash remoto:
+Pendências e causa:
+Próximo passo:
+
+FECHAMENTO LOCAL P03 — 01/10/2026
+P03-FUN-001/002 implementadas e validadas; novo P03-FUN-003 cadastrado
+para diagnostico sem efeitos do repositorio. P02-MOD-002 cadastrado para runner.
+P03-TST-001/002/003 e P02-TST-005 aprovados; 24 verificacoes locais, sem rede.
+Primeira execucao falhou por caminho relativo; corrigida e repetida com sucesso.
+Aviso testthat compilado no R 4.5.3, sem falhas na execucao em R 4.5.1.
+Wrapper p03_ambiente.ps1 usa p03_diagnosticar_ambiente.R; modulo apenas define funcoes.
+Consulta GitHub autorizada confirma conta amarallr, repositorio publico e main;
+hash remoto 8915bb376f82f95a3d934189b77b9977530ce156 antes deste incremento.
+README, RETOMADA e rastreabilidade atualizados; P04 a P07 nao iniciados.
+Este bloco supera declaracoes anteriores de ausencia do runner/testes P03.
+Encerramento commit/push em andamento; consultar RETOMADA para situacao final.
+
+P03 concluida: commit 6a8de17a6b779312f3dcc6ddf771eb02b30aa443 publicado; HEAD e main remoto confirmados iguais. Fechamento documental em commit posterior. P04 nao iniciada. Proximo movimento: usuario indica quando iniciar P04.
+Fechamento documental publicado: f174a103657e18c3528d667590e0a9f3f50b5000. Hash local e remoto confirmados iguais. P03 concluida; P04 nao iniciada. Este registro detalhado permanece local.
+
+REVISAO PARA PUBLICACAO — 01/10/2026
+Versoes revisadas preparadas localmente; originais preservados em locais/.
+PUBLICACAO.md lista arquivos, verificacoes e limitacoes. Sem commit/push novo.
+P03 concluida; P04 nao iniciada. Proximo movimento: usuario indica publicacao.
+
+
+PUBLICACAO DAS VERSOES REVISADAS — 01/10/2026
+Commit 4a9562085e00854cbce806041539b8e556a4c508 publicado em origin/main; hash remoto confirmado.
+Documentos publicados; originais pessoais e ZIPs excluidos.
+Fechamento documental em commit posterior; P04 nao iniciada.
+
+Revisão documental de 01/10/2026: hierarquia P01 a P07 autossuficiente, com rastreabilidade pelos IDs normativos. Estados das entregas preservados; P03 concluída e P04 não iniciada.
+
+REVISAO DOCUMENTAL CO-STAR — 01/10/2026
+Seis partes detalhadas em P01 a P07; guia CO_STAR.md incluído. Catálogo normativo, contratos e testes preservados. Não houve implementação de dados nem execução de novos testes do produto; P03 concluída e P04 não iniciada.
+
+P01 — EXECUÇÃO LOCAL (não equivale a aceite completo)
+Etapa: P03 | Estado: pendente
+Pendências: Console RStudio requer evidência manual.
+Testes: nao_executados_por_este_coordenador | Sincronização remota: nao_verificada
+Commit informado: NA
+Decisões informadas: Nenhuma decisão adicional informada.
+Arquivos criados:
+Arquivos preservados:
+Próximo movimento: Resolver as pendências da etapa solicitada.
+Matriz operacional: logs/p01/matriz_execucoes.csv; catálogo normativo preservado.
+
+## Correção Mermaid — item 5 de ARQUITETURA.md
+
+O usuário encontrou erro de renderização no GitHub. A revisão estrutural anterior não detectou ponto e vírgula literal em mensagens do diagrama de sequência; Mermaid o interpreta como separador de instruções. Substituídos por vírgulas no item 5, preservando o fluxo. Os outros três blocos foram conferidos quanto a esse problema.
+
+P02-RNF-010 refinado e complemento incluído nos sete prompts: verificar sintaxe das mensagens; preferir vírgula ou escape #59;. Referência: documentação oficial Mermaid, seção Entity codes to escape characters. Não declarar renderização local sem executar um renderizador. A revisão anterior permanece no histórico com essa limitação e sua correção.
+
+Nenhum script foi alterado. P04 a P07 permanecem sem iniciar. Após publicação, a bola fica com o usuário.
+
+## Verificação de viabilidade da VM no host atual
+
+Foi realizado somente diagnóstico de leitura. Não foram localizados Get-VM/New-VM, módulo PowerShell Hyper-V, vmms.exe ou gerenciadores VirtualBox/VMware/QEMU nos caminhos verificados. A sessão não é administradora. Há um hipervisor ativo segundo o inventário, mas isso não comprova disponibilidade do gerenciamento de VMs; não concluir BIOS desabilitada a partir de flags de CPU mascaradas. Nenhuma mídia ISO foi encontrada na raiz do projeto; não houve busca em arquivos pessoais nem download.
+
+Próximos pré-requisitos: confirmar acesso administrativo para preparar Hyper-V, disponibilidade/origem da imagem Windows e local de armazenamento da VM. A habilitação do Hyper-V no Windows exige execução administrativa e normalmente reinicialização; essa ação não foi executada. A condição inicial limpa só será avaliada no convidado depois de sua criação e instalação.
+
+P03-RF-006 registrado como planejado. VM não criada; P03-TST-004 não executado. P04–P07 não iniciados. Referências: [habilitar Hyper-V](https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/get-started/Install-Hyper-V) e [criar VM Hyper-V](https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/get-started/create-a-virtual-machine-in-hyper-v).
+
+DECISÃO VIGENTE — 02/10/2026
+Leia este fechamento antes dos registros históricos abaixo/acima. Implementar incrementos renv/CI/recuperação/temporal/qualidade/desempenho/evidências e publicar um único versão de referência somente após validação. P03 continua documental e VM/reprodução independente canceladas. doit significa ler tmp/tmp.txt. Durante processamento, informar progresso e estimativa de conclusão sempre que possível. A bola está com o agente até concluir validação e publicação.
+
+FECHAMENTO LOCAL DO INCREMENTO — 02/10/2026
+36 casos/275 verificações aprovados. Evidências automáticas de interrupção, retomada e repetição em três processos, 36 checkpoints e 42 arquivos CSV/RDS de dados/qualidade com hashes iguais. Flat preserva 8.783 linhas/14.749 colunas; 21 CSVs equivalentes à revisão pré-otimização. renv restaurado/verificado; Parquet avaliado em IV/VIII; unidade/escala não confirmadas. A bola permanece com o agente para publicar o novo versão de referência, verificar CI e limpar o histórico. Não reativar P03 ou VM.

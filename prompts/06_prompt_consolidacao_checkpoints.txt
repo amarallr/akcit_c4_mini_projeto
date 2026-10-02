@@ -1,0 +1,343 @@
+PROMPT 06 — CONSOLIDAÇÃO E CHECKPOINTS
+Versão: v2026-10-02 — incrementos autorizados e arquitetura DFD
+Prompt responsável: P06
+
+C — CONTEXT (CONTEXTO)
+Este é um mini projeto didático no âmbito da Especialização em Engenharia
+de Software com IA Generativa. Utiliza R, RStudio, Codex, Git e GitHub.
+Todo o ciclo de desenvolvimento é conduzido com IA generativa: definição
+de requisitos, planejamento, preparação, implementação, testes, revisão,
+documentação e versionamento, com decisões e validação humanas. Aplicam-se
+práticas modernas de engenharia de software: incrementos pequenos,
+modularidade simples, contratos, rastreabilidade, testes, revisão de código,
+controle de versão, segurança e documentação reproduzível.
+O ponto de partida obrigatório para uma nova reprodução são SOMENTE os sete
+prompts atuais. Não presumir código, scripts, projeto .Rproj, repositório Git,
+README, RETOMADA, catálogo, matriz ou registro de testes preexistentes.
+Todos esses artefatos serão criados ao longo dos incrementos, com apoio
+da IA generativa e revisão humana. Não exigir clonagem do repositório de
+referência nem scripts externos. Fontes públicas e dados serão consultados
+nas etapas pertinentes. Registros de uma execução anterior não equivalem
+à validação do ambiente de outro leitor.
+A orientação ao leitor parte de ambiente local limpo: R, RStudio, Git,
+Codex, pacotes e autenticações não são presumidos existentes. Instalar e
+configurar recursos necessários antes de usá-los. Em ambiente já preparado,
+reutilizar o que estiver confirmado; a hipótese didática não apaga evidências.
+P06 recebe membros validados de P05, contratos de esquema de P04 e políticas
+P02. As tabelas podem possuir chaves e granularidades distintas; duplicidade,
+colisão de campos e join precisam ser auditados. A relação de cedentes é
+separada do consolidado largo. Inferências sobre NI não confirmam identidade
+cadastral. A transformação deve persistir progresso por unidade em disco.
+
+O — OBJECTIVE (OBJETIVO)
+A entrega deve ensinar a reproduzir o incremento no ambiente próprio do
+leitor e tornar explícitas a participação da IA e a revisão humana.
+Ler e normalizar conforme contratos confirmados, consolidar sem perda ou
+multiplicação indevida e produzir saídas determinísticas e rastreáveis.
+Implementar checkpoints com invalidação seletiva e demonstrar equivalência
+entre execução completa e retomada. Trabalhar nos incrementos A, B, C e D
+especificados abaixo, sem executar todos quando apenas um for solicitado.
+
+S — STYLE (ESTILO)
+Descrever procedimentos passo a passo para ambiente inicialmente limpo,
+com separação entre navegador, PowerShell, console RStudio e interação
+com Codex. Explicar a finalidade da ação e como confirmar sua conclusão.
+Explicar cada transformação com entrada, regra, saída e diagnóstico.
+Usar exemplos pequenos para chaves, cardinalidade, duplicidades e conflitos.
+Documentar nomes, tipos, origem, contagens e regras de precedência. Exibir
+ambiguidade e erro de conversão, preservando os valores originais. Código
+R deve ser simples, comentado por ID e independente de objetos globais.
+
+T — TONE (TOM)
+Adotar tom analítico, didático e preciso. Justificar decisões com contratos
+e evidências, sem tratar hipótese como certeza. Comunicar problemas de
+qualidade e resultados parciais claramente, sem eliminar conflitos apenas
+para produzir uma tabela aparentemente completa.
+
+A — AUDIENCE (PÚBLICO)
+O público inclui alunos da especialização, leitores com conhecimentos
+básicos de análise de dados e revisores do trabalho acadêmico. O executor
+pode ter conhecimento intermediário em R, mas a documentação não pressupõe
+R, RStudio, Git, Codex, pacotes, contas, logins ou códigos já configurados.
+Um leitor deve conseguir preparar seu próprio computador a partir do zero
+e reproduzir cada entrega disponível. Identificar pré-requisitos, fonte
+oficial, instalação, local de execução, comando, resultado esperado e
+tratamento de falhas. Explicar conceitos de terminal, projeto, dependência,
+commit e autenticação quando utilizados. Para etapas ainda planejadas,
+indicar explicitamente o que ainda não existe ou não foi validado.
+
+R — RESPONSE (RESPOSTA)
+Registrar pré-requisitos, passos de preparação quando necessários,
+resultados esperados e observados, contribuição da IA e validação humana.
+Alegar reprodução em máquina limpa somente após execução e evidência real.
+Relatar o incremento A/B/C/D executado, tabelas e unidades processadas,
+linhas, conflitos, faltas, intermediários, saídas e regras adotadas.
+Apresentar testes por ID, evidências de retomada e equivalência quando
+executados, limites de completude e situação Git. Atualizar continuidade
+e identificar o responsável pelo próximo movimento sem iniciar P07.
+
+ENTRADAS: membros validados P05, mapa de esquema P04 e política P02.
+SAÍDAS: intermediários/manifestações, tabelas individuais, consolidado largo
+compatível, tabela VIII separada, cedentes longos e diagnósticos.
+
+EXECUÇÃO EM INCREMENTOS DENTRO DE P06
+A. Leitura/normalização e contratos, com testes P06-TST-001/002.
+B. Chaves, duplicidades, joins e tabelas separadas, com P06-TST-003/004.
+C. Persistência e retomada, com P06-TST-005/006.
+D. Cedentes, identificação e diagnósticos, com P06-TST-007/008/009.
+Comentários e IDs precisam acompanhar cada incremento, não só o final.
+Não selecionar automaticamente registros apenas pela maior completude.
+Verificar unicidade pela chave EXATA do join, incluindo semântica de origem;
+origem é metadado e não deve ocultar duplicidade de chave informacional.
+Data de publicação/reapresentação só orienta prioridade se confirmada e
+rastreável. Colisão de atributos não pode ser descartada só porque tabela I
+foi lida antes; comparar valores e registrar conflito/precedência confirmada.
+Detectar registros exclusivos de tabelas complementares antes do join.
+Para NI manter original textual, normalizado, apresentação, tipo de formato,
+resultado dos DVs e status de inferência separados. Lista de nomes finais
+de colunas deve ser documentada, sem transformar sugestão em campo oficial.
+Escala percentual é propriedade do contrato, não do caractere % removido.
+Validadores CPF/CNPJ numéricos não validam existência cadastral. Para formatos
+não numéricos não remover letras e aceitar os dígitos resultantes.
+A política de zeros deve preservar ambíguos e ser idempotente. Helpers de
+validação/formatação novos ganham IDs próprios antes da implementação.
+Entradas antigas e revisadas não devem compartilhar checkpoint se conteúdo,
+versão ou parâmetro relevante tiver mudado; saída final deriva da seleção atual.
+
+CONCLUSÃO
+P06 testes e política combinada P02/P05 aprovados; retomada em novo processo,
+equivalência e piloto consolidado com qualidade e completude demonstradas.
+Com resultado parcial ou zero unidades válidas, não declarar aceite local.
+
+HERANÇA: ler P02 integralmente; aplicar todos os requisitos comuns. Consultar
+registros quando já tiverem sido criados nesta reprodução; na primeira etapa,
+criá-los a partir dos contratos dos sete prompts. Não exigir anexos ou códigos
+externos como entrada. Não duplicar IDs da biblioteca.
+
+REQUISITOS DESTE PROMPT — CATÁLOGO NORMATIVO
+P06-RF-001 | RF | Ler identificadores como texto preservando zeros e valor original. Converter datas/valores pelo contrato, preservar nomes originais e detectar colisões após normalização; erro de conversão gera diagnóstico com origem, não NA silencioso. Validar vazio e esquema incompatível.
+
+P06-RF-002 | RF | Concatenar por tabela apenas origens selecionadas e filtrar linhas pelo período inclusivo. Preservar identificador de ZIP/membro/linha, referência, fundo e classe separados; derivar unidade informacional pelo mapa versionado, registrando fonte e conflitos. Não confundir fundo com classe.
+
+P06-RF-003 | RF | Tratar duplicidades sem presumir chave nem descartar registro legítimo. Linha integral repetida só é removida sob política documentada com contagem e auditoria; conflito de mesma chave é preservado/relatado ou resolvido por regra oficial verificada. Maior completude e última ordem de leitura não comprovam reapresentação mais recente.
+
+P06-RF-004 | RF | Consolidar tabelas compatíveis somente após verificar unicidade na chave exata do join, cardinalidade, órfãos e colisões de campos. Tabela I como âncora apenas com justificativa de cobertura; registros existentes só no complemento devem ser detectados e preservados em saída/relatório. Tabela VIII mantém CSV temporal separado e integra o flat por pivot de todos os detalhes em posições técnicas, antes do join 1:1; não multiplicar valores.
+
+P06-RF-005 | RF | Produzir intermediário separado validado por unidade. Manifesto: unidade, estado, hash da entrada, assinatura de parâmetros, versão da transformação, caminho/hash do intermediário, linhas e validação. Retomada revalida em processamento e invalida somente afetados, sem novo download por mudança só na transformação.
+
+P06-RF-006 | RF | Montar saídas determinísticas a partir do conjunto atual de intermediários válidos, sem append a saídas antigas; garantir equivalência completa/retomada e idempotência. Saídas RDS e CSV obrigatório; documentar tabelas individuais, consolidado e relatórios auxiliares.
+
+P06-RF-007 | RF | Gerar tabela longa de cedentes a partir dos grupos confirmados de NI/percentual com mesmo índice. Preservar linha, índice, colunas e valores originais, fundo/classe e data. Ausência de percentual é registrada; confirmar escala antes de converter. Não assumir que lista de cedentes seja exaustiva nem que percentuais devam somar 100 sem regra oficial.
+
+P06-RF-008 | RF | Distinguir formato CPF/CNPJ de validade dos dígitos e identidade cadastral. Completar zeros só como hipótese configurável, preservando NI original, candidatos e motivo; ambos válidos implica ambiguidade sem seleção. Inferência não prova titularidade; repetição não sobrescreve histórico. Entrada não numérica é preservada e não convertida em dígitos artificiais.
+
+P06-RF-009 | RF | Permitir saída parcial validada com flag incompleto e lista de unidades/tabelas faltantes; não atende aceite local. Nenhuma unidade válida implica nenhum resultado atual, sem exibir saída antiga como atual. Atualização falha deve permanecer visível no resumo final.
+
+P06-RNF-001 | RNF | Operações de leitura/transformação não dependem de objetos globais, setwd, rm(list=ls()), View ou dependências não previstas nos prompts. Ao carregar funções não executar downloads/ETL nem alterar ambiente do usuário; scripts de entrada invocam funções explicitamente.
+
+P06-RNF-002 | RNF | Não aplicar validador numérico a identificadores alfanuméricos desconhecidos. Preservar e sinalizar formato não suportado; evoluir suporte apenas após confirmação oficial. Mascaras são apresentação, chave usa representação textual documentada.
+
+
+MÓDULO E FUNÇÕES PROPOSTOS — NÃO IMPLEMENTADOS NESTA ENTREGA
+P06-MOD-001 | Arquivo proposto: scripts/p06_consolidacao_fidc.R
+P06-FUN-001 | ler_padronizar_fidc
+Contrato: Recebe membro/contrato; retorna dados tipados e diagnósticos com origem.
+Requisitos: P06-RF-001 P06-RF-002 P06-RNF-002
+
+P06-FUN-002 | auditar_chaves_fidc
+Contrato: Recebe tabela/chaves/regras; retorna multiplicidades, conflitos e trilha sem descarte presumido.
+Requisitos: P06-RF-003
+
+P06-FUN-003 | consolidar_tabelas_fidc
+Contrato: Recebe tabelas válidas e regras; devolve consolidado compatível, saídas separadas e órfãos/conflitos.
+Requisitos: P06-RF-004
+
+P06-FUN-004 | retomar_consolidacao_fidc
+Contrato: Recebe seleção/config/manifestos; reutiliza ou processa unidades e monta saída atual.
+Requisitos: P06-RF-005 P06-RF-006 P06-RF-009 P06-RNF-001
+
+P06-FUN-005 | extrair_cedentes_fidc
+Contrato: Recebe tabela I padronizada e mapa; retorna tabela longa sem perder índice/origem/NI.
+Requisitos: P06-RF-007
+
+P06-FUN-006 | avaliar_identificador_cedente
+Contrato: Recebe NI original/opção zeros; retorna formato, DV, candidatos e motivo, sem confirmar identidade.
+Requisitos: P06-RF-008 P06-RNF-002
+
+
+TESTES PRÓPRIOS PREVISTOS — A EXECUTAR NA IMPLEMENTAÇÃO
+P06-TST-001 | Tipo: unitario
+Verificar: Acentos, zeros, decimal por contrato, datas, vazio, esquema incompatível e colisão de nomes: comparar dados/diagnósticos esperados.
+Requisitos: P06-RF-001 P06-RNF-002
+Funções: P06-FUN-001
+
+P06-TST-002 | Tipo: unitario
+Verificar: Filtrar limites inclusivos e distinguir dois fundos/classes/meses/origens; fallback não preenche classe com fundo sem flag; NI textual mantido.
+Requisitos: P06-RF-002
+Funções: P06-FUN-001
+
+P06-TST-003 | Tipo: unitario
+Verificar: Repetição integral e conflito de chave têm trilha; linhas legítimas não são eliminadas por completude ou ordem de leitura.
+Requisitos: P06-RF-003
+Funções: P06-FUN-002
+
+P06-TST-004 | Tipo: unitario
+Verificar: Join com múltiplos VIII não multiplica PL; duplicidade na chave real impede join; órfãos e campos conflitantes ficam relatados/preservados.
+Requisitos: P06-RF-004
+Funções: P06-FUN-003
+
+P06-TST-005 | Tipo: integracao_local
+Verificar: Interromper após primeira unidade, abrir novo processo R e retomar; alterar entrada/parâmetro/versão invalida só afetados e não baixa original válido.
+Requisitos: P06-RF-005
+Funções: P06-FUN-004
+
+P06-TST-006 | Tipo: unitario
+Verificar: Completa versus retomada versus repetida: mesma seleção, ordem, linhas/valores; excluir unidade da seleção não deixa linhas antigas; CSV/RDS coerentes.
+Requisitos: P06-RF-006
+Funções: P06-FUN-004
+
+P06-TST-007 | Tipo: unitario
+Verificar: Dois cedentes/índices, percentual ausente e escala configurada: tabela longa esperada com originais e origem; sem soma presumida ou perda de repetição.
+Requisitos: P06-RF-007
+Funções: P06-FUN-005
+
+P06-TST-008 | Tipo: unitario
+Verificar: NI válido, DV inválido, sequências repetidas, zeros ausentes, ambos candidatos válidos, vazio e alfanumérico: distinguir formato/DV/ambiguidade, preservar original e repetir sem reescrever histórico.
+Requisitos: P06-RF-008 P06-RNF-002
+Funções: P06-FUN-006
+
+P06-TST-009 | Tipo: unitario
+Verificar: Uma unidade faltante gera incompleto/lista; zero unidades válidas não retorna saída antiga; source dos módulos não executa ETL nem altera globais.
+Requisitos: P06-RF-009 P06-RNF-001
+Funções: P06-FUN-004
+
+ENCERRAMENTO DA ETAPA
+Atualizar registro_projeto.txt, matriz_rastreabilidade.csv e registro_testes.csv.
+Registrar decisões, arquivos, comandos, resultados realmente observados,
+pendências, commit e situação de push. Não registrar teste como aprovado
+porque foi especificado aqui. Informar próximo passo sem iniciar etapa
+seguinte automaticamente, salvo sequência já autorizada pelo usuário.
+
+NOMENCLATURA E REFERÊNCIAS ENTRE SCRIPTS — P02-RNF-008
+Nomear cada script pelo prompt responsável e pela finalidade: pNN_nome_da_funcao.ext,
+em minúsculas, com nomes descritivos separados por sublinhado. Exemplos:
+scripts/p01_executar.R (coordenação), scripts/p02_testar.R (runner comum),
+scripts/p03_verificar_ambiente.R (ambiente). Testes: test-pNN-finalidade.R,
+como tests/testthat/test-p03-ambiente.R. A extensão corresponde à linguagem.
+P01 coordena; P02 fornece recursos comuns; P03 a P07 implementam suas etapas.
+O prefixo identifica responsabilidade estável, não toda a cadeia de dependências.
+Um script P05 que usa P02 permanece p05_; documentar as dependências no
+cabeçalho, chamadas e matriz. Registrar prompt, IDs pertinentes, entradas,
+saídas e efeitos; preservar IDs de requisitos, módulos e funções ao renomear.
+Atualizar conjuntamente source(), wrappers, runner, testes, comandos de uso,
+catálogo e matriz. Validar destinos existentes e execução das etapas já
+implementadas. Scripts futuros citados são propostas, não entregas realizadas.
+Bibliotecas, executáveis de terceiros e artefatos que não são scripts próprios
+não recebem esse prefixo. Não iniciar uma etapa só para criar seu script.
+
+CICLO DE DESENVOLVIMENTO E SWEBOK — P01-RF-004 / P02-RNF-009
+Usar o SWEBOK v4.0a como referência de áreas de conhecimento; ele não define
+os sete prompts como fases nem uma sequência oficial das dez etapas abaixo.
+Adotar, didaticamente: (1) concepção, planejamento e viabilidade;
+(2) requisitos; (3) arquitetura e projeto; (4) preparação do ambiente;
+(5) construção; (6) verificação, validação e testes;
+(7) entrega, implantação local e aceite; (8) operação e acompanhamento;
+(9) manutenção e evolução; (10) encerramento/retirada e preservação.
+Essas etapas podem ser revisitadas por incremento; testes, gestão, qualidade,
+segurança, versionamento e documentação são atividades transversais.
+
+Gerar na raiz Fases do Ciclo de Desenvolvimento de Software SWEBOK.md:
+enumerar e explicar as etapas; depois detalhar como cada uma será atendida
+neste mini projeto, com prompts/IDs, artefatos, IA e revisão humana,
+evidências, critérios, estados e pendências. Informar edição, fontes oficiais
+e data de consulta; distinguir o conteúdo do SWEBOK da adaptação do projeto.
+Fontes: https://www.computer.org/education/bodies-of-knowledge/software-engineering
+https://www.computer.org/education/bodies-of-knowledge/software-engineering/topics
+https://ieeecs-media.computer.org/media/education/swebok/swebok-v4.pdf
+O documento é uma saída a produzir, não entrada obrigatória: na primeira
+reprodução, partir somente dos sete prompts atuais e das fontes oficiais.
+
+Em cada fechamento, registrar fases relacionadas, contribuição da IA,
+revisão humana, artefatos e provas efetivas. Atualizar mapa e RETOMADA quando
+o incremento alterar seu estado; separar planejado, implementado, validado
+e não aplicável. Documento criado não significa fase concluída; publicação
+Git não comprova implantação/aceite, diagnóstico não comprova máquina limpa,
+e acompanhamento de P01 não comprova operação do pipeline FIDC.
+Não iniciar etapas de dados nem criar uma nova etapa P08 para preencher o mapa.
+Aplicação neste prompt: Quando autorizado, P06 deverá relacionar normalização, joins e checkpoints a projeto, construção, testes e operação; documentar impacto de mudanças e critérios de equivalência na manutenção.
+
+ARQUITETURA TÉCNICA E INCORPORAÇÃO DE PEDIDOS — P01-RF-005 / P02-RNF-010
+Sempre incorporar novos pedidos e decisões do usuário aos requisitos dos
+prompts responsáveis quando alterarem contratos, antes da implementação
+dependente. Cadastrar IDs novos quando necessário, preservar IDs existentes,
+atualizar catálogo/matriz/testes e registrar decisões. Preferências de
+comunicação devem constar das orientações e continuidade. Referenciar regras
+comuns sem duplicar IDs. Pedidos não autorizam automaticamente outras etapas.
+
+Gerar e manter ARQUITETURA.md na raiz: explicar objetivo e limites, papel de
+R, Rscript, RStudio, Codex/IA, PowerShell, Git, GitHub, GitHub CLI e pacotes;
+componentes, dependências, chamadas, interfaces, entradas/saídas, efeitos,
+organização de arquivos, persistência, erros e condições de retomada.
+Incluir somente um DFD Mermaid, com fluxos de dados nomeados, legenda e
+explicação coesa da relação entre os processos e P01-P07. Identificar o significado das setas e o que existe,
+é condicional ou ainda depende de implementação. Não misturar geração com
+IA, chamada de função, testes e publicação como se fossem uma rotina única.
+
+Conferir chamadas contra scripts reais e atualizar diagramas quando mudarem.
+Na implementação histórica opcional, P01 chama funções P03; o roteiro atual não exige essas chamadas. P01 não chama automaticamente runner, instalação ou Git.
+P02 tem runner separado; P03 tem entradas próprias. P04 a P07 têm entrada explícita p01_pipeline_fidc.R e funções por etapa; conferir a versão implementada e suas dependências antes de executar. Retornos pendentes e limitações devem
+aparecer nos diagramas e texto. Não atribuir atomicidade, autenticação,
+processamento de dados ou aceite a componentes que não os implementam.
+O documento é saída dos sete prompts atuais, não material preexistente
+obrigatório. Não instalar ferramentas de diagramas nem iniciar módulos
+futuros só para documentar a arquitetura. Registrar o alcance da verificação:
+revisão textual/estrutural não equivale a renderização ou teste de execução.
+Aplicação arquitetural neste prompt: Quando autorizado, P06 detalhará leitura, normalização, chaves, joins, cedentes e checkpoints, distinguindo incrementos de desenvolvimento da ordem de chamadas em produção. Mostrar invalidação e reconstrução da saída atual.
+
+Complemento de P02-RNF-010: Sintaxe Mermaid: em mensagens de sequenceDiagram, não usar ponto e vírgula literal; preferir vírgula ou escape #59;. Conferir sintaxe com a documentação oficial; revisão estrutural não comprova renderização.
+
+ESCOPO VIGENTE DE P03 — REVISÃO DE 01/10/2026
+P03 entrega somente um roteiro documental de preparação do ambiente, gerado
+a partir dos sete prompts atuais. Não pressupor ferramentas, contas, código
+ou documentos preexistentes. Explicar R, RStudio, Codex, Git, GitHub e os
+recursos auxiliares, com fontes oficiais, ordem, finalidade e alternativas
+para leitor sem credenciais administrativas. Não instalar, criar VM, executar
+scripts, testar o roteiro nem exigir evidências de execução para concluir P03.
+P03-TST-005 significa revisão documental, sem teste de execução.
+P03-RF-006 e P03-TST-004 estão cancelados por mudança de escopo, não pendentes.
+Scripts e testes P03 existentes são histórico opcional do escopo anterior.
+Sua preservação não os torna pré-requisitos da entrega vigente.
+Não iniciar P04–P07 automaticamente. Executar somente o incremento expressamente autorizado; testes funcionais dessas etapas continuam previstos.
+O roteiro não comprova ambiente instalado: avaliar pré-requisitos efetivos
+somente quando uma etapa de execução for expressamente autorizada.
+Sempre registrar novos pedidos nos prompts, arquitetura, SWEBOK e retomada.
+Informar plano e status a cada dez segundos durante o trabalho e indicar
+explicitamente se a bola está com o agente ou com o usuário.
+
+BASE OBRIGATÓRIA DA IMPLEMENTAÇÃO
+A implementação deve utilizar somente os comandos e requisitos dos sete prompts atuais. As consultas oficiais explicitamente previstas nesses prompts servem para confirmar dados e contratos; aplicar as instruções específicas posteriores do usuário, mantendo os requisitos revisados como contrato da implementação.
+
+AUTORIZAÇÃO VIGENTE — IMPLEMENTAÇÃO P04 A P07
+Implementar P04–P07 para julho/agosto de 2026. Junção por CNPJ e competência, preservando origens em colunas próprias. CSV temporal por leiaute e CSV flat único são entregas obrigatórias. Múltiplas linhas são preservadas em posições técnicas por leiaute no flat, sem somar, escolher completude ou multiplicar joins; registrar limites, chaves de identidade e conflitos. Inspeção/download e piloto real estão autorizados. P03 continua somente documental. Instruções específicas posteriores do usuário prevalecem sobre os limites de incrementos anteriores.
+
+CONTRATOS ADICIONAIS
+P06-FUN-007 | FUN | validar_dv_ni | Valida dígitos de CPF/CNPJ numéricos sem confirmar titularidade.
+P06-RF-010 | RF |  | Gerar CSV temporal por leiaute inf_mensal_fidc_tab_ID.csv, abrangendo I–X e subdivisões disponíveis selecionadas; filtrar competência e preservar arquivo_origem, ZIP e linha. CSV passa a entrega obrigatória, além de RDS.
+P06-RF-011 | RF | No modo completo padrão, gerar flat CSV/RDS por CNPJ/competência, com todas as origens e detalhes em posições independentes por leiaute, sem agregação ou produto cartesiano. O modo temporal explícito dispensa somente o flat e tem aceite específico.
+P06-TST-010 | TST |  | Consolidado de todos os leiautes preserva múltiplos registros em colunas, mantém órfãos/origens, não multiplica valores e é determinístico.
+
+INCREMENTO AUTORIZADO — 02/10/2026
+P06-RF-012 | RF | Produzir relatorio estruturado por tabela/competencia com esquema, multiplicidades, repeticoes, identificadores e conversoes. Preservar originais, diagnosticar falhas antes de interromper e nao confirmar unidades sem fonte oficial.
+P06-MOD-001 | MOD | scripts/p06_consolidacao_fidc.R
+P06-FUN-008 | FUN | relatar_qualidade_fidc
+P06-TST-011 | TST | Verificar comportamentos reais com fixtures e falhas controladas.
+
+INCREMENTO AUTORIZADO — 02/10/2026
+P06-RF-013 | RF | Medir tempo, bytes e memoria com metodo explicito; concatenar partes uma vez por tabela; permitir modo sem flat mantendo o padrao; avaliar Parquet opcional sem dependencia obrigatoria.
+P06-MOD-002 | MOD | scripts/p06_medir.R
+P06-FUN-009 | FUN | medir_pipeline
+P06-FUN-010 | FUN | exportar_parquet_fidc
+P06-TST-012 | TST | Verificar comportamentos reais com fixtures e falhas controladas.
+
+DECISOES VIGENTES — 02/10/2026
+Arquitetura apresenta somente um DFD, com fluxos de dados e explicacao da relacao com P01-P07; substitui pedidos anteriores de multiplos diagramas. P03 continua documental, sem reativar VM/reproducao independente. O modo temporal sem flat tem aceite proprio e nao substitui o piloto completo. CI e renv estao autorizados neste incremento. A instrucao final do usuario autoriza substituir o historico local/remoto por um unico versão de referência somente apos validar; fora desse fechamento, nao reescrever nem publicar sem pedido. doit significa ler tmp/tmp.txt.

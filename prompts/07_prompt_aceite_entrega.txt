@@ -1,0 +1,272 @@
+PROMPT 07 — ACEITE E ENTREGA
+Versão: v2026-10-02 — incrementos autorizados e arquitetura DFD
+Prompt responsável: P07
+
+C — CONTEXT (CONTEXTO)
+Este é um mini projeto didático no âmbito da Especialização em Engenharia
+de Software com IA Generativa. Utiliza R, RStudio, Codex, Git e GitHub.
+Todo o ciclo de desenvolvimento é conduzido com IA generativa: definição
+de requisitos, planejamento, preparação, implementação, testes, revisão,
+documentação e versionamento, com decisões e validação humanas. Aplicam-se
+práticas modernas de engenharia de software: incrementos pequenos,
+modularidade simples, contratos, rastreabilidade, testes, revisão de código,
+controle de versão, segurança e documentação reproduzível.
+O ponto de partida obrigatório para uma nova reprodução são SOMENTE os sete
+prompts atuais. Não presumir código, scripts, projeto .Rproj, repositório Git,
+README, RETOMADA, catálogo, matriz ou registro de testes preexistentes.
+Todos esses artefatos serão criados ao longo dos incrementos, com apoio
+da IA generativa e revisão humana. Não exigir clonagem do repositório de
+referência nem scripts externos. Fontes públicas e dados serão consultados
+nas etapas pertinentes. Registros de uma execução anterior não equivalem
+à validação do ambiente de outro leitor.
+A orientação ao leitor parte de ambiente local limpo: R, RStudio, Git,
+Codex, pacotes e autenticações não são presumidos existentes. Instalar e
+configurar recursos necessários antes de usá-los. Em ambiente já preparado,
+reutilizar o que estiver confirmado; a hipótese didática não apaga evidências.
+P07 avalia as entregas observadas de P03 a P06, os contratos P02 e a
+rastreabilidade atual. Testes simulados são necessários, mas o aceite exige
+um piloto real completo e retomada verificável em novo processo R.
+Aceite local e aceite completo possuem critérios distintos: a sincronização
+GitHub é verificada separadamente da qualidade técnica local.
+
+O — OBJECTIVE (OBJETIVO)
+A entrega deve ensinar a reproduzir o incremento no ambiente próprio do
+leitor e tornar explícitas a participação da IA e a revisão humana.
+Demonstrar o fluxo reproduzível de seleção, download, extração, transformação
+e retomada; executar a suíte e as integrações pertinentes e avaliar cada
+critério de aceite. Concluir documentação, inventário e relatório com
+resultados auditáveis. Obrigações pendentes devem impedir a declaração
+correspondente de conclusão, mesmo quando parte da entrega funciona.
+
+S — STYLE (ESTILO)
+Descrever procedimentos passo a passo para ambiente inicialmente limpo,
+com separação entre navegador, PowerShell, console RStudio e interação
+com Codex. Explicar a finalidade da ação e como confirmar sua conclusão.
+Organizar a demonstração em passos executáveis e o relatório em critério,
+evidência, resultado e pendência. Relacionar verificações aos IDs e comandos.
+Usar tabelas para comparar previsto e entregue e para os dois níveis de
+aceite. Separar limites atuais de melhorias futuras e explicar os resultados
+para leitores que não acompanharam o desenvolvimento.
+
+T — TONE (TOM)
+Ser objetivo, transparente e responsável. Confirmar sucesso apenas quando
+os critérios estiverem atendidos; explicar falhas, incompletude e bloqueios
+com motivo e próximo passo. Evitar linguagem promocional ou compensar
+uma verificação ausente com uma declaração genérica de confiança.
+
+A — AUDIENCE (PÚBLICO)
+O público inclui alunos da especialização, leitores com conhecimentos
+básicos de análise de dados e revisores do trabalho acadêmico. O executor
+pode ter conhecimento intermediário em R, mas a documentação não pressupõe
+R, RStudio, Git, Codex, pacotes, contas, logins ou códigos já configurados.
+Um leitor deve conseguir preparar seu próprio computador a partir do zero
+e reproduzir cada entrega disponível. Identificar pré-requisitos, fonte
+oficial, instalação, local de execução, comando, resultado esperado e
+tratamento de falhas. Explicar conceitos de terminal, projeto, dependência,
+commit e autenticação quando utilizados. Para etapas ainda planejadas,
+indicar explicitamente o que ainda não existe ou não foi validado.
+
+R — RESPONSE (RESPOSTA)
+Registrar pré-requisitos, passos de preparação quando necessários,
+resultados esperados e observados, contribuição da IA e validação humana.
+Alegar reprodução em máquina limpa somente após execução e evidência real.
+Entregar inventário final, demonstração reproduzível, testes e evidências,
+README concluído e relatório de aceite local/completo separado. Informar
+URLs e hashes somente quando confirmados, além de pendências e melhorias
+futuras. Encerrar com situação global e responsável pelo próximo movimento.
+Se houver requisito adicional de entrega acadêmica, usar apenas o informado.
+
+ENTRADAS: código/contratos/registro/evidências atuais das etapas anteriores.
+SAÍDAS: README final, exemplo reproduzível, relatório de aceite e rastreabilidade
+atualizada, URL e hash remoto realmente confirmados quando disponíveis.
+
+EXECUÇÃO
+Executar suíte completa pelo comando documentado, piloto real e testes de
+integração/aceite; registrar hora/comando/resultado/evidência de cada ID.
+Conferir os testes normativos pela matriz de rastreabilidade. Examinar diferenças e exclusões
+Git antes de publicar. Não incluir anexos originais com caminhos pessoais no
+repositório público. Commit/push somente no fluxo de desenvolvimento, conforme
+P02. Simular falha de sincronização num remoto bare local isolado; não alterar
+remotos reais para forçar falha. Não afirmar hash confirmado sem consulta real.
+Demonstração deve incluir configuração, primeira execução, interrupção,
+retomada, atualização, reprocessamento e tratamento de incompletude.
+CI com fixtures está autorizada neste incremento; GUI continua fora do escopo.
+Requisitos de entrega acadêmica de fórum/empacotamento devem ser informados;
+não se presume texto de professor ausente. O ZIP destes prompts não é
+empacotamento do software; se requerido posteriormente, especificar entrega.
+
+CONCLUSÃO
+Aceite local e completo avaliados separadamente contra P07-RF-002. Obrigação
+pendente implica situação pendente com motivo, responsável/próximo passo.
+Não é permitido compensar teste ausente com uma declaração de sucesso.
+
+HERANÇA: ler P02 integralmente; aplicar todos os requisitos comuns. Consultar
+registros quando já tiverem sido criados nesta reprodução; na primeira etapa,
+criá-los a partir dos contratos dos sete prompts. Não exigir anexos ou códigos
+externos como entrada. Não duplicar IDs da biblioteca.
+
+REQUISITOS DESTE PROMPT — CATÁLOGO NORMATIVO
+P07-RF-001 | RF | Demonstrar execução real pequena de seleção/download/extração/leitura/consolidação, interrupção e retomada em novo processo R; executar suíte completa e integração separada, registrando comandos e evidências por ID.
+
+P07-RF-002 | RF | Concluir README e relatório de aceite local/completo, inventário de entregas, limitações e melhorias futuras. Aceite local exige dados reais completos do escopo, retomada sem perda/duplicação, testes aprovados e exclusões Git; completo exige código/documentação sincronizados com commit remoto confirmado.
+
+P07-RF-003 | RF | Verificar .env simulado sem expor valores, exclusões Git, autenticação/remoto/URL/hash após push. Simular falha de push em ambiente isolado local, sem alterar remotos reais; assegurar preservação do commit e tentativa posterior sem duplicá-lo.
+
+P07-RNF-001 | RNF | Não declarar conclusão integral com obrigação pendente, resultado parcial, testes não executados ou bloqueio de sincronização. Testes de aceite avaliam entregas observadas e rastreabilidade, não apenas existência de arquivos.
+
+
+MÓDULO E FUNÇÕES PROPOSTOS — NÃO IMPLEMENTADOS NESTA ENTREGA
+P07-MOD-001 | Arquivo proposto: scripts/p07_aceite.R
+P07-FUN-001 | executar_aceite
+Contrato: Recebe plano de demonstração/matriz; executa verificações autorizadas e retorna evidências e critérios satisfeitos.
+Requisitos: P07-RF-001 P07-RF-003
+
+P07-FUN-002 | gerar_relatorio_aceite
+Contrato: Recebe evidências; retorna aceite local/completo separados, pendências e documentação final.
+Requisitos: P07-RF-002 P07-RNF-001
+
+
+TESTES PRÓPRIOS PREVISTOS — A EXECUTAR NA IMPLEMENTAÇÃO
+P07-TST-001 | Tipo: aceite
+Verificar: Piloto real completo, interrupção e retomada em processo novo, todas tabelas do escopo e conjunto de testes por etapa e comuns aprovados.
+Requisitos: P07-RF-001
+Funções: P07-FUN-001
+
+P07-TST-002 | Tipo: integracao_local
+Verificar: Fixture .env e git check-ignore/index: segredos/dados/checkpoints excluídos e exemplo fictício incluído; sem imprimir valores.
+Requisitos: P07-RF-003
+Funções: P07-FUN-001
+
+P07-TST-003 | Tipo: integracao_local
+Verificar: Remoto bare local isolado: simular falha de push, confirmar commit preservado, corrigir causa e tentar mesmo commit; não criar remoto real.
+Requisitos: P07-RF-003
+Funções: P07-FUN-001
+
+P07-TST-004 | Tipo: aceite
+Verificar: Aceite não aprova se teste obrigatório falhou/não executado, resultado parcial ou push pendente; README contém instruções verificadas e limitações.
+Requisitos: P07-RF-002 P07-RNF-001
+Funções: P07-FUN-002
+
+P07-TST-005 | Tipo: integracao_rede
+Verificar: Confirmar URL/remoto/autenticação e hash local/remoto após push realmente autorizado no fluxo de desenvolvimento.
+Requisitos: P07-RF-003
+Funções: P07-FUN-001
+
+ENCERRAMENTO DA ETAPA
+Atualizar registro_projeto.txt, matriz_rastreabilidade.csv e registro_testes.csv.
+Registrar decisões, arquivos, comandos, resultados realmente observados,
+pendências, commit e situação de push. Não registrar teste como aprovado
+porque foi especificado aqui. Informar próximo passo sem iniciar etapa
+seguinte automaticamente, salvo sequência já autorizada pelo usuário.
+
+NOMENCLATURA E REFERÊNCIAS ENTRE SCRIPTS — P02-RNF-008
+Nomear cada script pelo prompt responsável e pela finalidade: pNN_nome_da_funcao.ext,
+em minúsculas, com nomes descritivos separados por sublinhado. Exemplos:
+scripts/p01_executar.R (coordenação), scripts/p02_testar.R (runner comum),
+scripts/p03_verificar_ambiente.R (ambiente). Testes: test-pNN-finalidade.R,
+como tests/testthat/test-p03-ambiente.R. A extensão corresponde à linguagem.
+P01 coordena; P02 fornece recursos comuns; P03 a P07 implementam suas etapas.
+O prefixo identifica responsabilidade estável, não toda a cadeia de dependências.
+Um script P05 que usa P02 permanece p05_; documentar as dependências no
+cabeçalho, chamadas e matriz. Registrar prompt, IDs pertinentes, entradas,
+saídas e efeitos; preservar IDs de requisitos, módulos e funções ao renomear.
+Atualizar conjuntamente source(), wrappers, runner, testes, comandos de uso,
+catálogo e matriz. Validar destinos existentes e execução das etapas já
+implementadas. Scripts futuros citados são propostas, não entregas realizadas.
+Bibliotecas, executáveis de terceiros e artefatos que não são scripts próprios
+não recebem esse prefixo. Não iniciar uma etapa só para criar seu script.
+
+CICLO DE DESENVOLVIMENTO E SWEBOK — P01-RF-004 / P02-RNF-009
+Usar o SWEBOK v4.0a como referência de áreas de conhecimento; ele não define
+os sete prompts como fases nem uma sequência oficial das dez etapas abaixo.
+Adotar, didaticamente: (1) concepção, planejamento e viabilidade;
+(2) requisitos; (3) arquitetura e projeto; (4) preparação do ambiente;
+(5) construção; (6) verificação, validação e testes;
+(7) entrega, implantação local e aceite; (8) operação e acompanhamento;
+(9) manutenção e evolução; (10) encerramento/retirada e preservação.
+Essas etapas podem ser revisitadas por incremento; testes, gestão, qualidade,
+segurança, versionamento e documentação são atividades transversais.
+
+Gerar na raiz Fases do Ciclo de Desenvolvimento de Software SWEBOK.md:
+enumerar e explicar as etapas; depois detalhar como cada uma será atendida
+neste mini projeto, com prompts/IDs, artefatos, IA e revisão humana,
+evidências, critérios, estados e pendências. Informar edição, fontes oficiais
+e data de consulta; distinguir o conteúdo do SWEBOK da adaptação do projeto.
+Fontes: https://www.computer.org/education/bodies-of-knowledge/software-engineering
+https://www.computer.org/education/bodies-of-knowledge/software-engineering/topics
+https://ieeecs-media.computer.org/media/education/swebok/swebok-v4.pdf
+O documento é uma saída a produzir, não entrada obrigatória: na primeira
+reprodução, partir somente dos sete prompts atuais e das fontes oficiais.
+
+Em cada fechamento, registrar fases relacionadas, contribuição da IA,
+revisão humana, artefatos e provas efetivas. Atualizar mapa e RETOMADA quando
+o incremento alterar seu estado; separar planejado, implementado, validado
+e não aplicável. Documento criado não significa fase concluída; publicação
+Git não comprova implantação/aceite, diagnóstico não comprova máquina limpa,
+e acompanhamento de P01 não comprova operação do pipeline FIDC.
+Não iniciar etapas de dados nem criar uma nova etapa P08 para preencher o mapa.
+Aplicação neste prompt: Quando autorizado, P07 deverá demonstrar aceite, entrega local e fechamento acadêmico; revisar o atendimento das dez etapas, evidências e limitações. Operação contínua e retirada são condicionais; registrar não aplicável quando pertinente, sem inventar resultados ou apagar artefatos.
+
+ARQUITETURA TÉCNICA E INCORPORAÇÃO DE PEDIDOS — P01-RF-005 / P02-RNF-010
+Sempre incorporar novos pedidos e decisões do usuário aos requisitos dos
+prompts responsáveis quando alterarem contratos, antes da implementação
+dependente. Cadastrar IDs novos quando necessário, preservar IDs existentes,
+atualizar catálogo/matriz/testes e registrar decisões. Preferências de
+comunicação devem constar das orientações e continuidade. Referenciar regras
+comuns sem duplicar IDs. Pedidos não autorizam automaticamente outras etapas.
+
+Gerar e manter ARQUITETURA.md na raiz: explicar objetivo e limites, papel de
+R, Rscript, RStudio, Codex/IA, PowerShell, Git, GitHub, GitHub CLI e pacotes;
+componentes, dependências, chamadas, interfaces, entradas/saídas, efeitos,
+organização de arquivos, persistência, erros e condições de retomada.
+Incluir somente um DFD Mermaid, com fluxos de dados nomeados, legenda e
+explicação coesa da relação entre os processos e P01-P07. Identificar o significado das setas e o que existe,
+é condicional ou ainda depende de implementação. Não misturar geração com
+IA, chamada de função, testes e publicação como se fossem uma rotina única.
+
+Conferir chamadas contra scripts reais e atualizar diagramas quando mudarem.
+Na implementação histórica opcional, P01 chama funções P03; o roteiro atual não exige essas chamadas. P01 não chama automaticamente runner, instalação ou Git.
+P02 tem runner separado; P03 tem entradas próprias. P04 a P07 têm entrada explícita p01_pipeline_fidc.R e funções por etapa; conferir a versão implementada e suas dependências antes de executar. Retornos pendentes e limitações devem
+aparecer nos diagramas e texto. Não atribuir atomicidade, autenticação,
+processamento de dados ou aceite a componentes que não os implementam.
+O documento é saída dos sete prompts atuais, não material preexistente
+obrigatório. Não instalar ferramentas de diagramas nem iniciar módulos
+futuros só para documentar a arquitetura. Registrar o alcance da verificação:
+revisão textual/estrutural não equivale a renderização ou teste de execução.
+Aplicação arquitetural neste prompt: Quando autorizado, P07 revisará coerência entre arquitetura, implementação, testes e entrega; documentará execução local, critérios de aceite e limites. Publicação Git não equivale a aceite do pipeline ou operação contínua.
+
+Complemento de P02-RNF-010: Sintaxe Mermaid: em mensagens de sequenceDiagram, não usar ponto e vírgula literal; preferir vírgula ou escape #59;. Conferir sintaxe com a documentação oficial; revisão estrutural não comprova renderização.
+
+ESCOPO VIGENTE DE P03 — REVISÃO DE 01/10/2026
+P03 entrega somente um roteiro documental de preparação do ambiente, gerado
+a partir dos sete prompts atuais. Não pressupor ferramentas, contas, código
+ou documentos preexistentes. Explicar R, RStudio, Codex, Git, GitHub e os
+recursos auxiliares, com fontes oficiais, ordem, finalidade e alternativas
+para leitor sem credenciais administrativas. Não instalar, criar VM, executar
+scripts, testar o roteiro nem exigir evidências de execução para concluir P03.
+P03-TST-005 significa revisão documental, sem teste de execução.
+P03-RF-006 e P03-TST-004 estão cancelados por mudança de escopo, não pendentes.
+Scripts e testes P03 existentes são histórico opcional do escopo anterior.
+Sua preservação não os torna pré-requisitos da entrega vigente.
+Não iniciar P04–P07 automaticamente. Executar somente o incremento expressamente autorizado; testes funcionais dessas etapas continuam previstos.
+O roteiro não comprova ambiente instalado: avaliar pré-requisitos efetivos
+somente quando uma etapa de execução for expressamente autorizada.
+Sempre registrar novos pedidos nos prompts, arquitetura, SWEBOK e retomada.
+Informar plano e status a cada dez segundos durante o trabalho e indicar
+explicitamente se a bola está com o agente ou com o usuário.
+
+BASE OBRIGATÓRIA DA IMPLEMENTAÇÃO
+A implementação deve utilizar somente os comandos e requisitos dos sete prompts atuais. As consultas oficiais explicitamente previstas nesses prompts servem para confirmar dados e contratos; aplicar as instruções específicas posteriores do usuário, mantendo os requisitos revisados como contrato da implementação.
+
+AUTORIZAÇÃO VIGENTE — IMPLEMENTAÇÃO P04 A P07
+Implementar P04–P07 para julho/agosto de 2026. Junção por CNPJ e competência, preservando origens em colunas próprias. CSV temporal por leiaute e CSV flat único são entregas obrigatórias. Múltiplas linhas são preservadas em posições técnicas por leiaute no flat, sem somar, escolher completude ou multiplicar joins; registrar limites, chaves de identidade e conflitos. Inspeção/download e piloto real estão autorizados. P03 continua somente documental. Instruções específicas posteriores do usuário prevalecem sobre os limites de incrementos anteriores.
+
+INCREMENTO AUTORIZADO — 02/10/2026
+P07-RF-004 | RF | Gerar e validar evidencias de testes/retomada vinculadas a configuracao completa, assinatura da geracao e hash do codigo/testes/lockfile. Executar retomada em processo novo e comparar hashes; booleanos manuais nao aprovam o aceite operacional.
+P07-MOD-002 | MOD | scripts/p07_evidencias.R
+P07-FUN-003 | FUN | produzir_evidencias_aceite
+P07-FUN-004 | FUN | validar_evidencias_aceite
+P07-TST-006 | TST | Verificar comportamentos reais com fixtures e falhas controladas.
+
+DECISOES VIGENTES — 02/10/2026
+Arquitetura apresenta somente um DFD, com fluxos de dados e explicacao da relacao com P01-P07; substitui pedidos anteriores de multiplos diagramas. P03 continua documental, sem reativar VM/reproducao independente. O modo temporal sem flat tem aceite proprio e nao substitui o piloto completo. CI e renv estao autorizados neste incremento. A instrucao final do usuario autoriza substituir o historico local/remoto por um unico versão de referência somente apos validar; fora desse fechamento, nao reescrever nem publicar sem pedido. doit significa ler tmp/tmp.txt.
