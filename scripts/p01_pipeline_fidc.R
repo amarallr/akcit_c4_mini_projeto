@@ -14,15 +14,20 @@ executar_pipeline_etapa <- function(etapa, configuracao = list(), raiz = '.', in
   if ('config' %in% names(configuracao)) configuracao <- configuracao$config
   config <- ambiente$validar_configuracao(configuracao,raiz)
   if (etapa %in% c('P04','P05','P06')) {
-    ambiente$gravar_validado_atomico(list(estado='em_processamento',geracao=NULL),
-      ambiente$validar_destino(raiz,paste0(config$saidas,'/execucao.rds')))
+    terminar <- ambiente$registrar_tentativa(config,raiz,etapa)
+    finalizado <- FALSE
+    motivo_falha <- 'Etapa interrompida ou não concluída'
+    on.exit(if(!finalizado) terminar('falhou',motivo_falha),add=TRUE)
   }
+  withCallingHandlers({
   caminho_config <- ambiente$validar_destino(raiz,paste0(config$dados,'/configuracao.rds'))
   if (etapa == 'P04') {
     inventario <- ambiente$inventariar_recursos_fidc(config)
     plano <- ambiente$selecionar_unidades_fidc(config,inventario)
-    resultado <- list(config=config,inventario=inventario,plano=plano)
+    vinculo <- ambiente$assinar_plano_fidc(plano,config)
+    resultado <- list(config=config,inventario=inventario,plano=plano,assinatura_plano=vinculo$assinatura)
     ambiente$gravar_validado_atomico(resultado,caminho_config)
+    terminar('etapa_concluida',plano=vinculo$assinatura); finalizado <- TRUE
     return(resultado)
   }
   if (!file.exists(caminho_config)) stop('Execute P04 primeiro.')
@@ -36,6 +41,10 @@ executar_pipeline_etapa <- function(etapa, configuracao = list(), raiz = '.', in
     ambiente$gravar_validado_atomico(resultado,caminho_downloads)
     for (registro in resultado) if (registro$estado == 'concluido')
       ambiente$extrair_zip_fidc(registro,config,raiz)
+    ok <- all(vapply(resultado,function(x)identical(x$estado,'concluido'),logical(1)))
+    terminar(if(ok) 'etapa_concluida' else 'falhou',
+      if(!ok) 'Downloads não concluídos',plano=ambiente$assinar_plano_fidc(preparado$plano,config)$assinatura)
+    finalizado <- TRUE
     return(resultado)
   }
   if (etapa == 'P06') {
@@ -44,8 +53,10 @@ executar_pipeline_etapa <- function(etapa, configuracao = list(), raiz = '.', in
       stringsAsFactors=FALSE,fileEncoding='UTF-8')
     downloads <- ambiente$ler_rds_recuperavel(caminho_downloads)
     if (is.null(downloads)) stop('Registro de downloads inválido: execute P05 novamente.')
-    return(ambiente$retomar_consolidacao_fidc(downloads,config,raiz,
-      dicionario,interromper_apos))
+    resultado <- ambiente$retomar_consolidacao_fidc(downloads,config,raiz,dicionario,interromper_apos)
+    terminar(resultado$estado,assinatura=resultado$assinatura,plano=resultado$assinatura_plano)
+    finalizado <- TRUE
+    return(resultado)
   }
   caminho_atual <- ambiente$validar_destino(raiz,paste0(config$saidas,'/atual.rds'))
   if (!file.exists(caminho_atual)) stop('Execute P06 primeiro.')
@@ -54,6 +65,7 @@ executar_pipeline_etapa <- function(etapa, configuracao = list(), raiz = '.', in
   caminho_evidencias <- file.path(raiz,'logs/evidencias_aceite.rds')
   evidencia <- ambiente$ler_rds_recuperavel(caminho_evidencias)
   ambiente$executar_aceite(resultado,config,evidencias=evidencia,raiz=raiz)
+  },error=function(e) { if(etapa!='P07') motivo_falha <<- conditionMessage(e) })
 }
 # P01-FUN-002 | Interface terminal, impressão e código de saída.
 if (sys.nframe() == 0L) {

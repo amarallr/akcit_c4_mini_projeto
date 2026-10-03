@@ -57,7 +57,8 @@ baixar_unidade_fidc <- function(unidade, config, raiz = '.', transporte = transp
     valido <- identical(calcular_hash_assinatura(destino, TRUE), anterior$hash) &&
       !inherits(try(validar_zip_fidc(destino, config$max_bytes_zip), silent = TRUE), 'try-error')
   }
-  if (valido && !politica$baixar && identical(anterior$estado, 'concluido')) {
+  if (valido && !politica$baixar && identical(anterior$estado, 'concluido') &&
+      identical(anterior$unidade,unidade$unidade) && identical(anterior$url,unidade$url)) {
     message('P05 reutilizado: ', unidade$unidade)
     anterior$reutilizado <- TRUE
     return(anterior)
@@ -124,10 +125,12 @@ baixar_unidade_fidc <- function(unidade, config, raiz = '.', transporte = transp
 # P05-FUN-002 | Seleção atual; falhas não substituem estado por sucesso anterior.
 retomar_downloads_fidc <- function(plano, config, raiz = '.', transporte = transportar_http,
     esperar = Sys.sleep) {
+  vinculo <- assinar_plano_fidc(plano,config)
   resultados <- vector('list', nrow(plano))
   for (i in seq_len(nrow(plano))) resultados[[i]] <- baixar_unidade_fidc(
     plano[i, , drop = FALSE], config, raiz, transporte, esperar)
   names(resultados) <- plano$unidade
+  resultados <- lapply(resultados,function(x) { x$assinatura_plano <- vinculo$assinatura; x })
   resultados
 }
 

@@ -103,10 +103,37 @@ assinatura_codigo <- function(raiz = '.') {
   raiz <- normalizePath(raiz,winslash='/',mustWork=TRUE)
   arquivos <- c(list.files(file.path(raiz,'scripts'), '\\.(R|ps1)$', full.names = TRUE),
     list.files(file.path(raiz,'tests'), '\\.R$', recursive = TRUE, full.names = TRUE),
-    file.path(raiz, 'renv.lock'))
+    file.path(raiz, c('renv.lock','P04_CAMPOS_DECLARADOS_DICIONARIO.csv')))
   arquivos <- sort(arquivos[file.exists(arquivos)])
   calcular_hash_assinatura(setNames(lapply(arquivos, calcular_hash_assinatura, arquivo = TRUE),
     substring(arquivos, nchar(raiz)+2L)))
+}
+
+# P02-FUN-012 | Assina apenas funções que influenciam leitura e transformação.
+assinatura_transformacao <- function(escopo='leitura') {
+  nomes <- c('ler_padronizar_fidc','relatar_qualidade_fidc','validar_dv_ni')
+  if(escopo=='saida') nomes <- c(nomes,'consolidar_tabelas_fidc','auditar_chaves_fidc',
+    'extrair_cedentes_fidc','avaliar_identificador_cedente')
+  calcular_hash_assinatura(setNames(lapply(nomes,function(n) {
+    f <- get(n,envir=environment(assinatura_transformacao))
+    list(argumentos=formals(f),corpo=deparse(body(f),width.cutoff=500L))
+  }),nomes))
+}
+
+# P02-FUN-013 | Tentativa por etapa; estado inacabado denuncia processo abrupto.
+registrar_tentativa <- function(config,raiz,etapa) {
+  id <- basename(tempfile(paste0(etapa,'-',Sys.getpid(),'-')))
+  registro <- list(id=id,etapa=etapa,pid=Sys.getpid(),inicio=format(Sys.time(),'%FT%T%z'),
+    fim=NULL,estado='em_processamento',config=config,assinatura_plano=NULL,motivo=NULL)
+  caminhos <- c(validar_destino(raiz,paste0(config$saidas,'/tentativas/',id,'.rds')),
+    validar_destino(raiz,paste0(config$saidas,'/execucao.rds')))
+  persistir <- function() for(caminho in caminhos) gravar_validado_atomico(registro,caminho)
+  persistir()
+  function(estado,motivo=NULL,assinatura=NULL,plano=NULL) {
+    registro$estado <<- estado; registro$motivo <<- motivo
+    registro$assinatura <<- assinatura; registro$assinatura_plano <<- plano
+    registro$fim <<- format(Sys.time(),'%FT%T%z'); persistir()
+  }
 }
 
 # P02-FUN-010 | P02-RF-007: versões observadas, sem caminhos pessoais.

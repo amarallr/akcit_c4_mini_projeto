@@ -1,4 +1,29 @@
 # P01-TST-001/002 | P01-FUN-001 | sem rede, Git, instalação ou etapas futuras.
+testthat::test_that('P02-TST-013/P01-TST-002: estados por etapa e interrupção mantêm tentativas auditáveis', {
+  repo <- normalizePath('../..',winslash='/')
+  source('helper-p02-pipeline.R',local=TRUE)
+  raiz <- tempfile();dir.create(raiz);f <- fixture_piloto(raiz,'202607')
+  dir.create(file.path(raiz,'scripts'))
+  file.copy(list.files(file.path(repo,'scripts'),full.names=TRUE),file.path(raiz,'scripts'))
+  pages <- "inventariar_recursos_fidc <- function(config) data.frame(unidade='202607',arquivo='inf_mensal_fidc_202607.zip',url='simulado/202607',inicio=as.Date('2026-07-01'),fim=as.Date('2026-07-31'),tipo='mensal')"
+  cat(paste0('\n',pages,'\n'),file=file.path(raiz,'scripts/p04_configuracao_fidc.R'),append=TRUE)
+  e <- new.env(parent=globalenv());sys.source(file.path(repo,'scripts/p01_pipeline_fidc.R'),envir=e)
+  e$executar_pipeline_etapa('P04',f$config,raiz)
+  estado <- readRDS(file.path(raiz,'saidas/execucao.rds'))
+  testthat::expect_identical(estado$estado,'etapa_concluida')
+  testthat::expect_identical(estado$etapa,'P04');testthat::expect_true(nzchar(estado$fim))
+  e$executar_pipeline_etapa('P05',f$config,raiz)
+  testthat::expect_identical(readRDS(file.path(raiz,'saidas/execucao.rds'))$etapa,'P05')
+  config <- f$config;config$fim <- '2026-08-31'
+  testthat::expect_error(e$executar_pipeline_etapa('P06',config,raiz),'Configuração mudou')
+  estado <- readRDS(file.path(raiz,'saidas/execucao.rds'))
+  testthat::expect_identical(estado$estado,'falhou')
+  testthat::expect_match(estado$motivo,'Configuração mudou')
+  fim <- pipeline$registrar_tentativa(f$config,raiz,'P06')
+  estado <- readRDS(file.path(raiz,'saidas/execucao.rds'))
+  testthat::expect_identical(estado$estado,'em_processamento');testthat::expect_null(estado$fim)
+  testthat::expect_true(file.exists(file.path(raiz,'saidas/tentativas',paste0(estado$id,'.rds'))))
+})
 testthat::test_that('P01-TST-001: dependências e uma única etapa autorizada', {
   ambiente <- new.env(parent = globalenv())
   diretorio <- getwd()

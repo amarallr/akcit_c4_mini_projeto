@@ -250,17 +250,19 @@ retomar_consolidacao_fidc <- function(downloads, config, raiz = '.', dicionario 
   gc(reset=TRUE)
   estado_execucao <- validar_destino(raiz,paste0(config$saidas,'/execucao.rds'))
   atual <- validar_destino(raiz,paste0(config$saidas,'/atual.rds'))
-  gravar_validado_atomico(list(estado='em_processamento',geracao=NULL),estado_execucao)
+  terminar <- registrar_tentativa(config,raiz,'P06')
   finalizado <- FALSE
+  motivo_falha <- 'Execução interrompida ou gravação malsucedida'
   on.exit({
     if (!finalizado) {
       falha <- list(estado='falhou',incompleto=TRUE,geracao=NULL,
-        motivo='Execução interrompida ou gravação malsucedida')
-      try(gravar_validado_atomico(falha,estado_execucao),silent=TRUE)
-      try(gravar_validado_atomico(falha,atual),silent=TRUE)
+        motivo=motivo_falha)
+      try(terminar('falhou',falha$motivo),silent=TRUE)
     }
   },add=TRUE)
-  gravar_validado_atomico(list(estado='em_processamento',incompleto=TRUE,geracao=NULL),atual)
+  withCallingHandlers({
+  vinculo <- validar_downloads_plano(downloads,config,raiz)
+  logica <- assinatura_transformacao()
   checkpoint <- validar_destino(raiz, config$checkpoints)
   dir.create(checkpoint, recursive = TRUE, showWarnings = FALSE)
   tabelas <- list(); faltas <- character(); diagnosticos <- list(); usados <- 0L; processados <- 0L
@@ -276,7 +278,8 @@ retomar_consolidacao_fidc <- function(downloads, config, raiz = '.', dicionario 
         manifesto <- paste0(caminho, '.manifesto.rds')
         mapa <- if (is.null(dicionario)) NULL else dicionario[dicionario$tabela == id, ]
         assinatura <- calcular_hash_assinatura(list(hash = membros$hash[i],
-          inicio = config$inicio, fim = config$fim, versao = config$versao_transformacao, mapa = mapa))
+          inicio = config$inicio, fim = config$fim, versao = config$versao_transformacao,
+          logica=logica, mapa = mapa))
         anterior <- ler_rds_recuperavel(manifesto, function(x)
           is.list(x) && is.character(x$estado) && length(x$estado)==1L)
         recuperar_rollback(caminho, function(arq) {
@@ -317,8 +320,7 @@ retomar_consolidacao_fidc <- function(downloads, config, raiz = '.', dicionario 
   if (!length(tabelas) || (incompleto && !config$permitir_parcial)) {
     falha <- list(estado = if (!length(tabelas)) 'sem_unidades_validas' else 'selecao_incompleta',
       incompleto = TRUE, faltas = faltas, geracao = NULL, reutilizados = usados, processados = processados)
-    gravar_validado_atomico(falha, validar_destino(raiz,paste0(config$saidas,'/atual.rds')))
-    gravar_validado_atomico(falha,estado_execucao)
+    terminar(falha$estado,'Seleção incompleta',plano=vinculo$assinatura)
     finalizado <- TRUE
     return(falha)
   }
@@ -333,6 +335,7 @@ retomar_consolidacao_fidc <- function(downloads, config, raiz = '.', dicionario 
   cedentes <- if ('I' %in% names(tabelas)) extrair_cedentes_fidc(tabelas[['I']], config) else NULL
   assinatura_saida <- calcular_hash_assinatura(list(config = config[c('inicio','fim','tabelas',
     'versao_transformacao','completar_zeros','escala_percentual','gerar_flat','exportar_parquet')],
+    plano=vinculo$assinatura, logica=assinatura_transformacao('saida'), mapa=calcular_hash_assinatura(dicionario),
     conteudo = lapply(tabelas, calcular_hash_assinatura)))
   pasta <- validar_destino(raiz, paste0(config$saidas, '/geracoes/', assinatura_saida))
   dir.create(pasta, recursive = TRUE, showWarnings = FALSE)
@@ -362,6 +365,12 @@ retomar_consolidacao_fidc <- function(downloads, config, raiz = '.', dicionario 
   resultado <- list(estado = if (incompleto) 'parcial' else 'concluido', incompleto = incompleto,
     faltas = faltas, geracao = pasta, assinatura = assinatura_saida,
     arquivos = arquivos, config = config, codigo = assinatura_codigo(raiz),
+    assinatura_plano=vinculo$assinatura, unidades=vinculo$unidades,
+    logica=logica, mapa=calcular_hash_assinatura(dicionario),
+    logica_saida=assinatura_transformacao('saida'),
+    contratos=list(dicionario=list(caminho='P04_CAMPOS_DECLARADOS_DICIONARIO.csv',
+      hash=if(file.exists(file.path(raiz,'P04_CAMPOS_DECLARADOS_DICIONARIO.csv')))
+        calcular_hash_assinatura(file.path(raiz,'P04_CAMPOS_DECLARADOS_DICIONARIO.csv'),TRUE) else NA_character_)),
     modo = if (isTRUE(config$gerar_flat)) 'completo' else 'temporal',
     linhas_flat = if (is.null(flat$flat)) 0L else nrow(flat$flat),
     colunas_flat = if (is.null(flat$flat)) 0L else ncol(flat$flat),
@@ -370,8 +379,9 @@ retomar_consolidacao_fidc <- function(downloads, config, raiz = '.', dicionario 
     diagnosticos = diagnosticos, reutilizados = usados, processados = processados)
   gravar_validado_atomico(resultado, file.path(pasta,'manifesto_saida.rds'))
   # Ponteiro publicado só depois da geração inteira validada; saídas antigas não são atuais.
-  gravar_validado_atomico(resultado, validar_destino(raiz,paste0(config$saidas,'/atual.rds')))
-  gravar_validado_atomico(list(estado=resultado$estado,assinatura=assinatura_saida),estado_execucao)
+  if (identical(resultado$estado,'concluido'))
+    gravar_validado_atomico(resultado, validar_destino(raiz,paste0(config$saidas,'/atual.rds')))
+  terminar(resultado$estado,assinatura=assinatura_saida,plano=vinculo$assinatura)
   memoria <- gc()
   metricas <- list(assinatura=assinatura_saida,codigo=resultado$codigo,modo=resultado$modo,
     segundos=proc.time()[['elapsed']]-inicio_execucao,
@@ -380,9 +390,11 @@ retomar_consolidacao_fidc <- function(downloads, config, raiz = '.', dicionario 
     memoria_max_gc_mb=sum(memoria[,6]),
     metodo_memoria='Soma dos máximos Ncells/Vcells do gc desde reset; não é pico RSS do processo',
     ambiente=registrar_ambiente())
-  gravar_validado_atomico(metricas,validar_destino(raiz,paste0('logs/metricas_',resultado$modo,'.rds')))
+  destino_metricas <- if(startsWith(config$saidas,'logs/evidencias/')) config$saidas else 'logs'
+  gravar_validado_atomico(metricas,validar_destino(raiz,paste0(destino_metricas,'/metricas_',resultado$modo,'.rds')))
   finalizado <- TRUE
   resultado
+  },error=function(e) { motivo_falha <<- conditionMessage(e) })
 }
 
 # P06-FUN-010 | P06-RF-013: extensão opcional; verifica round-trip antes de publicar.

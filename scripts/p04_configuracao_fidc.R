@@ -84,3 +84,51 @@ selecionar_unidades_fidc <- function(config, inventario) {
   }
   inventario[escolhidos[order(inventario$inicio[escolhidos])], , drop = FALSE]
 }
+
+# P04-FUN-004 | Plano canônico, cobertura e ausência de sobreposição por competência.
+assinar_plano_fidc <- function(plano, config) {
+  campos <- c('unidade','arquivo','url')
+  if (!is.data.frame(plano) || !nrow(plano) || !all(campos %in% names(plano)))
+    stop('Plano inválido: execute P04 e P05 para o plano atual.')
+  p <- as.data.frame(lapply(plano[campos], as.character), stringsAsFactors=FALSE)
+  if (anyNA(p) || any(!nzchar(as.matrix(p))) || anyDuplicated(p$unidade) ||
+      any(!grepl('^[0-9]{4}([0-9]{2})?$',p$unidade))) stop('Plano duplicado ou inválido: execute P04/P05.')
+  meses <- format(seq(as.Date(paste0(substr(config$inicio,1,7),'-01')),
+    as.Date(paste0(substr(config$fim,1,7),'-01')),by='month'),'%Y%m')
+  coberturas <- lapply(p$unidade,function(u) if(nchar(u)==4L) paste0(u,sprintf('%02d',1:12)) else u)
+  recebidos <- unlist(coberturas,use.names=FALSE)
+  if (anyDuplicated(recebidos) || any(!meses %in% recebidos) ||
+      any(!vapply(coberturas,function(x)any(x %in% meses),logical(1))) ||
+      any(!substr(recebidos,5,6) %in% sprintf('%02d',1:12)))
+    stop('Plano incompleto ou com sobreposição: execute P04 e P05 para o plano atual.')
+  p <- p[order(p$unidade,p$arquivo,p$url),,drop=FALSE]; rownames(p) <- NULL
+  list(plano=p, assinatura=calcular_hash_assinatura(list(plano=p,
+    inicio=config$inicio,fim=config$fim,tabelas=sort(config$tabelas))))
+}
+
+# P04-FUN-005 | Também usado pelas chamadas diretas P06, medições e evidências.
+validar_downloads_plano <- function(downloads, config, raiz='.', plano=NULL) {
+  if (is.null(plano)) {
+    preparado <- ler_rds_recuperavel(file.path(raiz,config$dados,'configuracao.rds'))
+    if (is.null(preparado) || !identical(config[c('inicio','fim','tabelas')],
+        preparado$config[c('inicio','fim','tabelas')]))
+      stop('Plano ausente ou desatualizado: execute P04 e P05 para o plano atual.')
+    plano <- preparado$plano
+  }
+  vinculo <- assinar_plano_fidc(plano,config)
+  falhar <- function() stop('Downloads ausentes, extras, duplicados ou incompatíveis: execute P05 para o plano atual; ZIPs íntegros podem ser reutilizados.')
+  if (!is.list(downloads) || !length(downloads)) falhar()
+  ids <- vapply(downloads,function(x) if(is.character(x$unidade)&&length(x$unidade)==1L) x$unidade else '',character(1))
+  if (anyDuplicated(ids) || !setequal(ids,vinculo$plano$unidade)) falhar()
+  for (r in downloads) {
+    p <- vinculo$plano[match(r$unidade,vinculo$plano$unidade),]
+    if (!identical(basename(r$arquivo),p$arquivo) || !identical(r$url,p$url) ||
+        (!is.null(r$assinatura_plano) && !identical(r$assinatura_plano,vinculo$assinatura))) falhar()
+    # Migração conservadora: identidade exata e ZIP íntegro, nunca só nome da lista.
+    if (is.null(r$assinatura_plano) && (!identical(r$estado,'concluido') ||
+        !file.exists(r$arquivo) || !identical(calcular_hash_assinatura(r$arquivo,TRUE),r$hash) ||
+        inherits(try(validar_zip_fidc(r$arquivo,config$max_bytes_zip),silent=TRUE),'try-error'))) falhar()
+  }
+  vinculo$unidades <- sort(unname(ids))
+  vinculo
+}

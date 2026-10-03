@@ -29,8 +29,13 @@ fixture_zip <- function(destino, membros) {
 
 fixture_piloto <- function(raiz, meses = c('202607','202608')) {
   dir.create(raiz,recursive=TRUE,showWarnings=FALSE)
+  file.copy('../../P04_CAMPOS_DECLARADOS_DICIONARIO.csv',file.path(raiz,'P04_CAMPOS_DECLARADOS_DICIONARIO.csv'))
   config <- pipeline$validar_configuracao(list(tabelas=c('I','IV','VIII','X_4')),raiz)
+  config$inicio <- paste0(substr(min(meses),1,4),'-',substr(min(meses),5,6),'-01')
+  config$fim <- as.character(seq(as.Date(paste0(substr(max(meses),1,4),'-',substr(max(meses),5,6),'-01')),by='month',length.out=2)[2]-1)
   plano <- data.frame(unidade=meses,arquivo=paste0('inf_mensal_fidc_',meses,'.zip'),url=paste0('simulado/',meses))
+  dir.create(file.path(raiz,'dados'),showWarnings=FALSE)
+  saveRDS(list(config=config,plano=plano),file.path(raiz,'dados/configuracao.rds'))
   origem <- tempfile();dir.create(origem)
   for (mes in meses) {
     data <- if (mes == '202607') '2026-07-31' else '2026-08-31'
@@ -54,6 +59,7 @@ fixture_piloto <- function(raiz, meses = c('202607','202608')) {
     file.copy(file.path(origem,paste0(basename(url),'.zip')),destino,overwrite=TRUE);200L
   }
   downloads <- pipeline$retomar_downloads_fidc(plano,config,raiz,transporte,function(x)NULL)
+  saveRDS(downloads,file.path(raiz,'dados/downloads.rds'))
   mapa <- read.csv('../../P04_CAMPOS_DECLARADOS_DICIONARIO.csv',stringsAsFactors=FALSE)
   list(config=config,downloads=downloads,plano=plano,mapa=mapa,transporte=transporte,origem=origem)
 }
@@ -68,8 +74,15 @@ fixture_evidencias <- function(r,config,raiz) {
   jsonlite::write_json(list(estado='concluido',suite='todas',codigo=r$codigo,casos=1,
     verificacoes=1,falhas=0,erros=0,avisos=0,skips=0,hash_resultados=hash_teste),
     file.path(raiz,resumo),auto_unbox=TRUE)
-  saveRDS(list(codigo=r$codigo,config=config,assinatura=r$assinatura,pid_interrupcao=1L,
-    pid_retomada=2L,pid_repeticao=3L,reutilizados=1L,hashes_antes=hashes,hashes_depois=hashes),file.path(raiz,ret))
+  demo <- config; demo$usar_checkpoints <- TRUE; demo$atualizar_downloads <- FALSE; demo$forcar_reprocessamento <- FALSE
+  cp <- list.files(file.path(raiz,config$checkpoints),pattern='manifesto.rds$',full.names=TRUE)[1]
+  intermediario <- sub('.manifesto.rds$','',cp)
+  saveRDS(list(origem='fixture',codigo=r$codigo,config=config,assinatura=r$assinatura,pid_interrupcao=1L,
+    pid_retomada=2L,pid_repeticao=3L,reutilizados=1L,hashes_antes=hashes,hashes_depois=hashes,
+    hashes_usuario=hashes,config_usuario=config,config_demonstracao=demo,
+    assinatura_plano=r$assinatura_plano,processados_interrupcao=1L,
+    checkpoints=list(list(caminho=substring(cp,nchar(raiz)+2L),hash=pipeline$calcular_hash_assinatura(cp,TRUE),
+      intermediario=substring(intermediario,nchar(raiz)+2L),hash_intermediario=pipeline$calcular_hash_assinatura(intermediario,TRUE)))),file.path(raiz,ret))
   arqs <- c(testes=teste,resumo=resumo,retomada=ret)
   list(codigo=r$codigo,config=config,assinatura=r$assinatura,
     artefatos=lapply(arqs,function(a)list(caminho=a,hash=pipeline$calcular_hash_assinatura(file.path(raiz,a),TRUE))))

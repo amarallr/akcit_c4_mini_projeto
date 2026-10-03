@@ -1,4 +1,38 @@
 source('helper-p02-pipeline.R')
+
+testthat::test_that('P02-TST-013/P06-TST-013: saída parcial preserva ponteiro concluído', {
+  raiz <- tempfile();dir.create(raiz);f <- fixture_piloto(raiz,'202607')
+  anterior <- pipeline$retomar_consolidacao_fidc(f$downloads,f$config,raiz,f$mapa)
+  original <- pipeline$extrair_zip_fidc
+  on.exit({pipeline$extrair_zip_fidc <- original},add=TRUE)
+  pipeline$extrair_zip_fidc <- function(...) {
+    membros <- original(...);membros[!grepl('_tab_VIII_',membros$Name),]
+  }
+  f$config$permitir_parcial <- TRUE
+  parcial <- pipeline$retomar_consolidacao_fidc(f$downloads,f$config,raiz,f$mapa)
+  testthat::expect_identical(parcial$estado,'parcial')
+  testthat::expect_identical(readRDS(file.path(raiz,'saidas/atual.rds'))$assinatura,anterior$assinatura)
+  testthat::expect_identical(readRDS(file.path(raiz,'saidas/execucao.rds'))$estado,'parcial')
+  testthat::expect_false(pipeline$executar_aceite(anterior,anterior$config,raiz=raiz)$aceite_local)
+})
+
+testthat::test_that('P06-TST-013: lógica e mapa invalidam, documentação não invalida', {
+  raiz <- tempfile();dir.create(raiz);f <- fixture_piloto(raiz,'202607')
+  original <- pipeline$ler_padronizar_fidc
+  on.exit({pipeline$ler_padronizar_fidc <- original},add=TRUE)
+  a <- pipeline$retomar_consolidacao_fidc(f$downloads,f$config,raiz,f$mapa)
+  writeLines('Mudança documental',file.path(raiz,'README.md'))
+  b <- pipeline$retomar_consolidacao_fidc(f$downloads,f$config,raiz,f$mapa)
+  testthat::expect_equal(b$reutilizados,4)
+  f$mapa$tipo[f$mapa$tabela=='IV' & f$mapa$campo=='TAB_IV_A_VL_PL'] <- 'text'
+  c <- pipeline$retomar_consolidacao_fidc(f$downloads,f$config,raiz,f$mapa)
+  testthat::expect_equal(c$processados,1)
+  testthat::expect_equal(c$reutilizados,3)
+  pipeline$ler_padronizar_fidc <- function(...) original(...)
+  d <- pipeline$retomar_consolidacao_fidc(f$downloads,f$config,raiz,f$mapa)
+  testthat::expect_equal(d$processados,4)
+  testthat::expect_false(identical(c$assinatura,d$assinatura))
+})
 testthat::test_that('P06-TST-012: modo temporal evita pivot e conserva todas as linhas', {
   raiz <- tempfile();dir.create(raiz);f <- fixture_piloto(raiz)
   completo <- pipeline$retomar_consolidacao_fidc(f$downloads,f$config,raiz,f$mapa)
@@ -40,7 +74,7 @@ testthat::test_that('P02-TST-012: checkpoint corrompido e falha de saída não a
     original(objeto,caminho,...)
   }
   testthat::expect_error(pipeline$retomar_consolidacao_fidc(f$downloads,f$config,raiz,f$mapa),'Falha simulada')
-  testthat::expect_null(readRDS(file.path(raiz,'saidas/atual.rds'))$geracao)
+  testthat::expect_identical(readRDS(file.path(raiz,'saidas/atual.rds'))$geracao,valido$geracao)
   testthat::expect_identical(readRDS(file.path(raiz,'saidas/execucao.rds'))$estado,'falhou')
   testthat::expect_true(file.exists(file.path(valido$geracao,'inf_mensal_fidc_flat.csv')))
 })
@@ -57,7 +91,7 @@ testthat::test_that('P06-TST-011: conversão inválida publica diagnóstico ante
   testthat::expect_error(pipeline$retomar_consolidacao_fidc(f$downloads,f$config,raiz,f$mapa),'Decimal')
   q <- data.table::fread(file.path(raiz,'saidas/qualidade_falha.csv'),sep=';')
   testthat::expect_true(any(q$tipo=='conversao_invalida' & q$quantidade>0))
-  testthat::expect_null(readRDS(file.path(raiz,'saidas/atual.rds'))$geracao)
+  testthat::expect_false(file.exists(file.path(raiz,'saidas/atual.rds')))
 })
 
 testthat::test_that('P06-TST-012: Parquet é opcional e preserva identificador textual', {
@@ -104,7 +138,10 @@ testthat::test_that('P06-TST-003/004/006/010: flat preserva detalhes, órfãos e
   testthat::expect_identical(hash_csv,pipeline$calcular_hash_assinatura(file.path(sem$geracao,'inf_mensal_fidc_flat.csv'),TRUE))
   f$config$usar_checkpoints <- TRUE
   f$config$inicio <- '2026-08-01'
-  agosto <- pipeline$retomar_consolidacao_fidc(f$downloads,f$config,raiz,f$mapa)
+  plano <- f$plano[f$plano$unidade=='202608',]
+  saveRDS(list(config=f$config,plano=plano),file.path(raiz,'dados/configuracao.rds'))
+  downloads <- pipeline$retomar_downloads_fidc(plano,f$config,raiz,f$transporte)
+  agosto <- pipeline$retomar_consolidacao_fidc(downloads,f$config,raiz,f$mapa)
   testthat::expect_equal(agosto$linhas_flat,2)
   testthat::expect_true(agosto$processados>0)
   d <- data.table::data.table(cnpj='1',dt_comptc=as.Date('2026-07-31'),v=c(1,2),
@@ -160,6 +197,6 @@ testthat::test_that('P06-TST-009: ausência não usa geração antiga como atual
   testthat::expect_identical(r$estado,'sem_unidades_validas')
   testthat::expect_null(r$geracao)
   testthat::expect_true(r$incompleto)
-  testthat::expect_null(readRDS(file.path(raiz,'saidas/atual.rds'))$geracao)
+  testthat::expect_identical(readRDS(file.path(raiz,'saidas/atual.rds'))$geracao,anterior$geracao)
   testthat::expect_true(file.exists(file.path(anterior$geracao,'inf_mensal_fidc_flat.csv')))
 })
