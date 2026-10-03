@@ -8,6 +8,7 @@ if (length(argumentos) > 1 || !etapa %in% c(paste0('P0', 1:7), 'todas'))
   stop('Use P01 a P07 ou todas.')
 if (!file.exists('C4-Mini-projeto.Rproj')) stop('Execute da raiz do projeto.')
 bibliotecas_anteriores <- .libPaths()
+Sys.setenv(FIDC_TESTES_ATIVOS='1')
 dir.create('logs',showWarnings=FALSE)
 source('scripts/p02_utilitarios.R',encoding='UTF-8')
 codigo_teste <- NULL
