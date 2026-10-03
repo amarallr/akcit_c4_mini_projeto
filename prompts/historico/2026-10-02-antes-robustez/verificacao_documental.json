@@ -1,0 +1,20 @@
+{
+  "data_revisao": "2026-10-02",
+  "prompts": 7,
+  "ids_unicos": true,
+  "referencias_presentes": true,
+  "requisitos_com_teste_previsto": true,
+  "funcoes_com_teste_previsto": true,
+  "requisitos_funcionais": 48,
+  "requisitos_nao_funcionais": 18,
+  "modulos": 12,
+  "funcoes_cadastradas": 38,
+  "testes_previstos": 47,
+  "ligacoes": 87,
+  "casos_automatizados": 36,
+  "verificacoes_automatizadas": 275,
+  "falhas_automatizadas": 0,
+  "P03": "Documental; VM e reprodução independente canceladas",
+  "P07": "Aceite local com evidências automáticas validado; publicação conferida no fechamento",
+  "ci": "Configurada Windows/Linux, não confundir com piloto real"
+}

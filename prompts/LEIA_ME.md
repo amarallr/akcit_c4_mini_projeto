@@ -19,3 +19,5 @@ P03 não instala/cria VM/exige administrador ou teste de execução. [AMBIENTE_D
 Autorização atual implementa P04–P07 com CNPJ/competência, origem e CSVs temporais e flat opcional no modo temporal. Tabelas com várias linhas usam posições técnicas no flat, sem agregação/descarte/produto cartesiano. P03 continua documental. Pedidos futuros atualizam requisitos antes da implementação, com nomenclatura/arquitetura/SWEBOK/rastreabilidade.
 
 Os estados anteriores de P04 parcial e P05–P07 não iniciados são históricos. O pacote local contém documentos gerados da execução, sem exigir sua existência na primeira reprodução. Após o fechamento remoto, a bola fica com o usuário para revisar resultados ou escolher novo incremento; nenhuma melhoria futura é iniciada automaticamente.
+
+Regras compartilhadas vigentes estão em P02. Versões anteriores à centralização de 02/10/2026 ficam em historico/2026-10-02-antes-robustez, identificadas como substituídas. Os contratos novos constam do catálogo/matriz; resultados antigos não comprovam o incremento de [robustez](../INCREMENTO_ROBUSTEZ.md).

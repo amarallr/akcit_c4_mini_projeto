@@ -2,8 +2,6 @@ PROMPT 03 — ROTEIRO DE PREPARAÇÃO DO AMBIENTE
 Versão: v2026-10-02 — incrementos autorizados e arquitetura DFD
 Prompt responsável: P03
 
-IDs históricos preservados: P03-FUN-001 verificar_ambiente, P03-FUN-002 preparar_projeto, P03-FUN-003 verificar_repositorio; P03-TST-001, P03-TST-002 e P03-TST-003. Permanecem fora do aceite documental vigente; não reativar essas obrigações.
-
 C — CONTEXT (CONTEXTO)
 Mini projeto didático da Especialização em Engenharia de Software com IA
 Generativa, utilizando R, RStudio, Codex, Git e GitHub para um futuro
@@ -38,7 +36,7 @@ contas próprias e alternativas permitidas pela administração do computador.
 R — RESPONSE (RESPOSTA/ENTREGA)
 Entregar o roteiro, requisitos atualizados, revisão documental, visão global
 no RETOMADA e documentação sincronizada. Identificar ações não executadas.
-P04 e seguintes exigem autorização própria, sem início automático por P03. Não exigir implementação P03.
+P04 e seguintes permanecem não iniciados. Não exigir implementação P03.
 
 REQUISITOS VIGENTES
 P03-RF-001 | RF | Documentar recursos e verificações sugeridas: R, RStudio, UTF-8, pacotes, pasta, permissões e executáveis. Não realizar diagnóstico nem exigir resultados.
@@ -69,7 +67,7 @@ IDs históricos não podem ser reutilizados para outro requisito.
 
 ARQUITETURA, NOMENCLATURA E SWEBOK
 Gerar documentação técnica explicando ferramentas, dependências, chamadas
-reais dos scripts preservados e fluxo futuro, com o único DFD Mermaid definido em P02.
+reais dos scripts preservados e fluxo futuro, com diagramas Mermaid simples.
 Explicar separadamente o roteiro atual e a implementação histórica.
 Scripts de futuras etapas seguem pNN_nome_da_funcao.ext, testes seguem
 test-pNN-finalidade.R; registrar origem, dependências e referências.
@@ -78,8 +76,29 @@ em Fases do Ciclo de Desenvolvimento de Software SWEBOK.md. Preparação é
 atendida pelo roteiro documental; teste de instalação não é seu aceite.
 Esses documentos são saídas dos prompts, não material inicial obrigatório.
 
-HERANÇA: P03 é exclusivamente documental, conforme P02; cancelamentos preservados.
+ESCOPO VIGENTE DE P03 — REVISÃO DE 01/10/2026
+P03 entrega somente um roteiro documental de preparação do ambiente, gerado
+a partir dos sete prompts atuais. Não pressupor ferramentas, contas, código
+ou documentos preexistentes. Explicar R, RStudio, Codex, Git, GitHub e os
+recursos auxiliares, com fontes oficiais, ordem, finalidade e alternativas
+para leitor sem credenciais administrativas. Não instalar, criar VM, executar
+scripts, testar o roteiro nem exigir evidências de execução para concluir P03.
+P03-TST-005 significa revisão documental, sem teste de execução.
+P03-RF-006 e P03-TST-004 estão cancelados por mudança de escopo, não pendentes.
+Scripts e testes P03 existentes são histórico opcional do escopo anterior.
+Sua preservação não os torna pré-requisitos da entrega vigente.
+Não iniciar P04–P07 automaticamente. Executar somente o incremento expressamente autorizado; testes funcionais dessas etapas continuam previstos.
+O roteiro não comprova ambiente instalado: avaliar pré-requisitos efetivos
+somente quando uma etapa de execução for expressamente autorizada.
+Sempre registrar novos pedidos nos prompts, arquitetura, SWEBOK e retomada.
+Informar plano e status a cada dez segundos durante o trabalho e indicar
+explicitamente se a bola está com o agente ou com o usuário.
 
-HERANÇA: base de implementação e fontes oficiais conforme P02.
+BASE OBRIGATÓRIA DA IMPLEMENTAÇÃO
+A implementação deve utilizar somente os comandos e requisitos dos sete prompts atuais. As consultas oficiais explicitamente previstas nesses prompts servem para confirmar dados e contratos; aplicar as instruções específicas posteriores do usuário, mantendo os requisitos revisados como contrato da implementação.
 
-HERANÇA: decisões vigentes em P02; um DFD, P03 documental, temporal com aceite próprio e preservação do histórico.
+AUTORIZAÇÃO VIGENTE — IMPLEMENTAÇÃO P04 A P07
+Implementar P04–P07 para julho/agosto de 2026. Junção por CNPJ e competência, preservando origens em colunas próprias. CSV temporal por leiaute e CSV flat único são entregas obrigatórias. Múltiplas linhas são preservadas em posições técnicas por leiaute no flat, sem somar, escolher completude ou multiplicar joins; registrar limites, chaves de identidade e conflitos. Inspeção/download e piloto real estão autorizados. P03 continua somente documental. Instruções específicas posteriores do usuário prevalecem sobre os limites de incrementos anteriores.
+
+DECISOES VIGENTES — 02/10/2026
+Arquitetura apresenta somente um DFD, com fluxos de dados e explicacao da relacao com P01-P07; substitui pedidos anteriores de multiplos diagramas. P03 continua documental, sem reativar VM/reproducao independente. O modo temporal sem flat tem aceite proprio e nao substitui o piloto completo. CI e renv estao autorizados neste incremento. A instrucao final do usuario autoriza substituir o historico local/remoto por um unico versão de referência somente apos validar; fora desse fechamento, nao reescrever nem publicar sem pedido. doit significa ler tmp/tmp.txt.

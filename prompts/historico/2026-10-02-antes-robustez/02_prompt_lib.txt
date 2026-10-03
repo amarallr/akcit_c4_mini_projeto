@@ -2,13 +2,6 @@ PROMPT 02 — LIB — REGRAS COMPARTILHADAS
 Versão: v2026-10-02 — incrementos autorizados e arquitetura DFD
 Prompt responsável: P02
 
-CONTRATOS DO INCREMENTO DE ROBUSTEZ — 02/10/2026
-P02-RF-009 | RF | Vincular plano, downloads, checkpoints, lógica relevante, contratos e geração por hashes. Registrar tentativas por etapa com ID, início, fim e motivo; preservar última geração concluída. Estado em_processamento sem fim significa tentativa não finalizada, sem garantia de transação conjunta no Windows/OneDrive.
-P02-FUN-012 | FUN | assinatura_transformacao | Hash dos corpos e argumentos das funções relevantes de leitura; documentos e testes não invalidam checkpoints.
-P02-FUN-013 | FUN | registrar_tentativa | Persistir tentativa por etapa e marcador recente; etapa_concluida de P04/P05 não significa análise pronta.
-P02-TST-013 | TST | Validar vínculo, invalidação seletiva, estados e preservação com fixtures locais e falhas controladas.
-Regras compartilhadas: mesmos caminhos, hashes, políticas e registros de P02 em todas as etapas. P03 é exclusivamente documental, com P03-RF-006/P03-TST-004 cancelados. Preservar sete prompts e IDs; resultados de execuções ficam no registro histórico, nunca no contrato vigente. Não reescrever histórico nem usar force push. doit significa ler tmp/tmp.txt.
-
 C — CONTEXT (CONTEXTO)
 Este é um mini projeto didático no âmbito da Especialização em Engenharia
 de Software com IA Generativa. Utiliza R, RStudio, Codex, Git e GitHub.
@@ -85,7 +78,10 @@ permanece previsto e atualizar a continuidade. A resposta deve acompanhar
 o incremento em curso; carregar P02 não cria uma etapa independente de dados.
 
 CONTRATOS COMUNS
-- Configuração contém somente parâmetros suportados. Dependências efetivas são fixadas em renv.lock; usar biblioteca local e restauração explícita, sem instalação ao carregar os módulos.
+- Configuração contém somente parâmetros suportados; dependências ausentes
+  são informadas. data.table pode ser escolhido por utilidade nos exemplos;
+  confirmar instalação/carregamento e justificar. curl/httr2/digest/testthat
+  são candidatos, não obrigação de instalar todos. renv é opcional.
 - Originais são imutáveis até atualização validada; cada unidade tem estado
   persistido. Checkpoint não significa que arquivo remoto esteja atualizado.
 - Usar checkpoints FALSE refaz consolidação, preserva downloads válidos e
@@ -97,7 +93,7 @@ CONTRATOS COMUNS
   Saída final usa lista atual de unidades; ordem de leitura não escolhe versão.
 - Manifestações de falha/indisponibilidade e relatório parcial preservam
   motivos e datas; saídas atuais têm identificação da execução e seleção.
-- RDS e CSV temporal por leiaute são obrigatórios; flat CSV/RDS é obrigatório no modo completo, dispensado explicitamente no modo temporal com aceite próprio.
+- RDS tipado e CSV temporal por leiaute/flat são obrigatórios, com formato documentado.
   Não alterar para Parquet obrigatoriamente por ter sido usado em outro projeto.
 - Histórico de ambiente não é mínimo nem prova atual. Não publicar dados
   locais/segredos. Login Codex, GitHub e CVM são coisas distintas.
@@ -172,8 +168,8 @@ P02-RNF-009 | RNF | Gerar e manter Fases do Ciclo de Desenvolvimento de Software
 
 P02-RNF-010 | RNF | Manter ARQUITETURA.md com somente um DFD, fluxos nomeados, depósitos, transformações, limites e relação com P01-P07. Conferir contra os scripts; revisão textual não equivale a renderização.
 
-MÓDULO E FUNÇÕES — CONTRATOS DA IMPLEMENTAÇÃO
-P02-MOD-001 | Arquivo: scripts/p02_utilitarios.R
+MÓDULO E FUNÇÕES PROPOSTOS — NÃO IMPLEMENTADOS NESTA ENTREGA
+P02-MOD-001 | Arquivo proposto: scripts/p02_utilitarios.R
 P02-FUN-001 | gravar_validado_atomico
 Contrato: Recebe objeto/caminho/validador; publica validado ou preserva anterior; retorna caminho/hash e estado.
 Requisitos: P02-RF-002
@@ -191,7 +187,7 @@ Contrato: Recebe catálogo/ligacoes; identifica IDs duplicados, referências aus
 Requisitos: P02-RF-001 P02-RNF-002
 
 
-TESTES PRÓPRIOS — CRITÉRIOS DE VERIFICAÇÃO
+TESTES PRÓPRIOS PREVISTOS — A EXECUTAR NA IMPLEMENTAÇÃO
 P02-TST-001 | Tipo: unitario
 Verificar: Escrita interrompida ou validador falho não publica temporário nem destrói versão válida; plataforma sem substituição atômica informa limitação.
 Requisitos: P02-RF-002
@@ -234,8 +230,11 @@ pendências, commit e situação de push. Não registrar teste como aprovado
 porque foi especificado aqui. Informar próximo passo sem iniciar etapa
 seguinte automaticamente, salvo sequência já autorizada pelo usuário.
 
-RUNNER VIGENTE — P02-MOD-002
-scripts/p02_testar.R aceita P01 a P07 ou todas; executa fixtures locais sem CVM. Resultados históricos permanecem em historico e registro_testes.csv.
+ATUALIZAÇÃO DOCUMENTAL DE P03 — 01/10/2026
+P02-MOD-002 | Arquivo implementado: scripts/p02_testar.R
+Contrato: runner sem rede, com P01, P03 ou todas; etapa não implementada é rejeitada.
+Requisitos: P02-RF-004. Teste: P02-TST-005 aprovado para a suíte atual (P03).
+P02-FUN-001/002/003/004 continuam previstos. Consulte catálogo e registro_testes.
 
 NOMENCLATURA E REFERÊNCIAS ENTRE SCRIPTS — P02-RNF-008
 Nomear cada script pelo prompt responsável e pela finalidade: pNN_nome_da_funcao.ext,
@@ -255,7 +254,7 @@ Bibliotecas, executáveis de terceiros e artefatos que não são scripts própri
 não recebem esse prefixo. Não iniciar uma etapa só para criar seu script.
 
 P02-TST-008 | Tipo: revisao_execucao_local
-Verificar: Inventariar scripts próprios, conferir prefixos e destinos de chamadas; verificar ausência de referências operacionais aos nomes substituídos. Executar seleção de etapa e todas; confirmar contratos de dependências da implementação vigente. Preservar IDs e evidências históricas.
+Verificar: Inventariar scripts próprios, conferir prefixos e destinos de chamadas; verificar ausência de referências operacionais aos nomes substituídos. Executar diagnóstico, seleção P03 e todas e confirmar rejeição de P04 sem implementação ou execução dessa etapa. Preservar IDs e evidências históricas.
 Requisitos: P02-RNF-008
 Funções: verificação do módulo/documentação/fluxo
 
@@ -291,7 +290,7 @@ Não iniciar etapas de dados nem criar uma nova etapa P08 para preencher o mapa.
 Aplicação neste prompt: P02 mantém o contrato SWEBOK comum e a rastreabilidade, evitando duplicar IDs; revisar coerência de fontes, fases, critérios e estados sem exigir conformidade integral ou certificação SWEBOK.
 
 P02-TST-009 | Tipo: revisao_documental
-Verificar: Documento na raiz enumera dez etapas da adaptação didática, explica cada uma e sua aplicação com prompts, artefatos, IA/revisão humana, evidências e estados; fontes oficiais e edição SWEBOK v4.0a identificadas. Sete prompts contêm a regra comum e aplicação própria; documento não é pré-requisito inicial. RETOMADA e CSVs coerentes; P04–P07 são executados quando autorizados e P03-TST-004 cancelado por mudança de escopo. Não declarar implantação, operação, aceite ou ciclo integral concluídos.
+Verificar: Documento na raiz enumera dez etapas da adaptação didática, explica cada uma e sua aplicação com prompts, artefatos, IA/revisão humana, evidências e estados; fontes oficiais e edição SWEBOK v4.0a identificadas. Sete prompts contêm a regra comum e aplicação própria; documento não é pré-requisito inicial. RETOMADA e CSVs coerentes; P04–P07 continuam sem iniciar e P03-TST-004 cancelado por mudança de escopo. Não declarar implantação, operação, aceite ou ciclo integral concluídos.
 Requisitos: P01-RF-004 P02-RNF-009
 Funções: verificação do módulo/documentação/fluxo
 
@@ -324,7 +323,7 @@ revisão textual/estrutural não equivale a renderização ou teste de execuçã
 Aplicação arquitetural neste prompt: P02 mantém contratos de arquitetura, nomenclatura, rastreabilidade e qualidade comuns. Runner é entrada independente, não chamada implícita de P01. Separar dependências atuais de utilitários futuros.
 
 P02-TST-010 | Tipo: revisao_documental
-Verificar: ARQUITETURA.md explica ferramentas, contratos, persistência, erros e limites; tem um DFD Mermaid com descrição textual. Chamadas atuais conferem com source/sys.source, wrapper, runner e funções reais; fluxo futuro identificado como planejado. Sete prompts incorporam pedidos e exigem atualização arquitetural; IDs, fontes e estados coerentes. Não confundir revisão estrutural com renderização executada. P04–P07 executados somente quando autorizados.
+Verificar: ARQUITETURA.md explica ferramentas, contratos, persistência, erros e limites; tem quatro diagramas legíveis em Mermaid com descrição textual. Chamadas atuais conferem com source/sys.source, wrapper, runner e funções reais; fluxo futuro identificado como planejado. Sete prompts incorporam pedidos e exigem atualização arquitetural; IDs, fontes e estados coerentes. Não confundir revisão estrutural com renderização executada. P04–P07 sem iniciar.
 Requisitos: P01-RF-005 P02-RNF-010
 Funções: verificação do módulo/documentação/fluxo
 
@@ -376,4 +375,4 @@ P02-FUN-008 | FUN | ler_rds_recuperavel
 P02-TST-012 | TST | Verificar comportamentos reais com fixtures e falhas controladas.
 
 DECISOES VIGENTES — 02/10/2026
-Arquitetura apresenta somente um DFD, com fluxos de dados e explicacao da relacao com P01-P07; substitui pedidos anteriores de multiplos diagramas. P03 continua documental, sem reativar VM/reproducao independente. O modo temporal sem flat tem aceite proprio e nao substitui o piloto completo. CI e renv estao autorizados neste incremento. Não reescrever histórico nem usar force push. Publicação remota depende da autorização vigente. doit significa ler tmp/tmp.txt.
+Arquitetura apresenta somente um DFD, com fluxos de dados e explicacao da relacao com P01-P07; substitui pedidos anteriores de multiplos diagramas. P03 continua documental, sem reativar VM/reproducao independente. O modo temporal sem flat tem aceite proprio e nao substitui o piloto completo. CI e renv estao autorizados neste incremento. A instrucao final do usuario autoriza substituir o historico local/remoto por um unico versão de referência somente apos validar; fora desse fechamento, nao reescrever nem publicar sem pedido. doit significa ler tmp/tmp.txt.

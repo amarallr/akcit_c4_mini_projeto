@@ -1,3 +1,13 @@
+# Incremento de robustez — 02/10/2026
+
+Referência ddd8b1e; instrução doit: ler tmp/tmp.txt. Contratos e validação recentes em [INCREMENTO_ROBUSTEZ.md](INCREMENTO_ROBUSTEZ.md). Sete prompts preservados; regras comuns centralizadas em P02 e versões substituídas em prompts/historico. P03 continua documental e ARQUITETURA contém somente um DFD. Não reescrever histórico nem usar force push.
+
+Validação local concluída: **47 casos e 402 verificações**, zero falhas/erros/avisos/skips. Produtor operacional aprovado com dados reais locais em quatro processos R: checkpoint novo 1, retomada reutilizando 1; repetição e execução solicitada têm hashes iguais. **412 arquivos normais** permaneceram com hashes idênticos. Comparação do piloto preservou os **42 arquivos** byte a byte. R 4.5.1 e dependências conferidas com renv.lock. A biblioteca testthat informa compilação em R 4.5.3 ao carregar, com versões fixadas e sem avisos nos casos. Git: histórico anterior preservado; publicação remota deste incremento não executada. A CI consultada passou somente para a referência ddd8b1e; CI do incremento e aceite com sincronização remota permanecem pendentes. Linux não foi executado nesta máquina. P03 não foi reativado.
+
+---
+
+Registro anterior, preservado como histórico; suas aprovações não validam o incremento atual.
+
 # Retomada — 02/10/2026
 
 O projeto transforma informes mensais FIDC da CVM em datasets temporais, cedentes e, opcionalmente, flat por CNPJ/competência. P01 coordena etapas explícitas; P02 reúne utilitários, dependências e testes; P04 configura a seleção; P05 baixa e extrai originais; P06 normaliza e consolida; P07 verifica a entrega. P03 permanece exclusivamente documental, sem reativar instalação, VM ou prova de reprodução independente.

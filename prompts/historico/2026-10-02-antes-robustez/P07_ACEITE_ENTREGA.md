@@ -1,13 +1,3 @@
-# P07 — Aceite do incremento de robustez
-
-Validação local concluída: **47 casos e 402 verificações**, zero falhas/erros/avisos/skips. Produtor operacional aprovado com dados reais locais em quatro processos R: checkpoint novo 1, retomada reutilizando 1; repetição e execução solicitada têm hashes iguais. **412 arquivos normais** permaneceram com hashes idênticos. Comparação do piloto preservou os **42 arquivos** byte a byte. R 4.5.1 e dependências conferidas com renv.lock. A biblioteca testthat informa compilação em R 4.5.3 ao carregar, com versões fixadas e sem avisos nos casos. Git: histórico anterior preservado; publicação remota deste incremento não executada. A CI consultada passou somente para a referência ddd8b1e; CI do incremento e aceite com sincronização remota permanecem pendentes. Linux não foi executado nesta máquina. P03 não foi reativado.
-
-Contratos, problemas reproduzidos, comandos no RStudio e estatísticas por data completa em [INCREMENTO_ROBUSTEZ.md](INCREMENTO_ROBUSTEZ.md). Provas novas em [P07_EVIDENCIAS_INCREMENTO.json](P07_EVIDENCIAS_INCREMENTO.json); resumo por DT_COMPTC em [P07_RESUMO_COMPETENCIAS.csv](P07_RESUMO_COMPETENCIAS.csv). Essas provas substituem o arquivo de evidências anterior, preservado no histórico. Nenhum resultado antigo foi usado para aprovar este incremento.
-
----
-
-Relatório anterior preservado abaixo como histórico. Critérios/resultados históricos não são aprovação do incremento atual.
-
 # P07 — Aceite e entrega do piloto FIDC
 
 O aceite do modo completo avalia a entrega de **datasets consolidados temporalmente por tabela do informe mensal e de uma única tabela final integrada (flat)**. Para julho/agosto de 2026, são 18 datasets temporais e um flat, cada um em CSV e RDS: **19 datasets principais, entregues em 38 arquivos**. A base de cedentes acrescenta um dataset em dois formatos, totalizando **20 datasets e 40 arquivos de dados**, além dos relatórios de qualidade e manifestos. O aceite do piloto completo exige esse conjunto. A opção `gerar_flat=FALSE` entrega 38 arquivos de dados e tem aceite temporal próprio, sem substituir o completo.

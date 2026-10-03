@@ -4,7 +4,7 @@ Este protótipo da Especialização em Engenharia de Software com IA Generativa 
 
 Há dois caminhos de uso: **reproduzir o desenvolvimento** a partir dos [sete prompts P01–P07](prompts/LEIA_ME.md), gerando os artefatos com IA no próprio ambiente, ou **executar a implementação existente**, abrindo este projeto no RStudio e seguindo os comandos abaixo. As evidências do autor não aprovam automaticamente outra reprodução.
 
-O piloto julho/agosto de 2026 está validado. Esta revisão acrescenta dependências fixadas, testes em CI, recuperação de arquivos interrompidos, relatório de qualidade, medições e evidências automáticas de aceite. O flat continua habilitado por padrão; o modo temporal permite trabalhar com tabelas e cedentes sem montar suas 14.749 colunas. P03 permanece exclusivamente documental, sem VM ou teste de instalação.
+O piloto julho/agosto de 2026 tem referência histórica validada. O [incremento de robustez](INCREMENTO_ROBUSTEZ.md) documenta a nova validação e seus limites. Esta revisão acrescenta dependências fixadas, testes em CI, recuperação de arquivos interrompidos, relatório de qualidade, medições e evidências automáticas de aceite. O flat continua habilitado por padrão; o modo temporal permite trabalhar com tabelas e cedentes sem montar suas 14.749 colunas. P03 permanece exclusivamente documental, sem VM ou teste de instalação.
 
 O documento [Fases do Ciclo de Desenvolvimento de Software SWEBOK](<Fases do Ciclo de Desenvolvimento de Software SWEBOK.md>) relaciona as atividades e evidências do projeto a dez etapas didáticas do ciclo de software. O [DFD](ARQUITETURA.md) explica o caminho dos dados e sua relação com os prompts.
 
@@ -31,7 +31,7 @@ Rscript --vanilla scripts/p07_evidencias.R
 Rscript --vanilla scripts/p01_pipeline_fidc.R P07
 ```
 
-O primeiro comando executa a suíte completa e demonstra interrupção, retomada e repetição em processos R novos, usando os downloads locais. Pode levar alguns minutos. O segundo verifica os datasets e as evidências produzidas. A CLI informa o aceite local e mantém a sincronização remota como conferência separada. No console, também é possível chamar `carregar_pipeline('.')$produzir_evidencias_aceite()` depois de carregar os utilitários P02.
+O primeiro comando executa a suíte completa e demonstra interrupção, retomada e repetição em processos R novos, em uma área isolada nova, copiando ZIPs locais validados. Pode levar alguns minutos. O segundo verifica os datasets e as evidências produzidas. A CLI informa o aceite local e mantém a sincronização remota como conferência separada. No console, também é possível chamar `carregar_pipeline('.')$produzir_evidencias_aceite()` depois de carregar os utilitários P02.
 
 Para executar apenas os testes: `Rscript --vanilla scripts/p02_testar.R todas`. A suíte usa fixtures e Git temporário, sem credenciais ou downloads da CVM. O [workflow Windows/Linux](.github/workflows/testes.yml) restaura dependências, executa essa suíte e guarda os resultados como artefatos da CI. Seus resultados são separados das evidências do piloto real; consulte a [página de execuções](https://github.com/amarallr/akcit_c4_mini_projeto/actions).
 
@@ -55,10 +55,10 @@ Nesse caminho, o ponto de partida são somente os sete prompts e as instruções
 
 O modo completo entrega **18 datasets temporais + flat + cedentes**, cada um em CSV e RDS: **40 arquivos de dados**, além de `qualidade.csv`, `qualidade.rds` e manifestos. O modo temporal entrega os 18 temporais e cedentes, em **38 arquivos de dados**, com os mesmos relatórios; seu aceite é específico desse modo e não substitui o aceite do piloto completo.
 
-| Competência | Registros nas 18 tabelas | Registros no flat | Fundos/classes por CNPJ | PL total — unidade da fonte |
+| Data de competência | Registros nas 18 tabelas | Registros no flat | Fundos/classes por CNPJ | PL total — unidade da fonte |
 |---|---:|---:|---:|---:|
-| Julho/2026 | 189.577 | 4.386 | 4.386 | 1.015.421.915.561,51 |
-| Agosto/2026 | 192.875 | 4.397 | 4.397 | 989.154.738.500,71 |
+| 31/07/2026 | 189.577 | 4.386 | 4.386 | 1.015.421.915.561,51 |
+| 31/08/2026 | 192.875 | 4.397 | 4.397 | 989.154.738.500,71 |
 
 No período são 382.452 linhas temporais, 8.783 pares CNPJ/competência no flat e 4.493 CNPJs distintos. “Fundos” é a contagem operacional dos CNPJs informados como fundo/classe, sem presumir equivalência cadastral. O PL soma `TAB_IV_A_VL_PL` uma vez por chave da tabela IV. Unidade monetária e escala percentual permanecem **não confirmadas**; os valores originais são preservados. Veja [resumo mensal](P07_RESUMO_COMPETENCIAS.csv), [contagens por tabela](P07_RESUMO_TABELAS.csv) e [relatório de aceite](P07_ACEITE_ENTREGA.md).
 
@@ -87,11 +87,11 @@ executar_pipeline_etapa('P05', config)
 executar_pipeline_etapa('P06', config)
 ```
 
-No terminal: `Rscript --vanilla scripts/p07_evidencias.R dados/config_temporal.rds` e `Rscript --vanilla scripts/p01_pipeline_fidc.R P07 dados/config_temporal.rds`. O padrão inclui 18 leiautes I–X e subdivisões de X, checkpoints TRUE, atualização FALSE e força FALSE. Datas inclusivas filtram `DT_COMPTC`; mudar período/tabelas exige nova seleção P04/P05.
+No terminal: `Rscript --vanilla scripts/p07_evidencias.R dados/config_temporal.rds` e `Rscript --vanilla scripts/p01_pipeline_fidc.R P07 dados/config_temporal.rds`. O padrão inclui 18 leiautes I–X e subdivisões de X, checkpoints TRUE, atualização FALSE e força FALSE. Datas inclusivas filtram `DT_COMPTC`; mudar período/tabelas exige nova seleção P04/P05. P06 valida vínculo e completude do plano também nas chamadas diretas; entradas ausentes/extras/duplicadas ou incompatíveis orientam executar P05. Tabelas vazias presentes podem ser preservadas; seleção inteira sem registros fica pendente de aceite.
 
-Checkpoints FALSE refaz a transformação; atualizar TRUE obtém novamente os ZIPs e reaproveita intermediários se o conteúdo for igual; forçar TRUE refaz ambos. Manifestos sempre persistem. A versão padrão da transformação é `fidc-v2`. Novas mudanças de lógica devem alterar essa versão; saídas são reconstruídas da seleção, sem append.
+Checkpoints FALSE refaz a transformação; atualizar TRUE obtém novamente os ZIPs e reaproveita intermediários se o conteúdo for igual; forçar TRUE refaz ambos. Manifestos sempre persistem. A versão padrão da transformação é `fidc-v2`. O hash automático da lógica relevante também invalida checkpoints incompatíveis; a versão continua como informação legível; saídas são reconstruídas da seleção, sem append.
 
-Rollback válido é restaurado conservadoramente, preservando o destino interrompido em outro arquivo. RDS corrompido é preservado para diagnóstico e exige reconstrução. Falhas mantêm as gerações anteriores em disco, mas o estado da execução impede apresentá-las como sucesso atual. Um rollback inválido ou arquivo bloqueado interrompe a operação para revisão. Windows/OneDrive não oferecem transação conjunta entre arquivos.
+Rollback válido é restaurado conservadoramente, preservando o destino interrompido em outro arquivo. RDS corrompido é preservado para diagnóstico e exige reconstrução. Falhas preservam a última geração concluída em atual.rds; execucao.rds e tentativas/<id>.rds identificam a tentativa recente e impedem anúncio de sucesso atual. P04/P05 terminam como etapa_concluida, sem anunciar dados prontos. Estado em_processamento sem fim identifica tentativa não finalizada após encerramento abrupto. Um rollback inválido ou arquivo bloqueado interrompe a operação para revisão. Windows/OneDrive não oferecem transação conjunta entre arquivos.
 
 `qualidade.csv` registra, por tabela/competência, campos novos/ausentes, multiplicidades, repetições integrais, formato/DV dos identificadores e problemas de conversão. Conversões inválidas geram `saidas/qualidade_falha.csv` antes da interrupção. DV não confirma cadastro ou titularidade; identificadores alfanuméricos ficam preservados sem homologação cadastral.
 
@@ -106,7 +106,9 @@ Consulte o estado concluído e analise uma tabela temporal, evitando carregar o 
 atual <- readRDS('saidas/atual.rds')
 stopifnot(atual$estado == 'concluido')
 execucao <- readRDS('saidas/execucao.rds')
-stopifnot(execucao$estado == 'concluido', execucao$assinatura == atual$assinatura)
+stopifnot(execucao$estado == 'concluido', execucao$etapa == 'P06',
+          execucao$assinatura == atual$assinatura,
+          execucao$assinatura_plano == atual$assinatura_plano)
 iv <- data.table::fread(file.path(atual$geracao, 'inf_mensal_fidc_tab_IV.csv'),
                        sep=';', colClasses=c(cnpj='character'))
 iv[, .(registros=.N, fundos_classes=data.table::uniqueN(cnpj),
@@ -118,3 +120,11 @@ Esse exemplo usa aritmética numérica de R para exploração; o resumo publicad
 Fontes oficiais: [catálogo CVM](https://dados.cvm.gov.br/dataset/fidc-doc-inf_mensal), [DADOS](https://dados.cvm.gov.br/dados/FIDC/DOC/INF_MENSAL/DADOS/), [HIST](https://dados.cvm.gov.br/dados/FIDC/DOC/INF_MENSAL/DADOS/HIST/) e [dicionário](https://dados.cvm.gov.br/dados/FIDC/DOC/INF_MENSAL/META/meta_inf_mensal_fidc_txt.zip). O esquema observado está em [P04_ESQUEMA_OBSERVADO_PILOTO.csv](P04_ESQUEMA_OBSERVADO_PILOTO.csv). Unidade/escala não é confirmada por valores plausíveis ou fontes secundárias.
 
 Erros comuns são pacote ausente, execução fora da raiz, ZIP inválido, configuração divergente e arquivo bloqueado no OneDrive. Consulte estado, diagnóstico e manifestos; não apague uma versão válida para resolver a falha. [CONTRIBUICAO](CONTRIBUICAO.md) orienta alterações e informa que o repositório ainda não declara licença de distribuição. [RETOMADA](RETOMADA.md) registra a situação, e [PUBLICACAO](PUBLICACAO.md) explica o fechamento do versão de referência.
+
+O [resumo mensal](P07_RESUMO_COMPETENCIAS.csv) registra por data completa de competência (DT_COMPTC) PL máximo, percentil 75, mediana, percentil 25, mínimo e coeficiente de variação amostral (sd/média × 100). Datas distintas no mesmo mês não são agrupadas. Quantis usam tipo 7 de R e excluem apenas PL ausente das estatísticas, registrando contagens. PL negativo permanece preservado. Para reproduzir com a geração concluída:
+
+```powershell
+Rscript --vanilla scripts/p07_resumo_pl.R
+```
+
+Datasets permanecem intactos; unidade/escala da fonte continua não confirmada.

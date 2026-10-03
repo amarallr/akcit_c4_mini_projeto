@@ -2,27 +2,13 @@ PROMPT 04 — DATASET E CONFIGURAÇÃO
 Versão: v2026-10-02 — incrementos autorizados e arquitetura DFD
 Prompt responsável: P04
 
+P04-RF-007 | RF | Assinar plano determinístico independente da ordem; validar unidades esperadas/recebidas, extras, duplicadas e incompatíveis, cobertura mensal/anual sem sobreposição. Migração antiga exige identidade exata e ZIP íntegro; caso impossível orientar P05, reutilizando ZIPs válidos.
+P04-FUN-004 | FUN | assinar_plano_fidc | Canonizar plano e verificar cobertura.
+P04-FUN-005 | FUN | validar_downloads_plano | Conferir downloads contra plano atual também em chamadas diretas de P06, evidências e medições.
+P04-TST-005 | TST | Reordenamento, expansão de período, entradas ausentes/extras/duplicadas, migração e seleção anual.
+
 C — CONTEXT (CONTEXTO)
-Este é um mini projeto didático no âmbito da Especialização em Engenharia
-de Software com IA Generativa. Utiliza R, RStudio, Codex, Git e GitHub.
-Todo o ciclo de desenvolvimento é conduzido com IA generativa: definição
-de requisitos, planejamento, preparação, implementação, testes, revisão,
-documentação e versionamento, com decisões e validação humanas. Aplicam-se
-práticas modernas de engenharia de software: incrementos pequenos,
-modularidade simples, contratos, rastreabilidade, testes, revisão de código,
-controle de versão, segurança e documentação reproduzível.
-O ponto de partida obrigatório para uma nova reprodução são SOMENTE os sete
-prompts atuais. Não presumir código, scripts, projeto .Rproj, repositório Git,
-README, RETOMADA, catálogo, matriz ou registro de testes preexistentes.
-Todos esses artefatos serão criados ao longo dos incrementos, com apoio
-da IA generativa e revisão humana. Não exigir clonagem do repositório de
-referência nem scripts externos. Fontes públicas e dados serão consultados
-nas etapas pertinentes. Registros de uma execução anterior não equivalem
-à validação do ambiente de outro leitor.
-A orientação ao leitor parte de ambiente local limpo: R, RStudio, Git,
-Codex, pacotes e autenticações não são presumidos existentes. Instalar e
-configurar recursos necessários antes de usá-los. Em ambiente já preparado,
-reutilizar o que estiver confirmado; a hipótese didática não apaga evidências.
+Aplicam-se o contexto acadêmico, a participação de IA/revisão humana e os pré-requisitos comuns definidos em P02.
 O dataset inicial é FIDC — Informe Mensal da CVM. P04 recebe o ambiente
 necessário e os contratos P02; deve consultar fontes oficiais para conhecer
 recursos, tabelas e esquemas efetivos. ZIPs podem ter organização mensal ou
@@ -30,8 +16,6 @@ anual e tabelas com granularidades diferentes. Listagens e análises datadas
 são referência a revalidar, não regra fixa de disponibilidade ou layout.
 
 O — OBJECTIVE (OBJETIVO)
-A entrega deve ensinar a reproduzir o incremento no ambiente próprio do
-leitor e tornar explícitas a participação da IA e a revisão humana.
 Definir uma seleção reproduzível: dataset, período, tabelas, diretórios e
 formatos suportados. Produzir inventário real, contratos de esquema e plano
 de unidades para P05/P06. Confirmar a viabilidade do piloto e explicitar o
@@ -39,9 +23,7 @@ escopo da tabela X. Campos e propriedades não confirmados permanecem
 pendentes; esta etapa não declara download ou transformação concluídos.
 
 S — STYLE (ESTILO)
-Descrever procedimentos passo a passo para ambiente inicialmente limpo,
-com separação entre navegador, PowerShell, console RStudio e interação
-com Codex. Explicar a finalidade da ação e como confirmar sua conclusão.
+Procedimentos, pré-requisitos e linguagem seguem P02.
 Usar tabelas para inventário, cobertura temporal, esquema e decisões de
 escopo. Explicar termos como competência, granularidade e chave por exemplos
 simples. Distinguir configuração proposta de configuração validada e tabela
@@ -55,21 +37,10 @@ leitura e consolidação. Pedir uma decisão apenas quando ela impedir o
 avanço dependente; registrar as demais pendências de forma clara.
 
 A — AUDIENCE (PÚBLICO)
-O público inclui alunos da especialização, leitores com conhecimentos
-básicos de análise de dados e revisores do trabalho acadêmico. O executor
-pode ter conhecimento intermediário em R, mas a documentação não pressupõe
-R, RStudio, Git, Codex, pacotes, contas, logins ou códigos já configurados.
-Um leitor deve conseguir preparar seu próprio computador a partir do zero
-e reproduzir cada entrega disponível. Identificar pré-requisitos, fonte
-oficial, instalação, local de execução, comando, resultado esperado e
-tratamento de falhas. Explicar conceitos de terminal, projeto, dependência,
-commit e autenticação quando utilizados. Para etapas ainda planejadas,
-indicar explicitamente o que ainda não existe ou não foi validado.
+Público e orientação para ambiente próprio seguem P02; explicitar limites da etapa solicitada.
 
 R — RESPONSE (RESPOSTA)
-Registrar pré-requisitos, passos de preparação quando necessários,
-resultados esperados e observados, contribuição da IA e validação humana.
-Alegar reprodução em máquina limpa somente após execução e evidência real.
+Registro de evidências, comandos e limitações segue P02.
 Entregar configuração efetiva, inventário, plano de unidades, contratos
 confirmados, fontes e decisões de inclusão/exclusão. Apresentar testes P04,
 evidências e pendências de esquema ou disponibilidade. Atualizar registros
@@ -85,10 +56,8 @@ SAÍDAS: configuração validada, inventário de recursos/tabelas, plano de
 unidades e dicionário versionado com evidências.
 
 EXECUÇÃO
-Consultar catálogo, listagens e dicionário oficiais na execução. As listagens
-vistas em 01/10/2026 têm ZIPs mensais 202501–202608 e anuais 2013–2024;
-são observação datada, não regra permanente de mudança em 2025.
-Período piloto confirmado julho/agosto de 2026: 2026-07-01 a 2026-08-31. A confirmação não implementa configuração nem comprova viabilidade operacional.
+Consultar catálogo, listagens e dicionário oficiais na execução. Não tratar levantamentos históricos como disponibilidade vigente; confirmar pela consulta autorizada e registrar data e fonte.
+Piloto solicitado julho/agosto de 2026: 2026-07-01 a 2026-08-31. Seleção proposta não comprova execução nem aceite.
 Inventariar membros reais, inclusive X. O escopo inicial deve processar as
 tabelas I a IX quando presentes/compatíveis; X deve ter decisão
 explícita: implementar se contrato simples confirmado, ou preservar original,
@@ -125,22 +94,22 @@ P04-RF-005 | RF | Definir contrato de esquema: nomes originais/canônicos, tipos
 P04-RNF-001 | RNF | Implementar somente os comandos e requisitos dos prompts atuais. Consultar as fontes oficiais previstas nos prompts para validar disponibilidade e layout dos dados. Manter origem e versão de cada decisão de esquema.
 
 
-MÓDULO E FUNÇÕES PROPOSTOS — NÃO IMPLEMENTADOS NESTA ENTREGA
-P04-MOD-001 | Arquivo proposto: scripts/p04_configuracao_fidc.R
+MÓDULO E FUNÇÕES — CONTRATOS DA IMPLEMENTAÇÃO
+P04-MOD-001 | Arquivo: scripts/p04_configuracao_fidc.R
 P04-FUN-001 | validar_configuracao
 Contrato: Recebe config; retorna config tipada ou mensagem específica de erro.
 Requisitos: P04-RF-002
 
 P04-FUN-002 | inventariar_recursos_fidc
-Contrato: Recebe páginas/dicionário oficial; retorna recursos, disponibilidade, tabela/esquema e evidência.
+Contrato: Recebe config e páginas oficiais opcionais; retorna inventário de ZIPs com referência, URL e cobertura. O mapa do dicionário é artefato local separado preparado em P04.
 Requisitos: P04-RF-001 P04-RF-003 P04-RF-005 P04-RNF-001
 
 P04-FUN-003 | selecionar_unidades_fidc
-Contrato: Recebe config/inventário; devolve plano único de ZIPs e membros com cobertura temporal.
+Contrato: Recebe config/inventário; devolve plano único de ZIPs com cobertura temporal; membros reais são validados na obtenção/extração.
 Requisitos: P04-RF-004
 
 
-TESTES PRÓPRIOS PREVISTOS — A EXECUTAR NA IMPLEMENTAÇÃO
+TESTES PRÓPRIOS — CRITÉRIOS DE VERIFICAÇÃO
 P04-TST-001 | Tipo: unitario
 Verificar: Aceitar FIDC e datas válidas; rejeitar dataset/tabela não implementados, datas malformadas, intervalo invertido e caminho inválido.
 Requisitos: P04-RF-002
@@ -162,113 +131,7 @@ Requisitos: P04-RF-001
 Funções: P04-FUN-002
 
 ENCERRAMENTO DA ETAPA
-Atualizar registro_projeto.txt, matriz_rastreabilidade.csv e registro_testes.csv.
-Registrar decisões, arquivos, comandos, resultados realmente observados,
-pendências, commit e situação de push. Não registrar teste como aprovado
-porque foi especificado aqui. Informar próximo passo sem iniciar etapa
-seguinte automaticamente, salvo sequência já autorizada pelo usuário.
-
-NOMENCLATURA E REFERÊNCIAS ENTRE SCRIPTS — P02-RNF-008
-Nomear cada script pelo prompt responsável e pela finalidade: pNN_nome_da_funcao.ext,
-em minúsculas, com nomes descritivos separados por sublinhado. Exemplos:
-scripts/p01_executar.R (coordenação), scripts/p02_testar.R (runner comum),
-scripts/p03_verificar_ambiente.R (ambiente). Testes: test-pNN-finalidade.R,
-como tests/testthat/test-p03-ambiente.R. A extensão corresponde à linguagem.
-P01 coordena; P02 fornece recursos comuns; P03 entrega roteiro; P04 a P07 têm implementação futura.
-O prefixo identifica responsabilidade estável, não toda a cadeia de dependências.
-Um script P05 que usa P02 permanece p05_; documentar as dependências no
-cabeçalho, chamadas e matriz. Registrar prompt, IDs pertinentes, entradas,
-saídas e efeitos; preservar IDs de requisitos, módulos e funções ao renomear.
-Atualizar conjuntamente source(), wrappers, runner, testes, comandos de uso,
-catálogo e matriz. Validar destinos existentes e execução das etapas já
-implementadas. Scripts futuros citados são propostas, não entregas realizadas.
-Bibliotecas, executáveis de terceiros e artefatos que não são scripts próprios
-não recebem esse prefixo. Não iniciar uma etapa só para criar seu script.
-
-CICLO DE DESENVOLVIMENTO E SWEBOK — P01-RF-004 / P02-RNF-009
-Usar o SWEBOK v4.0a como referência de áreas de conhecimento; ele não define
-os sete prompts como fases nem uma sequência oficial das dez etapas abaixo.
-Adotar, didaticamente: (1) concepção, planejamento e viabilidade;
-(2) requisitos; (3) arquitetura e projeto; (4) preparação do ambiente;
-(5) construção; (6) verificação, validação e testes;
-(7) entrega, implantação local e aceite; (8) operação e acompanhamento;
-(9) manutenção e evolução; (10) encerramento/retirada e preservação.
-Essas etapas podem ser revisitadas por incremento; testes, gestão, qualidade,
-segurança, versionamento e documentação são atividades transversais.
-
-Gerar na raiz Fases do Ciclo de Desenvolvimento de Software SWEBOK.md:
-enumerar e explicar as etapas; depois detalhar como cada uma será atendida
-neste mini projeto, com prompts/IDs, artefatos, IA e revisão humana,
-evidências, critérios, estados e pendências. Informar edição, fontes oficiais
-e data de consulta; distinguir o conteúdo do SWEBOK da adaptação do projeto.
-Fontes: https://www.computer.org/education/bodies-of-knowledge/software-engineering
-https://www.computer.org/education/bodies-of-knowledge/software-engineering/topics
-https://ieeecs-media.computer.org/media/education/swebok/swebok-v4.pdf
-O documento é uma saída a produzir, não entrada obrigatória: na primeira
-reprodução, partir somente dos sete prompts atuais e das fontes oficiais.
-
-Em cada fechamento, registrar fases relacionadas, contribuição da IA,
-revisão humana, artefatos e provas efetivas. Atualizar mapa e RETOMADA quando
-o incremento alterar seu estado; separar planejado, implementado, validado
-e não aplicável. Documento criado não significa fase concluída; publicação
-Git não comprova implantação/aceite, diagnóstico não comprova máquina limpa,
-e acompanhamento de P01 não comprova operação do pipeline FIDC.
-Não iniciar etapas de dados nem criar uma nova etapa P08 para preencher o mapa.
-Aplicação neste prompt: Quando autorizado, P04 deverá relacionar fontes, período e contratos de dados às fases de requisitos, projeto, construção e testes; o levantamento inicial consulta páginas oficiais, sem download, processamento ou implementação neste incremento.
-
-ARQUITETURA TÉCNICA E INCORPORAÇÃO DE PEDIDOS — P01-RF-005 / P02-RNF-010
-Sempre incorporar novos pedidos e decisões do usuário aos requisitos dos
-prompts responsáveis quando alterarem contratos, antes da implementação
-dependente. Cadastrar IDs novos quando necessário, preservar IDs existentes,
-atualizar catálogo/matriz/testes e registrar decisões. Preferências de
-comunicação devem constar das orientações e continuidade. Referenciar regras
-comuns sem duplicar IDs. Pedidos não autorizam automaticamente outras etapas.
-
-Gerar e manter ARQUITETURA.md na raiz: explicar objetivo e limites, papel de
-R, Rscript, RStudio, Codex/IA, PowerShell, Git, GitHub, GitHub CLI e pacotes;
-componentes, dependências, chamadas, interfaces, entradas/saídas, efeitos,
-organização de arquivos, persistência, erros e condições de retomada.
-Incluir somente um DFD Mermaid, com fluxos de dados nomeados, legenda e
-explicação coesa da relação entre os processos e P01-P07. Identificar o significado das setas e o que existe,
-é condicional ou ainda depende de implementação. Não misturar geração com
-IA, chamada de função, testes e publicação como se fossem uma rotina única.
-
-Conferir chamadas contra scripts reais e atualizar diagramas quando mudarem.
-Na implementação histórica opcional, P01 chama funções P03; o roteiro atual não exige essas chamadas. P01 não chama automaticamente runner, instalação ou Git.
-P02 tem runner separado; P03 tem entradas próprias. P04 a P07 têm entrada explícita p01_pipeline_fidc.R e funções por etapa; conferir a versão implementada e suas dependências antes de executar. Retornos pendentes e limitações devem
-aparecer nos diagramas e texto. Não atribuir atomicidade, autenticação,
-processamento de dados ou aceite a componentes que não os implementam.
-O documento é saída dos sete prompts atuais, não material preexistente
-obrigatório. Não instalar ferramentas de diagramas nem iniciar módulos
-futuros só para documentar a arquitetura. Registrar o alcance da verificação:
-revisão textual/estrutural não equivale a renderização ou teste de execução.
-Aplicação arquitetural neste prompt: Quando autorizado, P04 detalhará interfaces entre catálogo/dicionário, configuração, esquema e plano de unidades, com tipos e decisões confirmados. Atualizar arquitetura sem presumir campos ou iniciar download fora do incremento.
-
-Complemento de P02-RNF-010: Sintaxe Mermaid: em mensagens de sequenceDiagram, não usar ponto e vírgula literal; preferir vírgula ou escape #59;. Conferir sintaxe com a documentação oficial; revisão estrutural não comprova renderização.
-
-ESCOPO VIGENTE DE P03 — REVISÃO DE 01/10/2026
-P03 entrega somente um roteiro documental de preparação do ambiente, gerado
-a partir dos sete prompts atuais. Não pressupor ferramentas, contas, código
-ou documentos preexistentes. Explicar R, RStudio, Codex, Git, GitHub e os
-recursos auxiliares, com fontes oficiais, ordem, finalidade e alternativas
-para leitor sem credenciais administrativas. Não instalar, criar VM, executar
-scripts, testar o roteiro nem exigir evidências de execução para concluir P03.
-P03-TST-005 significa revisão documental, sem teste de execução.
-P03-RF-006 e P03-TST-004 estão cancelados por mudança de escopo, não pendentes.
-Scripts e testes P03 existentes são histórico opcional do escopo anterior.
-Sua preservação não os torna pré-requisitos da entrega vigente.
-Não iniciar P04–P07 automaticamente. Executar somente o incremento expressamente autorizado; testes funcionais dessas etapas continuam previstos.
-O roteiro não comprova ambiente instalado: avaliar pré-requisitos efetivos
-somente quando uma etapa de execução for expressamente autorizada.
-Sempre registrar novos pedidos nos prompts, arquitetura, SWEBOK e retomada.
-Informar plano e status a cada dez segundos durante o trabalho e indicar
-explicitamente se a bola está com o agente ou com o usuário.
-
-BASE OBRIGATÓRIA DA IMPLEMENTAÇÃO
-A implementação deve utilizar somente os comandos e requisitos dos sete prompts atuais. As consultas oficiais explicitamente previstas nesses prompts servem para confirmar dados e contratos; aplicar as instruções específicas posteriores do usuário, mantendo os requisitos revisados como contrato da implementação.
-
-AUTORIZAÇÃO VIGENTE — IMPLEMENTAÇÃO P04 A P07
-Implementar P04–P07 para julho/agosto de 2026. Junção por CNPJ e competência, preservando origens em colunas próprias. CSV temporal por leiaute e CSV flat único são entregas obrigatórias. Múltiplas linhas são preservadas em posições técnicas por leiaute no flat, sem somar, escolher completude ou multiplicar joins; registrar limites, chaves de identidade e conflitos. Inspeção/download e piloto real estão autorizados. P03 continua somente documental. Instruções específicas posteriores do usuário prevalecem sobre os limites de incrementos anteriores.
+Aplicar registros, evidências e limites de autorização definidos em P02; registrar situação específica da etapa.
 
 INCREMENTO AUTORIZADO — 02/10/2026
 P04-RF-006 | RF | Configurar gerar_flat=TRUE por padrao, FALSE para temporais/cedentes; exportar_parquet=FALSE por padrao. Modos compoem assinatura e criterios de aceite.
@@ -276,5 +139,4 @@ P04-MOD-001 | MOD | scripts/p04_configuracao_fidc.R
 P04-FUN-001 | FUN | validar_configuracao
 P04-TST-003 | TST | Verificar comportamentos reais com fixtures e falhas controladas.
 
-DECISOES VIGENTES — 02/10/2026
-Arquitetura apresenta somente um DFD, com fluxos de dados e explicacao da relacao com P01-P07; substitui pedidos anteriores de multiplos diagramas. P03 continua documental, sem reativar VM/reproducao independente. O modo temporal sem flat tem aceite proprio e nao substitui o piloto completo. CI e renv estao autorizados neste incremento. A instrucao final do usuario autoriza substituir o historico local/remoto por um unico versão de referência somente apos validar; fora desse fechamento, nao reescrever nem publicar sem pedido. doit significa ler tmp/tmp.txt.
+HERANÇA: decisões vigentes em P02; um DFD, P03 documental, temporal com aceite próprio e preservação do histórico.
