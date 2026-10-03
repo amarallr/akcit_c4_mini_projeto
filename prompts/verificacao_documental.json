@@ -16,6 +16,6 @@
   "falhas_automatizadas": 0,
   "P03": "Documental; cancelamentos preservados",
   "arquitetura": "Um DFD Mermaid; revisao textual, sem alegar renderizacao",
-  "P07": "Aceite local do incremento validado; publicacao remota nao executada",
-  "ci": "Referencia ddd8b1e passou; incremento sem nova CI"
+  "P07": "Aceite local e completo do piloto confirmados apos publicacao autorizada",
+  "ci": "Incremento ba7564354a2d819adcff54abe9efa4b1bb449889 aprovado em Windows e Linux; https://github.com/amarallr/akcit_c4_mini_projeto/actions/runs/37091112129"
 }
