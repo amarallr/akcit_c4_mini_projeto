@@ -4,7 +4,11 @@ t <- t[order(-t$pl_soma_periodo,t$cnpj_admin,na.last=TRUE),]
 fmt <- function(x) formatC(x,format='f',digits=2,big.mark='.',decimal.mark=',')
 data_legivel <- function(x) format(as.Date(x),'%d/%m/%Y')
 cnpj_legivel <- function(x) ifelse(grepl('^[0-9]{14}$',x),sub('^(.{2})(.{3})(.{3})(.{4})(.{2})$','\\1.\\2.\\3/\\4-\\5',x),x)
-linhas <- c('# Estatísticas e administradores do piloto','',
+linhas <- c('# Estatísticas dos FIDC','',
+ 'Esta página apresenta os resultados de um **mini projeto didático da Especialização em Engenharia de Software com IA Generativa**. O projeto utiliza dados públicos dos informes mensais de Fundos de Investimento em Direitos Creditórios (FIDC) da Comissão de Valores Mobiliários (CVM) para exercitar o ciclo de desenvolvimento de software: configuração das fontes, obtenção dos dados, consolidação, testes e documentação.',
+ '', 'A implementação foi desenvolvida em R, com RStudio, apoio de IA generativa por meio do Codex e controle de versões com Git e GitHub, sob decisões e revisão humanas. O pipeline reúne tabelas históricas por competência, uma base consolidada e dados de cedentes. As estatísticas e o ranking abaixo demonstram uma aplicação analítica dos dados produzidos pelo piloto.',
+ '', 'Consulte o [repositório do projeto](https://github.com/amarallr/akcit_c4_mini_projeto) para conhecer os sete prompts de desenvolvimento, a arquitetura, os testes e as instruções de reprodução. Os resultados representam um recorte didático de julho e agosto de 2026; não constituem uma avaliação de todo o histórico de FIDC.',
+ '',
  'O piloto abrange julho e agosto de 2026. Os valores de patrimônio líquido (PL) abaixo estão em **milhões da unidade da fonte**, arredondados a duas casas decimais. Os valores completos estão no [CSV por competência](P07_RESUMO_COMPETENCIAS.csv) e no [CSV dos top 25](P07_TOP25_ADMINISTRADORES.csv).',
  '', '## PL por data de competência','',
  'Estatísticas por DT_COMPTC sobre o PL original, com quantis tipo 7 de R. Administradores distintos pelo CNPJ da tabela I, associado à IV por CNPJ do fundo/classe e data exata.',

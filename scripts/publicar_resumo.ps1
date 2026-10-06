@@ -41,7 +41,7 @@ $pagina = @'
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Análises do piloto FIDC: estatísticas de patrimônio líquido e ranking dos 25 maiores administradores, julho e agosto de 2026.">
-<title>Análises dos dados FIDC · Piloto CVM</title>
+<title>Estatísticas dos FIDC</title>
 <style>
 :root{color-scheme:light;--ink:#172c38;--accent:#007f78;--muted:#506470;--line:#dce5e9}
 *{box-sizing:border-box}body{margin:0;background:#f4f7f8;color:var(--ink);font:16px/1.7 system-ui,sans-serif}
