@@ -64,6 +64,8 @@ resumir_pl_administradores <- function(dados) {
       if(!length(valores)) 0 else if(all(is.na(valores))) NA_real_ else sum(valores,na.rm=TRUE)
     },numeric(1))
   }
+  saida$quantidade_fundos <- vapply(ids,function(id)
+    length(unique(dados$cnpj[dados$cnpj_admin==id])),integer(1))
   saida$pl_soma_periodo <- vapply(ids,function(id) {
     valores <- pl[dados$cnpj_admin==id]
     if(all(is.na(valores))) NA_real_ else sum(valores,na.rm=TRUE)

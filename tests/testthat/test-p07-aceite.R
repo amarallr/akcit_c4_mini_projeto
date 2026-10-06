@@ -43,6 +43,7 @@ testthat::test_that('PL por administrador: limites por data, trimestre e denomin
   testthat::expect_equal(r$cnpj_admin,c('02','01'))
   testthat::expect_equal(r$pl_2026_T1,c(97.5,2.5))
   testthat::expect_equal(r$pl_2026_T2,c(29.5,10.5))
+  testthat::expect_equal(r$quantidade_fundos,c(1L,1L))
   testthat::expect_equal(r$percentual_pl_total,c(127,13)/140*100)
   testthat::expect_error(e$associar_administradores_pl(iv,rbind(cadastro,cadastro[1,])),'duplicada')
   testthat::expect_error(e$associar_administradores_pl(iv,cadastro[-1,]),'sem cadastro')
