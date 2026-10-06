@@ -17,6 +17,7 @@ testthat::test_that('P07-TST-009: quantis, CV amostral e chaves sem soma duplica
   d <- data.frame(cnpj=c('a','b','c','d','e'),dt_comptc=as.Date('2026-07-31'),TAB_IV_A_VL_PL=c(1,2,3,4,NA))
   r <- e$resumir_pl_mensal(d)
   testthat::expect_equal(r$pl_total_calculado,10)
+  testthat::expect_equal(r$pl_media_valor_fonte,2.5)
   testthat::expect_equal(unname(unlist(r[c('pl_min_valor_fonte','pl_percentil_25_valor_fonte','pl_mediana_valor_fonte','pl_percentil_75_valor_fonte','pl_max_valor_fonte')])),c(1,1.75,2.5,3.25,4))
   testthat::expect_equal(r$pl_coeficiente_variacao_percentual,sd(1:4)/mean(1:4)*100)
   testthat::expect_equal(r$registros_sem_pl,1)
@@ -31,6 +32,26 @@ testthat::test_that('P07-TST-009: quantis, CV amostral e chaves sem soma duplica
   testthat::expect_true(is.na(e$resumir_pl_mensal(d)$pl_coeficiente_variacao_percentual))
   d$TAB_IV_A_VL_PL <- NA_real_
   testthat::expect_identical(e$resumir_pl_mensal(d)$cv_definicao,'amostra_insuficiente')
+})
+
+testthat::test_that('PL por administrador: limites por data, trimestre e denominador completo', {
+  e <- new.env(parent=globalenv());sys.source('../../scripts/p07_resumo_pl.R',envir=e)
+  iv <- data.frame(cnpj=rep(c('a','b'),2),dt_comptc=as.Date(rep(c('2026-03-31','2026-04-30'),each=2)),TAB_IV_A_VL_PL=c(0,100,10,30))
+  cadastro <- iv[c('cnpj','dt_comptc')];cadastro$CNPJ_ADMIN <- c('01','02','01','02');cadastro$ADMIN <- c('A','B','A','B')
+  d <- e$associar_administradores_pl(iv,cadastro[4:1,])
+  r <- e$resumir_pl_administradores(d)
+  testthat::expect_equal(r$cnpj_admin,c('02','01'))
+  testthat::expect_equal(r$pl_2026_T1,c(97.5,2.5))
+  testthat::expect_equal(r$pl_2026_T2,c(29.5,10.5))
+  testthat::expect_equal(r$percentual_pl_total,c(127,13)/140*100)
+  testthat::expect_error(e$associar_administradores_pl(iv,rbind(cadastro,cadastro[1,])),'duplicada')
+  testthat::expect_error(e$associar_administradores_pl(iv,cadastro[-1,]),'sem cadastro')
+  muitos <- data.frame(cnpj=as.character(1:30),dt_comptc=as.Date('2026-07-31'),TAB_IV_A_VL_PL=1:30,cnpj_admin=as.character(1:30),administrador=as.character(1:30))
+  top <- e$resumir_pl_administradores(muitos)
+  testthat::expect_equal(nrow(top),25)
+  testthat::expect_lt(sum(top$percentual_pl_total),100)
+  muitos$TAB_IV_A_VL_PL <- NA_real_
+  testthat::expect_true(all(is.na(e$resumir_pl_administradores(muitos)$percentual_pl_total)))
 })
 
 testthat::test_that('P07-TST-007: tabela vazia é preservada; seleção toda vazia não aprova', {

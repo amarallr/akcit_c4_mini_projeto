@@ -15,13 +15,64 @@ resumir_pl_mensal <- function(dados) {
     media <- if(length(pl)) mean(pl) else NA_real_
     cv <- if(length(pl)>=2L && !is.na(media) && media!=0) stats::sd(pl)/media*100 else NA_real_
     data.frame(data_competencia=data,competencia=substr(data,1,7),registros_com_pl=length(pl),registros_sem_pl=sum(is.na(raw)),
-      pl_total_calculado=if(length(pl)) sum(pl) else NA_real_,
+      pl_total_calculado=if(length(pl)) sum(pl) else NA_real_,pl_media_valor_fonte=media,
       pl_max_valor_fonte=q[5],pl_percentil_75_valor_fonte=q[4],pl_mediana_valor_fonte=q[3],
       pl_percentil_25_valor_fonte=q[2],pl_min_valor_fonte=q[1],pl_coeficiente_variacao_percentual=cv,
       cv_definicao=if(length(pl)<2L) 'amostra_insuficiente' else if(media==0) 'media_zero' else 'amostral_sd_sobre_media_vezes_100',
       quantis_metodo='R_tipo_7',stringsAsFactors=FALSE)
   })
   do.call(rbind,partes)
+}
+
+# Associação exata por CNPJ/data, sem multiplicar observações de PL.
+associar_administradores_pl <- function(iv, cadastro) {
+  resumir_pl_mensal(iv)
+  campos <- c('cnpj','dt_comptc','CNPJ_ADMIN','ADMIN')
+  if (!all(campos %in% names(cadastro)) || anyNA(cadastro[c('cnpj','dt_comptc')]) ||
+      anyDuplicated(cadastro[c('cnpj','dt_comptc')])) stop('Cadastro I incompatível ou chave duplicada.')
+  chave <- function(d) paste(d$cnpj,as.character(as.Date(d$dt_comptc)),sep='|')
+  pos <- match(chave(iv),chave(cadastro))
+  if(anyNA(pos)) stop('PL sem cadastro I na mesma data.')
+  iv$cnpj_admin <- gsub('[^A-Za-z0-9]','',trimws(cadastro$CNPJ_ADMIN[pos]))
+  iv$administrador <- trimws(cadastro$ADMIN[pos])
+  if(anyNA(iv$cnpj_admin) || any(!nzchar(iv$cnpj_admin))) stop('Administrador sem identificador.')
+  iv
+}
+
+resumir_pl_administradores <- function(dados) {
+  resumir_pl_mensal(dados)
+  if(!all(c('cnpj_admin','administrador') %in% names(dados))) stop('Administradores ausentes.')
+  datas <- as.character(as.Date(dados$dt_comptc))
+  pl <- dados$TAB_IV_A_VL_PL
+  for(data in unique(datas)) {
+    i <- which(datas==data & !is.na(pl))
+    if(length(i)) {
+      limites <- stats::quantile(pl[i],c(.025,.975),type=7,names=FALSE)
+      pl[i] <- pmax(limites[1],pmin(limites[2],pl[i]))
+    }
+  }
+  trimestre <- paste0(substr(datas,1,4),'_T',(as.integer(substr(datas,6,7))-1L)%/%3L+1L)
+  ids <- sort(unique(dados$cnpj_admin))
+  saida <- data.frame(cnpj_admin=ids,administrador=vapply(ids,function(id) {
+    nomes <- dados$administrador[dados$cnpj_admin==id]
+    nomes <- sort(unique(nomes[!is.na(nomes) & nzchar(nomes)]))
+    if(length(nomes)) paste(nomes,collapse=' / ') else NA_character_
+  },character(1)),stringsAsFactors=FALSE)
+  for(t in sort(unique(trimestre))) {
+    saida[[paste0('pl_',t)]] <- vapply(ids,function(id) {
+      valores <- pl[dados$cnpj_admin==id & trimestre==t]
+      if(!length(valores)) 0 else if(all(is.na(valores))) NA_real_ else sum(valores,na.rm=TRUE)
+    },numeric(1))
+  }
+  saida$pl_soma_periodo <- vapply(ids,function(id) {
+    valores <- pl[dados$cnpj_admin==id]
+    if(all(is.na(valores))) NA_real_ else sum(valores,na.rm=TRUE)
+  },numeric(1))
+  total <- if(all(is.na(pl))) NA_real_ else sum(pl,na.rm=TRUE)
+  saida$percentual_pl_total <- if(is.na(total) || total==0) NA_real_ else saida$pl_soma_periodo/total*100
+  saida <- saida[order(-saida$pl_soma_periodo,saida$cnpj_admin,na.last=TRUE),]
+  rownames(saida) <- NULL
+  head(saida,25L)
 }
 
 # P07-FUN-006 | Acrescenta colunas, preservando a soma decimal publicada e datasets.
@@ -35,7 +86,13 @@ atualizar_resumo_pl <- function(raiz='.',config=list()) {
   caminho <- file.path(atual$geracao,'inf_mensal_fidc_tab_IV.rds')
   meta <- atual$arquivos$IV_rds
   if (is.null(meta) || !identical(meta$hash,calcular_hash_assinatura(caminho,TRUE))) stop('Tabela IV alterada.')
-  estatisticas <- resumir_pl_mensal(readRDS(caminho))
+  caminho_i <- file.path(atual$geracao,'inf_mensal_fidc_tab_I.rds')
+  if(is.null(atual$arquivos$I_rds) || !identical(atual$arquivos$I_rds$hash,calcular_hash_assinatura(caminho_i,TRUE))) stop('Tabela I alterada.')
+  dados <- associar_administradores_pl(readRDS(caminho),readRDS(caminho_i))
+  estatisticas <- resumir_pl_mensal(dados)
+  estatisticas$quantidade_administradores <- vapply(estatisticas$data_competencia,function(data)
+    length(unique(dados$cnpj_admin[as.character(dados$dt_comptc)==data])),integer(1))
+  ranking <- resumir_pl_administradores(dados)
   destino <- file.path(raiz,'P07_RESUMO_COMPETENCIAS.csv')
   resumo <- read.csv(destino,stringsAsFactors=FALSE,colClasses=c(pl_total_valor_fonte='character'))
   if ('data_competencia' %in% names(resumo)) {
@@ -63,6 +120,16 @@ atualizar_resumo_pl <- function(raiz='.',config=list()) {
   if(!file.rename(destino,backup)) stop('Resumo bloqueado.')
   if(!file.rename(temporario,destino)) {file.rename(backup,destino);stop('Publicação do resumo falhou.')}
   unlink(backup)
+  utils::write.csv(ranking,file.path(raiz,'P07_TOP25_ADMINISTRADORES.csv'),row.names=FALSE,na='',fileEncoding='UTF-8')
+  pasta <- file.path(raiz,config$saidas,'resumos_piloto')
+  dir.create(pasta,recursive=TRUE,showWarnings=FALSE)
+  utils::write.csv(resumo,file.path(pasta,'resumo_competencias.csv'),row.names=FALSE,na='',fileEncoding='UTF-8')
+  utils::write.csv(ranking,file.path(pasta,'top25_administradores.csv'),row.names=FALSE,na='',fileEncoding='UTF-8')
+  saveRDS(list(assinatura=atual$assinatura,competencias=resumo,administradores=ranking,
+    metodo='Winsorização por DT_COMPTC, quantis tipo 7: 2,5% e 97,5%; ranking pela soma no período; percentual sobre todo PL winsorizado.'),
+    file.path(pasta,'resumo_piloto.rds'))
+  if (normalizePath(raiz,winslash='/')==normalizePath(getwd(),winslash='/'))
+    sys.source(file.path(raiz,'scripts/p07_documentar_resumo.R'),envir=new.env(parent=globalenv()))
   resumo
 }
 

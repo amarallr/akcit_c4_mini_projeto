@@ -2,6 +2,8 @@
 
 Este protótipo da Especialização em Engenharia de Software com IA Generativa obtém informes mensais de FIDCs da CVM e produz datasets consolidados no tempo por tabela, uma tabela final única (flat) e uma base de cedentes. O desenvolvimento usa R, RStudio, Codex, Git e GitHub, com decisões e revisão humanas.
 
+Consulte o [resumo do piloto: estatísticas do PL e top 25 administradores](RESUMO_DADOS.md), com tabelas por competência, ranking e uma breve análise da concentração do PL.
+
 Há dois caminhos de uso: **reproduzir o desenvolvimento** a partir dos [sete prompts P01–P07](prompts/LEIA_ME.md), gerando os artefatos com IA no próprio ambiente, ou **executar a implementação existente**, abrindo este projeto no RStudio e seguindo os comandos abaixo. As evidências do autor não aprovam automaticamente outra reprodução.
 
 O piloto julho/agosto de 2026 tem referência histórica validada. O [incremento de robustez](INCREMENTO_ROBUSTEZ.md) documenta a nova validação e seus limites. Esta revisão acrescenta dependências fixadas, testes em CI, recuperação de arquivos interrompidos, relatório de qualidade, medições e evidências automáticas de aceite. O flat continua habilitado por padrão; o modo temporal permite trabalhar com tabelas e cedentes sem montar suas 14.749 colunas. P03 permanece exclusivamente documental, sem VM ou teste de instalação.
@@ -52,6 +54,8 @@ Nesse caminho, o ponto de partida são somente os sete prompts e as instruções
 [CO-STAR](prompts/CO_STAR.md) explica a estrutura dos prompts. Catálogo, matriz e registros ficam em `prompts`. P03-RF-006/P03-TST-004 continuam cancelados; diagnósticos e testes históricos de P03 não comprovam a execução do roteiro atual.
 
 ## Saídas e resumo do piloto
+
+O [resumo estatístico e top 25 administradores](RESUMO_DADOS.md) apresenta mínimo, P25, mediana, média, P75, máximo e quantidade de administradores por data de competência. O [ranking em CSV](P07_TOP25_ADMINISTRADORES.csv) soma PL winsorizado nos percentis 2,5 e 97,5 de cada data, por CNPJ de administrador e trimestre, com participação sobre todo o PL winsorizado do período. O terceiro trimestre de 2026 é parcial (julho/agosto). Execute `Rscript --vanilla scripts/p07_resumo_pl.R` para atualizar esses relatórios e as cópias CSV/RDS em `saidas/resumos_piloto`. As somas de posições mensais não representam fluxo financeiro.
 
 O modo completo entrega **18 datasets temporais + flat + cedentes**, cada um em CSV e RDS: **40 arquivos de dados**, além de `qualidade.csv`, `qualidade.rds` e manifestos. O modo temporal entrega os 18 temporais e cedentes, em **38 arquivos de dados**, com os mesmos relatórios; seu aceite é específico desse modo e não substitui o aceite do piloto completo.
 
