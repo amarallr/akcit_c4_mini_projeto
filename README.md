@@ -2,9 +2,9 @@
 
 Este protótipo da Especialização em Engenharia de Software com IA Generativa obtém informes mensais de FIDCs da CVM e produz datasets consolidados no tempo por tabela, uma tabela final única (flat) e uma base de cedentes. O desenvolvimento usa R, RStudio, Codex, Git e GitHub, com decisões e revisão humanas.
 
-Consulte o [resumo do piloto: estatísticas do PL e top 25 administradores](RESUMO_DADOS.md), com tabelas por competência, ranking e uma breve análise da concentração do PL.
+**[Acesse a página de análises dos dados no GitHub Pages](https://amarallr.github.io/akcit_c4_mini_projeto/)**: estatísticas do PL por competência, ranking dos top 25 administradores, análise da concentração e downloads dos CSVs.
 
-As análises também estão disponíveis na [página pública do GitHub Pages](https://amarallr.github.io/akcit_c4_mini_projeto/). A publicação acompanha alterações no resumo e nos CSVs pela [rotina de publicação](.github/workflows/pages.yml). Para gerar a página localmente, execute `powershell -File scripts/publicar_resumo.ps1`.
+O conteúdo também está disponível no [resumo do piloto em Markdown](RESUMO_DADOS.md). A publicação acompanha alterações no resumo e nos CSVs pela [rotina de publicação](.github/workflows/pages.yml). Para gerar a página localmente, execute `powershell -File scripts/publicar_resumo.ps1`.
 
 Há dois caminhos de uso: **reproduzir o desenvolvimento** a partir dos [sete prompts P01–P07](prompts/LEIA_ME.md), gerando os artefatos com IA no próprio ambiente, ou **executar a implementação existente**, abrindo este projeto no RStudio e seguindo os comandos abaixo. As evidências do autor não aprovam automaticamente outra reprodução.
 
