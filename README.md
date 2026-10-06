@@ -4,6 +4,8 @@ Este protótipo da Especialização em Engenharia de Software com IA Generativa 
 
 Consulte o [resumo do piloto: estatísticas do PL e top 25 administradores](RESUMO_DADOS.md), com tabelas por competência, ranking e uma breve análise da concentração do PL.
 
+As análises também estão disponíveis na [página pública do GitHub Pages](https://amarallr.github.io/akcit_c4_mini_projeto/). A publicação acompanha alterações no resumo e nos CSVs pela [rotina de publicação](.github/workflows/pages.yml). Para gerar a página localmente, execute `powershell -File scripts/publicar_resumo.ps1`.
+
 Há dois caminhos de uso: **reproduzir o desenvolvimento** a partir dos [sete prompts P01–P07](prompts/LEIA_ME.md), gerando os artefatos com IA no próprio ambiente, ou **executar a implementação existente**, abrindo este projeto no RStudio e seguindo os comandos abaixo. As evidências do autor não aprovam automaticamente outra reprodução.
 
 O piloto julho/agosto de 2026 tem referência histórica validada. O [incremento de robustez](INCREMENTO_ROBUSTEZ.md) documenta a nova validação e seus limites. Esta revisão acrescenta dependências fixadas, testes em CI, recuperação de arquivos interrompidos, relatório de qualidade, medições e evidências automáticas de aceite. O flat continua habilitado por padrão; o modo temporal permite trabalhar com tabelas e cedentes sem montar suas 14.749 colunas. P03 permanece exclusivamente documental, sem VM ou teste de instalação.

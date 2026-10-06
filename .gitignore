@@ -33,4 +33,5 @@ rsconnect/
 
 # Originais pessoais e pacotes gerados permanecem locais.
 /locais/
+/site/
 /prompts/*.zip

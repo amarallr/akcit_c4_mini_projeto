@@ -1,0 +1,36 @@
+name: Publicar análises no GitHub Pages
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'RESUMO_DADOS.md'
+      - 'P07_RESUMO_COMPETENCIAS.csv'
+      - 'P07_TOP25_ADMINISTRADORES.csv'
+      - 'scripts/publicar_resumo.ps1'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Gerar página a partir do resumo
+        shell: pwsh
+        run: ./scripts/publicar_resumo.ps1
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - name: Publicar
+        id: deployment
+        uses: actions/deploy-pages@v4
