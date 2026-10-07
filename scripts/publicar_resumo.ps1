@@ -35,7 +35,7 @@ foreach ($linha in Get-Content -LiteralPath (Join-Path $raiz 'resultados/estatis
         }
         $celulas = $linha.Trim().Trim('|').Split('|')
         if (!$emTabela) {
-            $html.Add('<table><thead><tr>')
+            $html.Add('<div class="table-viewport" tabindex="0" role="region" aria-label="Tabela de dados"><table><thead><tr>')
             $inicioCabecalho = $html.Count
             $rotulosCabecalho = @($celulas | ForEach-Object { (Formatar-Inline $_.Trim()) })
             for ($i = 0; $i -lt $celulas.Count; $i++) {
@@ -53,14 +53,14 @@ foreach ($linha in Get-Content -LiteralPath (Join-Path $raiz 'resultados/estatis
         }
         continue
     }
-    if ($emTabela) { $html.Add('</tbody></table>'); $emTabela = $false }
+    if ($emTabela) { $html.Add('</tbody></table></div>'); $emTabela = $false }
     if ([string]::IsNullOrWhiteSpace($linha)) { continue }
     if ($linha -match '^(#{1,2}) (.+)$') {
         $nivel = $Matches[1].Length
         $html.Add("<h$nivel>" + (Formatar-Inline $Matches[2]) + "</h$nivel>")
     } else { $html.Add('<p>' + (Formatar-Inline $linha) + '</p>') }
 }
-if ($emTabela) { $html.Add('</tbody></table>') }
+if ($emTabela) { $html.Add('</tbody></table></div>') }
 $pagina = @'
 <!doctype html>
 <html lang="pt-BR">
@@ -75,7 +75,7 @@ $pagina = @'
 header{background:#123340;color:white;padding:28px max(24px,calc((100% - 1200px)/2))}header span{font-size:.8rem;letter-spacing:.14em;text-transform:uppercase}header a{color:#b0eee6}
 main{max-width:1250px;margin:36px auto;padding:32px;background:white;border:1px solid var(--line);border-radius:12px}
 h1{font-size:clamp(1.8rem,4vw,2.8rem);line-height:1.2;margin:0 0 24px}h2{margin-top:48px;border-top:1px solid var(--line);padding-top:24px;font-size:1.5rem}p{max-width:100ch}a{color:var(--accent);text-underline-offset:3px}
-table{border-collapse:collapse;table-layout:fixed;width:100%;margin:24px 0;font-size:.78rem;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}th{background:#e7f3f1;color:#17473f;text-align:left}th,td{padding:8px 7px;border-bottom:1px solid var(--line)}th.align-right,td.align-right{text-align:right}th.align-center,td.align-center{text-align:center}td{vertical-align:top}tbody tr:nth-child(even){background:#f7fafb}tbody tr:hover{background:#edf7f5}footer{max-width:1200px;margin:24px auto 48px;padding:0 24px;color:var(--muted);font-size:.9rem}
+ .table-viewport{max-height:32rem;overflow-y:auto;overflow-x:hidden;scrollbar-gutter:stable;margin:24px 0;border:1px solid var(--line);border-radius:8px}.table-viewport:focus-visible{outline:3px solid var(--accent)}table{border-collapse:collapse;table-layout:fixed;width:100%;margin:0;font-size:.78rem;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}th{position:sticky;top:0;z-index:2;background:#e7f3f1;color:#17473f;text-align:left}th,td{padding:8px 7px;border-bottom:1px solid var(--line)}th.align-right,td.align-right{text-align:right}th.align-center,td.align-center{text-align:center}td{vertical-align:top}tbody tr:nth-child(even){background:#f7fafb}tbody tr:hover{background:#edf7f5}footer{max-width:1200px;margin:24px auto 48px;padding:0 24px;color:var(--muted);font-size:.9rem}
 @media(max-width:760px){main{margin:16px 12px;padding:20px 16px}header{padding:20px 24px}table,thead,tbody,tr,th,td{display:block;width:100%}thead{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}tbody tr{margin:12px 0;border:1px solid var(--line);border-radius:8px;overflow:hidden}tbody td{display:grid;grid-template-columns:minmax(7.5em,40%) minmax(0,1fr);gap:8px;padding:8px 10px;text-align:right!important}tbody td::before{content:attr(data-label);font-weight:600;text-align:left;color:var(--muted)} }
 </style>
 </head>
