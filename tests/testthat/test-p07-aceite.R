@@ -34,15 +34,15 @@ testthat::test_that('P07-TST-009: quantis, CV amostral e chaves sem soma duplica
   testthat::expect_identical(e$resumir_pl_mensal(d)$cv_definicao,'amostra_insuficiente')
 })
 
-testthat::test_that('PL por administrador: limites por data, trimestre e denominador completo', {
+testthat::test_that('PL por administrador: limite por data, PL no último mês do trimestre e denominador completo', {
   e <- new.env(parent=globalenv());sys.source('../../scripts/p07_resumo_pl.R',envir=e)
   iv <- data.frame(cnpj=rep(c('a','b'),2),dt_comptc=as.Date(rep(c('2026-03-31','2026-04-30'),each=2)),TAB_IV_A_VL_PL=c(0,100,10,30))
   cadastro <- iv[c('cnpj','dt_comptc')];cadastro$CNPJ_ADMIN <- c('01','02','01','02');cadastro$ADMIN <- c('A','B','A','B')
   d <- e$associar_administradores_pl(iv,cadastro[4:1,])
   r <- e$resumir_pl_administradores(d)
   testthat::expect_equal(r$cnpj_admin,c('02','01'))
-  testthat::expect_equal(r$pl_2026_T1,c(97.5,2.5))
-  testthat::expect_equal(r$pl_2026_T2,c(29.5,10.5))
+  testthat::expect_equal(r$pl_2026_T1,c(100,0))
+  testthat::expect_true(all(is.na(r$pl_2026_T2)))
   testthat::expect_equal(r$quantidade_fundos,c(1L,1L))
   testthat::expect_equal(r$percentual_pl_total,c(127,13)/140*100)
   testthat::expect_error(e$associar_administradores_pl(iv,rbind(cadastro,cadastro[1,])),'duplicada')

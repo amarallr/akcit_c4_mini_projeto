@@ -12,7 +12,7 @@ Relatório anterior preservado abaixo como histórico. Critérios/resultados his
 
 O aceite do modo completo avalia a entrega de **datasets consolidados temporalmente por tabela do informe mensal e de uma única tabela final integrada (flat)**. Para julho/agosto de 2026, são 18 datasets temporais e um flat, cada um em CSV e RDS: **19 datasets principais, entregues em 38 arquivos**. A base de cedentes acrescenta um dataset em dois formatos, totalizando **20 datasets e 40 arquivos de dados**, além dos relatórios de qualidade e manifestos. O aceite do piloto completo exige esse conjunto. A opção `gerar_flat=FALSE` entrega 38 arquivos de dados e tem aceite temporal próprio, sem substituir o completo.
 
-A execução do autor ocorreu em 01/10/2026, após autorização para implementar P04–P07, no âmbito da Especialização em Engenharia de Software com IA Generativa. A revisão incremental foi validada em 02/10/2026. P01 coordena o pipeline, P02 fornece a biblioteca comum e P03 permanece roteiro documental. As evidências locais demonstram o resultado deste piloto; a reprodução independente em ambiente limpo continua fora do escopo validado.
+A execução do autor ocorreu em 01/10/2026, após autorização para implementar P04–P07, no âmbito da Especialização em Engenharia de Software: Automação e Inovação com Inteligência Artificial Generativa, da Universidade Federal de Goiás (UFG). A revisão incremental foi validada em 02/10/2026. P01 coordena o pipeline, P02 fornece a biblioteca comum e P03 permanece roteiro documental. As evidências locais demonstram o resultado deste piloto; a reprodução independente em ambiente limpo continua fora do escopo validado.
 
 ## Escopo, fontes e saídas verificadas
 

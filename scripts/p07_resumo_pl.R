@@ -71,10 +71,18 @@ resumir_pl_administradores <- function(dados) {
     nomes <- sort(unique(nomes[!is.na(nomes) & nzchar(nomes)]))
     if(length(nomes)) paste(nomes,collapse=' / ') else NA_character_
   },character(1)),stringsAsFactors=FALSE)
+  meses <- as.integer(format(as.Date(dados$dt_comptc),'%m'))
+  datas_date <- as.Date(dados$dt_comptc)
   for(t in sort(unique(trimestre))) {
+    q <- as.integer(sub('.*_T','',t))
+    mes_final <- q*3L
+    candidatos <- which(trimestre==t & meses==mes_final)
+    data_final <- if(length(candidatos)) max(datas_date[candidatos]) else as.Date(NA_character_)
     saida[[paste0('pl_',t)]] <- vapply(ids,function(id) {
-      valores <- pl[dados$cnpj_admin==id & trimestre==t]
-      if(!length(valores)) 0 else if(all(is.na(valores))) NA_real_ else sum(valores,na.rm=TRUE)
+      if(is.na(data_final)) return(NA_real_)
+      pos <- which(datas_date==data_final & dados$cnpj_admin==id)
+      valores <- dados$TAB_IV_A_VL_PL[pos]
+      if(!length(valores)) NA_real_ else if(all(is.na(valores))) NA_real_ else sum(valores,na.rm=TRUE)
     },numeric(1))
   }
   saida$quantidade_fundos <- vapply(ids,function(id)

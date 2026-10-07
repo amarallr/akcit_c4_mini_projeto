@@ -1,6 +1,6 @@
 # Fases do Ciclo de Desenvolvimento de Software SWEBOK
 
-Mini projeto didático da especialização em Engenharia de Software com IA Generativa, com R, RStudio, Codex, Git e GitHub. Revisão: 01/10/2026.
+Mini projeto da **Especialização em Engenharia de Software: Automação e Inovação com Inteligência Artificial Generativa**, da Universidade Federal de Goiás (UFG), desenvolvido com R, RStudio, Codex, Git e GitHub. Revisão: 01/10/2026.
 
 ## Referência e organização adotada
 

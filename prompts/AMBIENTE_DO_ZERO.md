@@ -1,6 +1,6 @@
 # P03 — Roteiro de preparação do ambiente do zero
 
-Entrega documental do mini projeto da Especialização em Engenharia de Software com IA Generativa. O roteiro parte somente dos oito prompts P01–P08, sem ferramentas, contas, código ou documentos preexistentes. Os passos abaixo são orientações para uso futuro: **não foram executados ou testados nesta revisão**. A conclusão de P03 exige revisão do documento, não instalação, VM ou teste de execução.
+Entrega documental do mini projeto da **Especialização em Engenharia de Software: Automação e Inovação com Inteligência Artificial Generativa**, da Universidade Federal de Goiás (UFG). O roteiro parte somente dos oito prompts P01–P08, sem ferramentas, contas, código ou documentos preexistentes. Os passos abaixo são orientações para uso futuro: **não foram executados ou testados nesta revisão**. A conclusão de P03 exige revisão do documento, não instalação, VM ou teste de execução.
 
 ## 1. Conhecer as ferramentas e a ordem
 

@@ -4,7 +4,7 @@ Prompt responsável: P08
 
 P08-RF-001 | RF | Receber a configuração de uma consolidação P06 concluída e verificar estado, intervalo, plano, assinatura e hashes das tabelas IV e I antes de calcular estatísticas. Aceitar seleção de 2020 em diante, sem presumir período fixo.
 P08-RF-002 | RF | Calcular por DT_COMPTC mínimo, percentis 25/75, mediana, média, máximo, total, registros válidos/ausentes e quantidades de CNPJs e administradores. A chave da posição é CNPJ, TP_FUNDO_CLASSE e data. Associar I↔IV por essas dimensões. Repetições só podem ser descartadas se PL (IV) ou administrador (I) não divergirem; conflito interrompe a geração. PL sem administrador fica nas estatísticas por competência e fora do ranking.
-P08-RF-003 | RF | Winsorizar PL em 2,5% e 97,5% por data, quantis tipo 7 de R. Somar por CNPJ de administrador e trimestre, contar CNPJs distintos no período, classificar os 25 maiores pela soma e calcular participação sobre todo PL winsorizado atribuível a administradores identificados. Explicar trimestres parciais, posições mensais e exclusões de PL sem administrador.
+P08-RF-003 | RF | Winsorizar PL em 2,5% e 97,5% por data, quantis tipo 7 de R. Classificar os 25 maiores pela soma mensal winsorizada no período e calcular participação sobre todo PL winsorizado atribuível a administradores identificados. Para cada trimestre, informar a posição como soma do PL original no último mês do trimestre, sem somar meses anteriores; associar o administrador vigente nessa competência. Contar CNPJs distintos no período e explicar ausências e exclusões de PL sem administrador.
 P08-RF-004 | RF | Gerar `resultados/estatisticas/estatisticas_por_competencia.csv`, `top25_administradores.csv`, artefato RDS ligado à assinatura e `relatorio_estatisticas.md`. A página estática inclui metadados, CSVs e dicionários publicados, preservando originais/consolidados. Nas tabelas visíveis, exibir apenas outubro–dezembro dos cinco anos completos mais recentes; manter a série integral nos CSVs.
 P08-RNF-001 | RNF | Registrar fonte, período, método, ausências, unidade monetária não confirmada e limites. Não interpretar soma de posições como fluxo ou patrimônio próprio do administrador. Não declarar conclusão se hash, cobertura ou período forem incompatíveis. As tabelas do Pages não devem criar rolagem horizontal; em telas estreitas, reorganizar os valores em cartões.
 
@@ -14,7 +14,7 @@ P08-FUN-002 | FUN | documentar_resumo_dados_fidc | Renderizar Markdown com perí
 P08-TST-001 | TST | Ainda planejado: quantis, winsorização, chaves CNPJ/tipo/data, repetições conflitantes, administradores ausentes, metadados e rejeição de hash incompatível.
 
 C — CONTEXTO
-P08 sucede P06, cuja consolidação temporal guarda as observações originais. É uma etapa didática do projeto de Engenharia de Software com IA Generativa. P01/P02 e os contratos compartilhados continuam vigentes. Dados CVM podem ser revisados; conferir fontes e geração persistida, não usar números copiados de uma execução anterior.
+P08 sucede P06, cuja consolidação temporal guarda as observações originais. É uma etapa didática da Especialização em Engenharia de Software: Automação e Inovação com Inteligência Artificial Generativa, da Universidade Federal de Goiás (UFG). P01/P02 e os contratos compartilhados continuam vigentes. Dados CVM podem ser revisados; conferir fontes e geração persistida, não usar números copiados de uma execução anterior.
 
 O — OBJETIVO
 Produzir estatísticas descritivas e uma análise auditável da série selecionada. A unidade analítica conserva tipo Fundo/Classe; associar IV à tabela I por CNPJ, tipo e data. Expor metadados da fonte, período, leiautes, campos, chaves, formatos, linhagem e limites no README e na página.
@@ -34,7 +34,7 @@ Entregar código, testes e referências atualizadas no README, LEIA_ME, CO-STAR,
 EXECUÇÃO
 1. Ler registros vigentes e configuração, selecionar explicitamente a geração concluída.
 2. Validar hashes e chaves de IV/I por CNPJ, tipo e data. Descartar repetição apenas se os campos analíticos não divergirem; conflitos impedem geração. Contar CNPJs distintos por competência. Administradores sem identificador não entram no ranking nem no denominador de participação.
-3. Winsorizar separadamente cada data antes da soma por administrador/trimestre; reportar quantis, ausências, denominador das participações e trimestres incompletos.
+3. Winsorizar separadamente cada data para o ranking e participação acumulados no período. As colunas trimestrais devem somar o PL original apenas na competência do último mês de cada trimestre. Reportar quantis, ausências, denominador das participações e meses de referência.
 4. Atualizar código, registros, testes e documentação, incluindo metadados no README e no Pages. Na página, mostrar apenas o quarto trimestre dos cinco anos completos mais recentes; manter os CSVs completos e garantir apresentação sem barra horizontal. Não editar arquivos de origem. Verificar diff e artefatos gerados.
 5. Publicar na página apenas quando solicitado; informar o estado de CI/deploy observado.
 

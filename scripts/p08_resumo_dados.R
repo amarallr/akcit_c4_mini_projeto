@@ -62,7 +62,7 @@ pasta <- file.path(config$saidas,'resumo_estatisticas')
 dir.create(pasta,recursive=TRUE,showWarnings=FALSE)
 saveRDS(list(assinatura=atual$assinatura,config=config,competencias=resumo,administradores=ranking,
  deduplicacoes=list(tabela_IV=iv_dedup$removidas,tabela_I=i_dedup$removidas),
- metodo='Winsorização por DT_COMPTC, quantis tipo 7: 2,5% e 97,5%; soma do PL por administrador e trimestre; percentual sobre o PL winsorizado total.'),
+ metodo='Ranking e percentual pela soma mensal winsorizada em todo o período (quantis tipo 7: 2,5% e 97,5% por DT_COMPTC); colunas trimestrais são a soma do PL original no último mês de cada trimestre.'),
  file.path(pasta,'resumo_historico.rds'))
 file.copy(c(arquivo_resumo,arquivo_top25),pasta,overwrite=TRUE)
 cat('Estatísticas geradas para ',nrow(resumo),' datas de competência e ',nrow(ranking),' administradores no ranking.\n',sep='')

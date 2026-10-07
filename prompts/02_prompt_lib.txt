@@ -164,7 +164,7 @@ P02-RNF-005 | RNF | Ao concluir etapa: revisar diferenças, executar verificaç�
 P02-RNF-006 | RNF | Processar por origem e persistir progresso, sem carregar todo o histórico obrigatoriamente na memória. Não fixar meta de desempenho sem medição; demonstrar consumo viável no período curto e documentar limites.
 
 
-P02-RNF-007 | RNF | Mini projeto didático da Especialização em Engenharia de Software com IA Generativa: aplicar IA em todo o ciclo com revisão e decisões humanas; registrar contribuição, comandos e evidências. Explicar práticas de requisitos, incrementos, contratos, testes, revisão e versionamento sem alegar técnicas ou etapas não executadas.
+P02-RNF-007 | RNF | Mini projeto didático da Especialização em Engenharia de Software: Automação e Inovação com Inteligência Artificial Generativa, da Universidade Federal de Goiás (UFG): aplicar IA em todo o ciclo com revisão e decisões humanas; registrar contribuição, comandos e evidências. Explicar práticas de requisitos, incrementos, contratos, testes, revisão e versionamento sem alegar técnicas ou etapas não executadas.
 
 P02-RNF-008 | RNF | Nomear scripts próprios com pNN_nome_da_funcao.ext pelo prompt responsável e testes com test-pNN-finalidade.R; documentar dependências e preservar IDs. Ao renomear, atualizar chamadas, wrappers, testes, comandos, catálogo e matriz e validar a execução existente; não implementar etapas futuras apenas para nomear scripts.
 

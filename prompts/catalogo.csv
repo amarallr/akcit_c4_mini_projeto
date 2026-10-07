@@ -114,7 +114,7 @@
 "P03-FUN-003","P03","FUN","verificar_repositorio","Escopo anterior, preservado como histórico opcional. Avalia observações Git/GitHub contra repositorio_esperado explícito, sem conta fixa; ausência é pendência e formato inválido é erro; preserva sessão/visibilidade sem efeitos.","historico"
 "P02-MOD-002","P02","MOD","scripts/p02_testar.R","Runner simples sem rede, com selecao por etapa e somente suites implementadas.","validado_piloto"
 "P03-RF-004","P03","RF","","Orientar preparação desde ambiente limpo com somente os sete prompts, fontes oficiais e ordem de uso de R, RStudio, Git e Codex, sem código ou guia preexistente obrigatório.","validado_documental"
-"P02-RNF-007","P02","RNF","","Mini projeto didático da Especialização em Engenharia de Software com IA Generativa: aplicar IA em todo o ciclo com revisão e decisões humanas; registrar contribuição, comandos e evidências. Explicar práticas de requisitos, incrementos, contratos, testes, revisão e versionamento sem alegar técnicas ou etapas não executadas.","validado_piloto"
+"P02-RNF-007","P02","RNF","","Mini projeto didático da Especialização em Engenharia de Software: Automação e Inovação com Inteligência Artificial Generativa, da UFG; aplicar IA em todo o ciclo com revisão e decisões humanas.","validado_piloto"
 "P03-TST-004","P03","TST","","Cancelado por mudança de escopo em 01/10/2026. Não é pendência. Partir de computador ou VM independente sem ferramentas ou código, fornecer somente os sete prompts, instalar/configurar ferramentas, gerar projeto e registros com IA, executar preparação e testes P03, revisar exclusões e publicar em repositório próprio. Registrar decisões, versões e evidências; ausência de validação mantém reprodução limpa pendente.","cancelado"
 "P01-RF-003","P01","RF","","Na primeira reprodução, partir somente dos sete prompts atuais, sem presumir ferramentas, código, projeto ou registros. Criar artefatos de continuidade e rastreabilidade a partir dos contratos dos prompts; usar artefatos prévios somente após geração e verificação no ambiente do próprio leitor.","validado_piloto"
 "P02-RNF-008","P02","RNF","","Nomear scripts próprios com pNN_nome_da_funcao.ext pelo prompt responsável e testes com test-pNN-finalidade.R; documentar dependências e preservar IDs. Ao renomear, atualizar chamadas, wrappers, testes, comandos, catálogo e matriz e validar a execução existente; não implementar etapas futuras apenas para nomear scripts.","validado_piloto"
@@ -184,7 +184,7 @@
 
 "P08-RF-001","P08","RF","","Validar configuração, geração P06 concluída, cobertura, assinatura e hashes de I/IV.","validado_local"
 "P08-RF-002","P08","RF","","Calcular estatísticas por competência e contagens de fundos/classes e administradores com vínculo CNPJ/data.","validado_local"
-"P08-RF-003","P08","RF","","Winsorizar por data e calcular top 25 por administrador e trimestre, com percentual no PL total e limites explícitos.","validado_local"
+"P08-RF-003","P08","RF","","Ranking pela soma mensal winsorizada; colunas trimestrais somam PL original no último mês de cada trimestre.","validado_local"
 "P08-RF-004","P08","RF","","Gerar CSVs completos, RDS assinado, relatório e página; tabelas exibem Q4 dos cinco anos completos mais recentes sem rolagem horizontal.","validado_local"
 "P08-RNF-001","P08","RNF","","Documentar fonte, método, unidade desconhecida, cobertura e limites; adaptar tabelas do Pages a telas estreitas sem rolagem horizontal.","validado_local"
 "P08-MOD-001","P08","MOD","scripts/p08_resumo_dados.R","Estatísticas consolidadas após P06.","validado_local"
