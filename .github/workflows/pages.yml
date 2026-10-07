@@ -3,9 +3,10 @@ on:
   push:
     branches: [main]
     paths:
-      - 'RESUMO_DADOS.md'
-      - 'P07_RESUMO_COMPETENCIAS.csv'
-      - 'P07_TOP25_ADMINISTRADORES.csv'
+      - 'resultados/estatisticas/relatorio_estatisticas.md'
+      - 'resultados/estatisticas/estatisticas_por_competencia.csv'
+      - 'resultados/estatisticas/top25_administradores.csv'
+      - 'referencias/cvm/*.csv'
       - 'scripts/publicar_resumo.ps1'
       - '.github/workflows/pages.yml'
   workflow_dispatch:

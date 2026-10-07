@@ -29,7 +29,8 @@ fixture_zip <- function(destino, membros) {
 
 fixture_piloto <- function(raiz, meses = c('202607','202608')) {
   dir.create(raiz,recursive=TRUE,showWarnings=FALSE)
-  file.copy('../../P04_CAMPOS_DECLARADOS_DICIONARIO.csv',file.path(raiz,'P04_CAMPOS_DECLARADOS_DICIONARIO.csv'))
+  dir.create(file.path(raiz,'referencias/cvm'),recursive=TRUE,showWarnings=FALSE)
+  file.copy('../../referencias/cvm/dicionario_campos_declarados.csv',file.path(raiz,'referencias/cvm/dicionario_campos_declarados.csv'))
   config <- pipeline$validar_configuracao(list(tabelas=c('I','IV','VIII','X_4')),raiz)
   config$inicio <- paste0(substr(min(meses),1,4),'-',substr(min(meses),5,6),'-01')
   config$fim <- as.character(seq(as.Date(paste0(substr(max(meses),1,4),'-',substr(max(meses),5,6),'-01')),by='month',length.out=2)[2]-1)
@@ -60,7 +61,7 @@ fixture_piloto <- function(raiz, meses = c('202607','202608')) {
   }
   downloads <- pipeline$retomar_downloads_fidc(plano,config,raiz,transporte,function(x)NULL)
   saveRDS(downloads,file.path(raiz,'dados/downloads.rds'))
-  mapa <- read.csv('../../P04_CAMPOS_DECLARADOS_DICIONARIO.csv',stringsAsFactors=FALSE)
+  mapa <- read.csv('../../referencias/cvm/dicionario_campos_declarados.csv',stringsAsFactors=FALSE)
   list(config=config,downloads=downloads,plano=plano,mapa=mapa,transporte=transporte,origem=origem)
 }
 

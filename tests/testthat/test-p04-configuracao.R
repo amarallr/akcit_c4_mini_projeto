@@ -54,7 +54,7 @@ testthat::test_that('P04-TST-002/003: seleção histórica não inventa meses e 
   testthat::expect_identical(plano$unidade,'2024')
   config$inicio <- '2023-01-01'
   testthat::expect_error(pipeline$selecionar_unidades_fidc(config,inventario),'indisponível')
-  mapa <- read.csv('../../P04_CAMPOS_DECLARADOS_DICIONARIO.csv')
+  mapa <- read.csv('../../referencias/cvm/dicionario_campos_declarados.csv')
   testthat::expect_true(all(c('I','VIII','X','X_1_1','X_7') %in% mapa$tabela))
   testthat::expect_equal(mapa$tipo[mapa$tabela=='VIII'&mapa$campo=='SEQUENCIAL'],'bigint')
 })

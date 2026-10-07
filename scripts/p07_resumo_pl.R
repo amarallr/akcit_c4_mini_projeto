@@ -1,10 +1,11 @@
 # P07-MOD-003 | P07-RF-007: estatísticas descritivas; nenhuma alteração dos datasets.
-# P07-FUN-005 | Uma observação de PL por CNPJ/data DT_COMPTC; quantis R tipo 7.
+# P07-FUN-005 | Uma observação de PL por CNPJ/tipo/data; quantis R tipo 7.
 resumir_pl_mensal <- function(dados) {
   campos <- c('cnpj','dt_comptc','TAB_IV_A_VL_PL')
   if (!is.data.frame(dados) || !all(campos %in% names(dados))) stop('Tabela IV incompatível.')
+  chave <- c('cnpj','dt_comptc',if('TP_FUNDO_CLASSE' %in% names(dados)) 'TP_FUNDO_CLASSE')
   if (anyNA(dados$cnpj) || any(!nzchar(trimws(dados$cnpj))) || anyNA(dados$dt_comptc) ||
-      anyDuplicated(dados[c('cnpj','dt_comptc')])) stop('Chave IV inválida ou duplicada; PL não pode ser contado duas vezes.')
+      anyDuplicated(dados[chave])) stop('Chave IV inválida ou duplicada; PL não pode ser contado duas vezes.')
   if (!is.numeric(dados$TAB_IV_A_VL_PL) ||
       any(!is.finite(dados$TAB_IV_A_VL_PL[!is.na(dados$TAB_IV_A_VL_PL)]))) stop('PL incompatível.')
   datas <- as.character(as.Date(dados$dt_comptc))
@@ -24,24 +25,36 @@ resumir_pl_mensal <- function(dados) {
   do.call(rbind,partes)
 }
 
-# Associação exata por CNPJ/data, sem multiplicar observações de PL.
+# Associação exata por CNPJ/tipo/data, sem multiplicar observações de PL.
 associar_administradores_pl <- function(iv, cadastro) {
   resumir_pl_mensal(iv)
   campos <- c('cnpj','dt_comptc','CNPJ_ADMIN','ADMIN')
+  tipo_iv <- 'TP_FUNDO_CLASSE' %in% names(iv)
+  tipo_i <- 'TP_FUNDO_CLASSE' %in% names(cadastro)
+  if(!identical(tipo_iv,tipo_i)) stop('Tipo fundo/classe ausente em apenas uma das tabelas.')
+  if(tipo_iv) campos <- c(campos,'TP_FUNDO_CLASSE')
   if (!all(campos %in% names(cadastro)) || anyNA(cadastro[c('cnpj','dt_comptc')]) ||
-      anyDuplicated(cadastro[c('cnpj','dt_comptc')])) stop('Cadastro I incompatível ou chave duplicada.')
-  chave <- function(d) paste(d$cnpj,as.character(as.Date(d$dt_comptc)),sep='|')
+      anyDuplicated(cadastro[c('cnpj','dt_comptc',if(tipo_i) 'TP_FUNDO_CLASSE')]))
+    stop('Cadastro I incompatível ou chave duplicada.')
+  chave <- function(d) {
+    partes <- list(d$cnpj,as.character(as.Date(d$dt_comptc)))
+    if(tipo_iv) partes <- c(partes,list(ifelse(is.na(d$TP_FUNDO_CLASSE),'<NA>',d$TP_FUNDO_CLASSE)))
+    do.call(paste,c(partes,list(sep='|')))
+  }
   pos <- match(chave(iv),chave(cadastro))
   if(anyNA(pos)) stop('PL sem cadastro I na mesma data.')
   iv$cnpj_admin <- gsub('[^A-Za-z0-9]','',trimws(cadastro$CNPJ_ADMIN[pos]))
   iv$administrador <- trimws(cadastro$ADMIN[pos])
-  if(anyNA(iv$cnpj_admin) || any(!nzchar(iv$cnpj_admin))) stop('Administrador sem identificador.')
+  iv$cnpj_admin[is.na(iv$cnpj_admin) | !nzchar(iv$cnpj_admin)] <- NA_character_
+  iv$administrador[is.na(iv$administrador) | !nzchar(iv$administrador)] <- NA_character_
   iv
 }
 
 resumir_pl_administradores <- function(dados) {
   resumir_pl_mensal(dados)
   if(!all(c('cnpj_admin','administrador') %in% names(dados))) stop('Administradores ausentes.')
+  dados <- dados[!is.na(dados$cnpj_admin) & nzchar(dados$cnpj_admin),,drop=FALSE]
+  if(!nrow(dados)) stop('Nenhum PL com administrador identificado para o ranking.')
   datas <- as.character(as.Date(dados$dt_comptc))
   pl <- dados$TAB_IV_A_VL_PL
   for(data in unique(datas)) {
@@ -93,9 +106,10 @@ atualizar_resumo_pl <- function(raiz='.',config=list()) {
   dados <- associar_administradores_pl(readRDS(caminho),readRDS(caminho_i))
   estatisticas <- resumir_pl_mensal(dados)
   estatisticas$quantidade_administradores <- vapply(estatisticas$data_competencia,function(data)
-    length(unique(dados$cnpj_admin[as.character(dados$dt_comptc)==data])),integer(1))
+    length(unique(dados$cnpj_admin[as.character(dados$dt_comptc)==data & !is.na(dados$cnpj_admin)])),integer(1))
   ranking <- resumir_pl_administradores(dados)
-  destino <- file.path(raiz,'P07_RESUMO_COMPETENCIAS.csv')
+  destino <- file.path(raiz,'resultados/estatisticas/estatisticas_por_competencia.csv')
+  dir.create(dirname(destino),recursive=TRUE,showWarnings=FALSE)
   resumo <- read.csv(destino,stringsAsFactors=FALSE,colClasses=c(pl_total_valor_fonte='character'))
   if ('data_competencia' %in% names(resumo)) {
     pos <- match(resumo$data_competencia,estatisticas$data_competencia)
@@ -122,7 +136,7 @@ atualizar_resumo_pl <- function(raiz='.',config=list()) {
   if(!file.rename(destino,backup)) stop('Resumo bloqueado.')
   if(!file.rename(temporario,destino)) {file.rename(backup,destino);stop('Publicação do resumo falhou.')}
   unlink(backup)
-  utils::write.csv(ranking,file.path(raiz,'P07_TOP25_ADMINISTRADORES.csv'),row.names=FALSE,na='',fileEncoding='UTF-8')
+  utils::write.csv(ranking,file.path(raiz,'resultados/estatisticas/top25_administradores.csv'),row.names=FALSE,na='',fileEncoding='UTF-8')
   pasta <- file.path(raiz,config$saidas,'resumos_piloto')
   dir.create(pasta,recursive=TRUE,showWarnings=FALSE)
   utils::write.csv(resumo,file.path(pasta,'resumo_competencias.csv'),row.names=FALSE,na='',fileEncoding='UTF-8')

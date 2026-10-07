@@ -1,4 +1,4 @@
-> Evidência histórica do primeiro incremento P04. Os limites e próximos passos abaixo descrevem aquele momento. Estado atual: P04–P07 implementados, piloto executado; consulte P07_ACEITE_ENTREGA.md, P04_ESQUEMA_OBSERVADO_PILOTO.csv e RETOMADA.md.
+> Evidência histórica do primeiro incremento P04. Os limites e próximos passos abaixo descrevem aquele momento. Estado atual: P04–P07 implementados, piloto executado; consulte documentacao/aceite_entrega.md, referencias/cvm/esquema_observado_piloto.csv e documentacao/retomada.md.
 
 # P04 — Leitura do dicionário oficial e período piloto
 
@@ -10,7 +10,7 @@ Fonte: [diretório META da CVM](https://dados.cvm.gov.br/dados/FIDC/DOC/INF_MENS
 
 Os textos foram lidos diretamente dos membros do ZIP, sem executar seu conteúdo. Todos falharam na decodificação UTF-8 estrita. A leitura com Windows-1252 recuperou os acentos; não há bytes 0x80–0x9F, de modo que ISO-8859-1 produz os mesmos caracteres para estes textos. Isso descreve o dicionário consultado, **não confirma o encoding dos futuros CSVs**.
 
-Foram identificadas 455 ocorrências de `Campo:` e suas propriedades declaradas. Campo repetido em tabelas diferentes é contado em cada tabela, não como nome global único. O [inventário de propriedades declaradas](P04_CAMPOS_DECLARADOS_DICIONARIO.csv) registra tabela, nome, tipo, tamanho, precisão, escala e arquivo de origem. É saída documental desta leitura, não configuração de processamento ou contrato validado contra os informes.
+Foram identificadas 455 ocorrências de `Campo:` e suas propriedades declaradas. Campo repetido em tabelas diferentes é contado em cada tabela, não como nome global único. O [inventário de propriedades declaradas](../referencias/cvm/dicionario_campos_declarados.csv) registra tabela, nome, tipo, tamanho, precisão, escala e arquivo de origem. É saída documental desta leitura, não configuração de processamento ou contrato validado contra os informes.
 
 ## Conteúdo observado no dicionário
 

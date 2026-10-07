@@ -168,9 +168,9 @@ P02-RNF-007 | RNF | Mini projeto didático da Especialização em Engenharia de 
 
 P02-RNF-008 | RNF | Nomear scripts próprios com pNN_nome_da_funcao.ext pelo prompt responsável e testes com test-pNN-finalidade.R; documentar dependências e preservar IDs. Ao renomear, atualizar chamadas, wrappers, testes, comandos, catálogo e matriz e validar a execução existente; não implementar etapas futuras apenas para nomear scripts.
 
-P02-RNF-009 | RNF | Gerar e manter Fases do Ciclo de Desenvolvimento de Software SWEBOK.md com etapas enumeradas e explicadas e aplicação ao projeto. Distinguir áreas SWEBOK da adaptação didática, citar edição/fontes oficiais e separar estados e provas; documento é saída dos sete prompts, não pré-requisito nem prova de conclusão integral.
+P02-RNF-009 | RNF | Gerar e manter documentacao/ciclo_desenvolvimento_swebok.md com etapas enumeradas e explicadas e aplicação ao projeto. Distinguir áreas SWEBOK da adaptação didática, citar edição/fontes oficiais e separar estados e provas; documento é saída dos sete prompts, não pré-requisito nem prova de conclusão integral.
 
-P02-RNF-010 | RNF | Manter ARQUITETURA.md com somente um DFD, fluxos nomeados, depósitos, transformações, limites e relação com P01-P07. Conferir contra os scripts; revisão textual não equivale a renderização.
+P02-RNF-010 | RNF | Manter documentacao/arquitetura.md com somente um DFD, fluxos nomeados, depósitos, transformações, limites e relação com P01-P07. Conferir contra os scripts; revisão textual não equivale a renderização.
 
 MÓDULO E FUNÇÕES — CONTRATOS DA IMPLEMENTAÇÃO
 P02-MOD-001 | Arquivo: scripts/p02_utilitarios.R
@@ -243,7 +243,7 @@ em minúsculas, com nomes descritivos separados por sublinhado. Exemplos:
 scripts/p01_executar.R (coordenação), scripts/p02_testar.R (runner comum),
 scripts/p03_verificar_ambiente.R (ambiente). Testes: test-pNN-finalidade.R,
 como tests/testthat/test-p03-ambiente.R. A extensão corresponde à linguagem.
-P01 coordena; P02 fornece recursos comuns; P03 a P07 implementam suas etapas.
+P01 coordena; P02 fornece recursos comuns; P03 a P07 implementam as etapas do pipeline e P08 publica estatísticas derivadas após P06.
 O prefixo identifica responsabilidade estável, não toda a cadeia de dependências.
 Um script P05 que usa P02 permanece p05_; documentar as dependências no
 cabeçalho, chamadas e matriz. Registrar prompt, IDs pertinentes, entradas,
@@ -270,7 +270,7 @@ Adotar, didaticamente: (1) concepção, planejamento e viabilidade;
 Essas etapas podem ser revisitadas por incremento; testes, gestão, qualidade,
 segurança, versionamento e documentação são atividades transversais.
 
-Gerar na raiz Fases do Ciclo de Desenvolvimento de Software SWEBOK.md:
+Gerar na raiz documentacao/ciclo_desenvolvimento_swebok.md:
 enumerar e explicar as etapas; depois detalhar como cada uma será atendida
 neste mini projeto, com prompts/IDs, artefatos, IA e revisão humana,
 evidências, critérios, estados e pendências. Informar edição, fontes oficiais
@@ -303,7 +303,7 @@ atualizar catálogo/matriz/testes e registrar decisões. Preferências de
 comunicação devem constar das orientações e continuidade. Referenciar regras
 comuns sem duplicar IDs. Pedidos não autorizam automaticamente outras etapas.
 
-Gerar e manter ARQUITETURA.md na raiz: explicar objetivo e limites, papel de
+Gerar e manter documentacao/arquitetura.md na raiz: explicar objetivo e limites, papel de
 R, Rscript, RStudio, Codex/IA, PowerShell, Git, GitHub, GitHub CLI e pacotes;
 componentes, dependências, chamadas, interfaces, entradas/saídas, efeitos,
 organização de arquivos, persistência, erros e condições de retomada.
@@ -324,7 +324,7 @@ revisão textual/estrutural não equivale a renderização ou teste de execuçã
 Aplicação arquitetural neste prompt: P02 mantém contratos de arquitetura, nomenclatura, rastreabilidade e qualidade comuns. Runner é entrada independente, não chamada implícita de P01. Separar dependências atuais de utilitários futuros.
 
 P02-TST-010 | Tipo: revisao_documental
-Verificar: ARQUITETURA.md explica ferramentas, contratos, persistência, erros e limites; tem um DFD Mermaid com descrição textual. Chamadas atuais conferem com source/sys.source, wrapper, runner e funções reais; fluxo futuro identificado como planejado. Sete prompts incorporam pedidos e exigem atualização arquitetural; IDs, fontes e estados coerentes. Não confundir revisão estrutural com renderização executada. P04–P07 executados somente quando autorizados.
+Verificar: documentacao/arquitetura.md explica ferramentas, contratos, persistência, erros e limites; tem um DFD Mermaid com descrição textual. Chamadas atuais conferem com source/sys.source, wrapper, runner e funções reais; fluxo futuro identificado como planejado. Sete prompts incorporam pedidos e exigem atualização arquitetural; IDs, fontes e estados coerentes. Não confundir revisão estrutural com renderização executada. P04–P07 executados somente quando autorizados.
 Requisitos: P01-RF-005 P02-RNF-010
 Funções: verificação do módulo/documentação/fluxo
 
@@ -377,3 +377,5 @@ P02-TST-012 | TST | Verificar comportamentos reais com fixtures e falhas control
 
 DECISOES VIGENTES — 02/10/2026
 Arquitetura apresenta somente um DFD, com fluxos de dados e explicacao da relacao com P01-P07; substitui pedidos anteriores de multiplos diagramas. P03 continua documental, sem reativar VM/reproducao independente. O modo temporal sem flat tem aceite proprio e nao substitui o piloto completo. CI e renv estao autorizados neste incremento. Não reescrever histórico nem usar force push. Publicação remota depende da autorização vigente. doit significa ler tmp/tmp.txt.
+ADENDO VIGENTE 06/10/2026 — P08
+P08 é uma oitava instrução ativa, posterior à consolidação P06, dedicada às estatísticas por competência e ao ranking winsorizado. Complementa os sete prompts históricos, sem reescrevê-los. Entradas, saídas, método e limites constam em 08_prompt_estatisticas_consolidadas.txt, prompts/catalogo.csv e prompts/matriz_rastreabilidade.csv.

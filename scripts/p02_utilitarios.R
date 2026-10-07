@@ -103,7 +103,7 @@ assinatura_codigo <- function(raiz = '.') {
   raiz <- normalizePath(raiz,winslash='/',mustWork=TRUE)
   arquivos <- c(list.files(file.path(raiz,'scripts'), '\\.(R|ps1)$', full.names = TRUE),
     list.files(file.path(raiz,'tests'), '\\.R$', recursive = TRUE, full.names = TRUE),
-    file.path(raiz, c('renv.lock','P04_CAMPOS_DECLARADOS_DICIONARIO.csv')))
+    file.path(raiz, c('renv.lock','referencias/cvm/dicionario_campos_declarados.csv')))
   arquivos <- sort(arquivos[file.exists(arquivos)])
   calcular_hash_assinatura(setNames(lapply(arquivos, calcular_hash_assinatura, arquivo = TRUE),
     substring(arquivos, nchar(raiz)+2L)))

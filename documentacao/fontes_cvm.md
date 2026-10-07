@@ -1,8 +1,8 @@
-> Evidência histórica do primeiro incremento P04. Os limites e próximos passos abaixo descrevem aquele momento. Estado atual: P04–P07 implementados, piloto executado; consulte P07_ACEITE_ENTREGA.md, P04_ESQUEMA_OBSERVADO_PILOTO.csv e RETOMADA.md.
+> Evidência histórica do primeiro incremento P04. Os limites e próximos passos abaixo descrevem aquele momento. Estado atual: P04–P07 implementados, piloto executado; consulte documentacao/aceite_entrega.md, referencias/cvm/esquema_observado_piloto.csv e documentacao/retomada.md.
 
 # P04 — Levantamento inicial das fontes oficiais da CVM
 
-**Atualização vigente:** julho/agosto de 2026 confirmado pelo usuário; dicionário lido no incremento seguinte. Consulte [leitura e limites](P04_LEITURA_DICIONARIO_CVM.md). O conteúdo abaixo registra a observação do primeiro incremento, anterior à autorização de leitura.
+**Atualização vigente:** julho/agosto de 2026 confirmado pelo usuário; dicionário lido no incremento seguinte. Consulte [leitura e limites](dicionario_cvm.md). O conteúdo abaixo registra a observação do primeiro incremento, anterior à autorização de leitura.
 
 Consulta em 01/10/2026. Incremento autorizado: item 1, levantamento de catálogo, listagens e localização do dicionário. Base: P04-RF-001 e P04-RNF-001. A IA consultou páginas oficiais e organizou as evidências; o usuário decidirá o próximo incremento. Não houve download de ZIP, extração, execução R, implementação de configuração ou início de P05.
 

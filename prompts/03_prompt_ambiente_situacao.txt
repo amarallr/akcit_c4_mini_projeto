@@ -74,7 +74,7 @@ Explicar separadamente o roteiro atual e a implementação histórica.
 Scripts de futuras etapas seguem pNN_nome_da_funcao.ext, testes seguem
 test-pNN-finalidade.R; registrar origem, dependências e referências.
 Documentar as dez etapas didáticas apoiadas no SWEBOK, sua aplicação e status
-em Fases do Ciclo de Desenvolvimento de Software SWEBOK.md. Preparação é
+em documentacao/ciclo_desenvolvimento_swebok.md. Preparação é
 atendida pelo roteiro documental; teste de instalação não é seu aceite.
 Esses documentos são saídas dos prompts, não material inicial obrigatório.
 

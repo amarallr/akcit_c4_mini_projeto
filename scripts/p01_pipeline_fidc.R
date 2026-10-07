@@ -49,7 +49,7 @@ executar_pipeline_etapa <- function(etapa, configuracao = list(), raiz = '.', in
   }
   if (etapa == 'P06') {
     if (!file.exists(caminho_downloads)) stop('Execute P05 primeiro.')
-    dicionario <- read.csv(file.path(raiz,'P04_CAMPOS_DECLARADOS_DICIONARIO.csv'),
+    dicionario <- read.csv(file.path(raiz,'referencias/cvm/dicionario_campos_declarados.csv'),
       stringsAsFactors=FALSE,fileEncoding='UTF-8')
     downloads <- ambiente$ler_rds_recuperavel(caminho_downloads)
     if (is.null(downloads)) stop('Registro de downloads inválido: execute P05 novamente.')

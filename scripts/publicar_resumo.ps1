@@ -5,6 +5,7 @@ New-Item -ItemType Directory -Path $destino -Force | Out-Null
 function Formatar-Inline([string]$texto) {
     $texto = [System.Net.WebUtility]::HtmlEncode($texto)
     $texto = [regex]::Replace($texto, '\*\*(.+?)\*\*', '<strong>$1</strong>')
+    $texto = $texto.Replace('../../referencias/cvm/', 'referencias/cvm/')
     $texto = [regex]::Replace($texto, '\[([^\]]+)\]\(([^)]+)\)', '<a href="$2">$1</a>')
     return $texto
 }
@@ -12,7 +13,7 @@ $html = New-Object System.Collections.Generic.List[string]
 $emTabela = $false
 $alinhamentos = @()
 $inicioCabecalho = -1
-foreach ($linha in Get-Content -LiteralPath (Join-Path $raiz 'RESUMO_DADOS.md') -Encoding UTF8) {
+foreach ($linha in Get-Content -LiteralPath (Join-Path $raiz 'resultados/estatisticas/relatorio_estatisticas.md') -Encoding UTF8) {
     if ($linha.StartsWith('|')) {
         if ($linha -match '^\|[\s:|\-]+\|$') {
             $alinhamentos = @($linha.Trim().Trim('|').Split('|') | ForEach-Object {
@@ -64,7 +65,7 @@ $pagina = @'
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Análises do piloto FIDC: estatísticas de patrimônio líquido e ranking dos 25 maiores administradores, julho e agosto de 2026.">
+<meta name="description" content="Metadados e estatísticas dos informes mensais de FIDC da CVM, incluindo patrimônio líquido e ranking de administradores.">
 <title>Estatísticas dos FIDC</title>
 <style>
 :root{color-scheme:light;--ink:#172c38;--accent:#007f78;--muted:#506470;--line:#dce5e9}
@@ -81,13 +82,22 @@ h1{font-size:clamp(1.8rem,4vw,2.8rem);line-height:1.2;margin:0 0 24px}h2{margin-
 <main>
 <!-- CONTEUDO -->
 </main>
-<footer>Fonte: informes mensais de FIDCs da CVM. Piloto de julho e agosto de 2026. <a href="RESUMO_DADOS.md">Baixar relatório em Markdown</a>.</footer>
+<footer>Fonte: informes mensais de FIDCs da CVM. Cobertura e limitações desta geração estão descritas nos metadados acima. <a href="relatorio_estatisticas.md">Baixar relatório em Markdown</a>.</footer>
 </body>
 </html>
 '@
 $pagina = $pagina.Replace('<!-- CONTEUDO -->', ($html -join "`n"))
 [System.IO.File]::WriteAllText((Join-Path $destino 'index.html'), $pagina, (New-Object System.Text.UTF8Encoding($false)))
-foreach ($arquivo in @('RESUMO_DADOS.md','P07_RESUMO_COMPETENCIAS.csv','P07_TOP25_ADMINISTRADORES.csv')) {
-    Copy-Item -LiteralPath (Join-Path $raiz $arquivo) -Destination $destino -Force
+foreach ($arquivo in @('relatorio_estatisticas.md','estatisticas_por_competencia.csv','top25_administradores.csv')) {
+    $origem = Join-Path $raiz ('resultados/estatisticas/' + $arquivo)
+    if ($arquivo -eq 'relatorio_estatisticas.md') {
+        $conteudo = [System.IO.File]::ReadAllText($origem,[System.Text.Encoding]::UTF8).Replace('../../referencias/cvm/','referencias/cvm/')
+        [System.IO.File]::WriteAllText((Join-Path $destino $arquivo),$conteudo,(New-Object System.Text.UTF8Encoding($false)))
+    } else { Copy-Item -LiteralPath $origem -Destination $destino -Force }
+}
+foreach ($arquivo in @('dicionario_campos_declarados.csv','esquema_observado_piloto.csv')) {
+    $siteRef = Join-Path $destino 'referencias/cvm'
+    New-Item -ItemType Directory -Path $siteRef -Force | Out-Null
+    Copy-Item -LiteralPath (Join-Path $raiz ('referencias/cvm/' + $arquivo)) -Destination $siteRef -Force
 }
 Write-Output 'Página gerada em site/index.html.'

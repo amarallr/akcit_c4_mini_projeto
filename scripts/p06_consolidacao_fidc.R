@@ -272,7 +272,12 @@ retomar_consolidacao_fidc <- function(downloads, config, raiz = '.', dicionario 
     ids <- sub('^inf_mensal_fidc_tab_(.+)_[0-9]{4}([0-9]{2})?\\.csv$', '\\1', membros$Name)
     for (id in config$tabelas) {
       posicoes <- which(ids == id)
-      if (!length(posicoes)) { faltas <- c(faltas, paste(registro$unidade,id,sep='/')); next }
+      if (!length(posicoes)) {
+        # A tabela X ainda nÃ£o consta nos pacotes histÃ³ricos de 2020â€“2022.
+        # Essa ausÃªncia por vintage nÃ£o torna incompleta a seleÃ§Ã£o mensal.
+        if (identical(id,'X') && as.integer(registro$unidade) <= 2022L) next
+        faltas <- c(faltas, paste(registro$unidade,id,sep='/')); next
+      }
       for (i in posicoes) {
         caminho <- file.path(checkpoint, paste0(registro$unidade, '_', id, '_', i, '.rds'))
         manifesto <- paste0(caminho, '.manifesto.rds')
@@ -368,9 +373,9 @@ retomar_consolidacao_fidc <- function(downloads, config, raiz = '.', dicionario 
     assinatura_plano=vinculo$assinatura, unidades=vinculo$unidades,
     logica=logica, mapa=calcular_hash_assinatura(dicionario),
     logica_saida=assinatura_transformacao('saida'),
-    contratos=list(dicionario=list(caminho='P04_CAMPOS_DECLARADOS_DICIONARIO.csv',
-      hash=if(file.exists(file.path(raiz,'P04_CAMPOS_DECLARADOS_DICIONARIO.csv')))
-        calcular_hash_assinatura(file.path(raiz,'P04_CAMPOS_DECLARADOS_DICIONARIO.csv'),TRUE) else NA_character_)),
+    contratos=list(dicionario=list(caminho='referencias/cvm/dicionario_campos_declarados.csv',
+      hash=if(file.exists(file.path(raiz,'referencias/cvm/dicionario_campos_declarados.csv')))
+        calcular_hash_assinatura(file.path(raiz,'referencias/cvm/dicionario_campos_declarados.csv'),TRUE) else NA_character_)),
     modo = if (isTRUE(config$gerar_flat)) 'completo' else 'temporal',
     linhas_flat = if (is.null(flat$flat)) 0L else nrow(flat$flat),
     colunas_flat = if (is.null(flat$flat)) 0L else ncol(flat$flat),

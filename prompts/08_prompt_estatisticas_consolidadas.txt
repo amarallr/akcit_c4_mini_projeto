@@ -1,0 +1,43 @@
+PROMPT 08 — ESTATÍSTICAS CONSOLIDADAS E ANÁLISE
+Versão: v2026-10-06
+Prompt responsável: P08
+
+P08-RF-001 | RF | Receber a configuração de uma consolidação P06 concluída e verificar estado, intervalo, plano, assinatura e hashes das tabelas IV e I antes de calcular estatísticas. Aceitar seleção de 2020 em diante, sem presumir período fixo.
+P08-RF-002 | RF | Calcular por DT_COMPTC mínimo, percentis 25/75, mediana, média, máximo, total, registros válidos/ausentes e quantidades de CNPJs e administradores. A chave da posição é CNPJ, TP_FUNDO_CLASSE e data. Associar I↔IV por essas dimensões. Repetições só podem ser descartadas se PL (IV) ou administrador (I) não divergirem; conflito interrompe a geração. PL sem administrador fica nas estatísticas por competência e fora do ranking.
+P08-RF-003 | RF | Winsorizar PL em 2,5% e 97,5% por data, quantis tipo 7 de R. Somar por CNPJ de administrador e trimestre, contar CNPJs distintos no período, classificar os 25 maiores pela soma e calcular participação sobre todo PL winsorizado atribuível a administradores identificados. Explicar trimestres parciais, posições mensais e exclusões de PL sem administrador.
+P08-RF-004 | RF | Gerar `resultados/estatisticas/estatisticas_por_competencia.csv`, `top25_administradores.csv`, artefato RDS ligado à assinatura e `relatorio_estatisticas.md`. A página estática inclui metadados, CSVs e dicionários publicados, preservando originais/consolidados.
+P08-RNF-001 | RNF | Registrar fonte, período, método, ausências, unidade monetária não confirmada e limites. Não interpretar soma de posições como fluxo ou patrimônio próprio do administrador. Não declarar conclusão se hash, cobertura ou período forem incompatíveis.
+
+P08-MOD-001 | MOD | scripts/p08_resumo_dados.R
+P08-FUN-001 | FUN | gerar_resumo_dados_fidc | Validar geração concluída e hashes; resolver repetições sem conflito e rejeitar conflitos; produzir estatísticas por competência e top 25, com CNPJ/tipo/data e trimestre.
+P08-FUN-002 | FUN | documentar_resumo_dados_fidc | Renderizar Markdown com período, metadados do conjunto, tabelas, análise e links para CSVs/dicionários.
+P08-TST-001 | TST | Ainda planejado: quantis, winsorização, chaves CNPJ/tipo/data, repetições conflitantes, administradores ausentes, metadados e rejeição de hash incompatível.
+
+C — CONTEXTO
+P08 sucede P06, cuja consolidação temporal guarda as observações originais. É uma etapa didática do projeto de Engenharia de Software com IA Generativa. P01/P02 e os contratos compartilhados continuam vigentes. Dados CVM podem ser revisados; conferir fontes e geração persistida, não usar números copiados de uma execução anterior.
+
+O — OBJETIVO
+Produzir estatísticas descritivas e uma análise auditável da série selecionada. A unidade analítica conserva tipo Fundo/Classe; associar IV à tabela I por CNPJ, tipo e data. Expor metadados da fonte, período, leiautes, campos, chaves, formatos, linhagem e limites no README e na página.
+
+S — ESTILO
+Implementar em funções pequenas no padrão scripts/pNN_nome.R; não executar efeitos ao carregar o script. Usar CSV/RDS, datas completas, quantis tipo 7, caminhos validados e escrita substituível. Apresentar PL em milhões arredondados na página e valores integrais nos CSVs. Nomes e rótulos devem ser claros em português.
+
+T — TOM
+Explicar cobertura e método com neutralidade. Distinguir contagem por data de contagem distinta no período. Não concluir tendência, rentabilidade, patrimônio próprio ou qualidade do administrador a partir da soma apresentada.
+
+A — PÚBLICO
+Estudante iniciante em análise de dados, professor e revisor que precisam reproduzir a tabela e entender o significado e os limites dos números.
+
+R — RESPOSTA
+Entregar código, testes e referências atualizadas no README, LEIA_ME, CO-STAR, arquitetura, SWEBOK, catálogo e matriz. Informar período e datas cobertos, número de competências e administradores, método, arquivos gerados, testes realmente executados, limites e destino da página. Sincronizar/publicar apenas quando autorizado no pedido ativo.
+
+EXECUÇÃO
+1. Ler registros vigentes e configuração, selecionar explicitamente a geração concluída.
+2. Validar hashes e chaves de IV/I por CNPJ, tipo e data. Descartar repetição apenas se os campos analíticos não divergirem; conflitos impedem geração. Contar CNPJs distintos por competência. Administradores sem identificador não entram no ranking nem no denominador de participação.
+3. Winsorizar separadamente cada data antes da soma por administrador/trimestre; reportar quantis, ausências, denominador das participações e trimestres incompletos.
+4. Atualizar código, registros, testes e documentação, incluindo metadados no README e no Pages. Não editar arquivos de origem. Verificar diff e artefatos gerados.
+5. Publicar na página apenas quando solicitado; informar o estado de CI/deploy observado.
+
+ENTRADAS: seleção validada, manifestos, configuração e tabelas I/IV da mesma geração P06.
+SAÍDAS: resultados/estatisticas/estatisticas_por_competencia.csv, resultados/estatisticas/top25_administradores.csv, resumo_historico.rds, resultados/estatisticas/relatorio_estatisticas.md e página derivada.
+CONCLUSÃO: período, assinatura, contagens, hashes, testes e publicação confirmados ou pendências explícitas.

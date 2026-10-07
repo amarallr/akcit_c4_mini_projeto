@@ -4,7 +4,7 @@ validar_evidencias_aceite <- function(evidencia,resultado,config,raiz='.') {
   codigo <- assinatura_codigo(raiz)
   if (!identical(resultado$logica,assinatura_transformacao()) ||
       !identical(resultado$logica_saida,assinatura_transformacao('saida'))) return(FALSE)
-  mapa <- read.csv(file.path(raiz,'P04_CAMPOS_DECLARADOS_DICIONARIO.csv'),stringsAsFactors=FALSE,fileEncoding='UTF-8')
+  mapa <- read.csv(file.path(raiz,'referencias/cvm/dicionario_campos_declarados.csv'),stringsAsFactors=FALSE,fileEncoding='UTF-8')
   if (!identical(resultado$mapa,calcular_hash_assinatura(mapa))) return(FALSE)
   for(meta in resultado$contratos) {
     arq <- validar_destino(raiz,meta$caminho)
@@ -99,7 +99,7 @@ produzir_evidencias_aceite <- function(config=list(),raiz='.',executor_testes=NU
     "args <- commandArgs(trailingOnly=TRUE); x <- readRDS(args[1])",
     "setwd(x$raiz); .libPaths(x$bibliotecas)",
     "source('scripts/p02_utilitarios.R'); p <- carregar_pipeline('.')",
-    "mapa <- read.csv('P04_CAMPOS_DECLARADOS_DICIONARIO.csv',stringsAsFactors=FALSE)",
+    "mapa <- read.csv('referencias/cvm/dicionario_campos_declarados.csv',stringsAsFactors=FALSE)",
     "saveRDS(Sys.getpid(),args[3]); config <- if(args[2]=='usuario') x$usuario else x$demo",
     "r <- p$retomar_consolidacao_fidc(x$downloads,config,'.',mapa,if(args[2]=='interromper') 1 else Inf)",
     "saveRDS(r,args[4])"),script,useBytes=TRUE)

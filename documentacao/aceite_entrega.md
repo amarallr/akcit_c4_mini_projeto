@@ -1,8 +1,8 @@
 # P07 — Aceite do incremento de robustez
 
-Validação local concluída: **47 casos e 402 verificações**, zero falhas/erros/avisos/skips. Produtor operacional aprovado com dados reais locais em quatro processos R: checkpoint novo 1, retomada reutilizando 1; repetição e execução solicitada têm hashes iguais. **412 arquivos normais** permaneceram com hashes idênticos. Comparação do piloto preservou os **42 arquivos** byte a byte. R 4.5.1 e dependências conferidas com renv.lock. A biblioteca testthat informa compilação em R 4.5.3 ao carregar, com versões fixadas e sem avisos nos casos. Publicação autorizada pelo usuário e confirmada no GitHub: os três commits do incremento chegaram ao main, com HEAD local/remoto ba7564354a2d819adcff54abe9efa4b1bb449889. CI do incremento aprovada em Windows e Linux (47 casos/401 verificações em cada ambiente, zero falhas/erros/avisos/skips; suíte local: 47/402, com uma verificação adicional do Parquet opcional instalado): https://github.com/amarallr/akcit_c4_mini_projeto/actions/runs/37091112129. Aceite completo do piloto confirmado após conferir sincronização e evidências locais. Detalhes em P07_SINCRONIZACAO_GITHUB.json. Dados, checkpoints, gerações e bibliotecas permanecem locais e ignorados pelo Git. O commit seguinte registra somente este fechamento documental; o resultado de CI acima refere-se exatamente ao commit informado. P03 não foi reativado.
+Validação local concluída: **47 casos e 402 verificações**, zero falhas/erros/avisos/skips. Produtor operacional aprovado com dados reais locais em quatro processos R: checkpoint novo 1, retomada reutilizando 1; repetição e execução solicitada têm hashes iguais. **412 arquivos normais** permaneceram com hashes idênticos. Comparação do piloto preservou os **42 arquivos** byte a byte. R 4.5.1 e dependências conferidas com renv.lock. A biblioteca testthat informa compilação em R 4.5.3 ao carregar, com versões fixadas e sem avisos nos casos. Publicação autorizada pelo usuário e confirmada no GitHub: os três commits do incremento chegaram ao main, com HEAD local/remoto ba7564354a2d819adcff54abe9efa4b1bb449889. CI do incremento aprovada em Windows e Linux (47 casos/401 verificações em cada ambiente, zero falhas/erros/avisos/skips; suíte local: 47/402, com uma verificação adicional do Parquet opcional instalado): https://github.com/amarallr/akcit_c4_mini_projeto/actions/runs/37091112129. Aceite completo do piloto confirmado após conferir sincronização e evidências locais. Detalhes em evidencias/p07/sincronizacao_github.json. Dados, checkpoints, gerações e bibliotecas permanecem locais e ignorados pelo Git. O commit seguinte registra somente este fechamento documental; o resultado de CI acima refere-se exatamente ao commit informado. P03 não foi reativado.
 
-Contratos, problemas reproduzidos, comandos no RStudio e estatísticas por data completa em [INCREMENTO_ROBUSTEZ.md](INCREMENTO_ROBUSTEZ.md). Provas novas em [P07_EVIDENCIAS_INCREMENTO.json](P07_EVIDENCIAS_INCREMENTO.json); resumo por DT_COMPTC em [P07_RESUMO_COMPETENCIAS.csv](P07_RESUMO_COMPETENCIAS.csv). Essas provas substituem o arquivo de evidências anterior, preservado no histórico. Nenhum resultado antigo foi usado para aprovar este incremento.
+Contratos, problemas reproduzidos, comandos no RStudio e estatísticas por data completa em [documentacao/incremento_robustez.md](incremento_robustez.md). Provas novas em [evidencias/p07/evidencias_incremento.json](../evidencias/p07/evidencias_incremento.json); resumo por DT_COMPTC em [resultados/estatisticas/estatisticas_por_competencia.csv](../resultados/estatisticas/estatisticas_por_competencia.csv). Essas provas substituem o arquivo de evidências anterior, preservado no histórico. Nenhum resultado antigo foi usado para aprovar este incremento.
 
 ---
 
@@ -38,7 +38,7 @@ Arquivos originais, extração, dados, resultados, checkpoints e logs ficam loca
 | X_4 | 46.976 linhas julho, 47.939 agosto, preservadas |
 | CSV flat | 244.781.526 bytes, aproximadamente 245 MB |
 
-Contagens agregadas completas: [P07_EVIDENCIAS_PILOTO.csv](P07_EVIDENCIAS_PILOTO.csv). Não contém registros individuais. Manifesto da geração contém caminho/hash de cada CSV/RDS; `saidas/atual.rds` indica a geração atual. CSV usa UTF-8, ponto e vírgula e decimal ponto, RDS preserva tipos.
+Contagens agregadas completas: [evidencias/p07/evidencias_piloto.csv](../evidencias/p07/evidencias_piloto.csv). Não contém registros individuais. Manifesto da geração contém caminho/hash de cada CSV/RDS; `saidas/atual.rds` indica a geração atual. CSV usa UTF-8, ponto e vírgula e decimal ponto, RDS preserva tipos.
 
 ## Datasets exigidos para o aceite
 
@@ -81,11 +81,11 @@ O PL total soma `TAB_IV_A_VL_PL` da tabela IV, uma vez por CNPJ/competência, us
 | X_7 | 4.386 | 4.397 | 8.783 |
 | **Total** | **189.577** | **192.875** | **382.452** |
 
-Evidências agregadas: [resumo mensal](P07_RESUMO_COMPETENCIAS.csv) e [registros/CNPJs por tabela e competência](P07_RESUMO_TABELAS.csv). A base complementar de cedentes contém 7.004 registros no período e não integra a soma das 18 tabelas acima.
+Evidências agregadas: [resumo mensal](../resultados/estatisticas/estatisticas_por_competencia.csv) e [registros/CNPJs por tabela e competência](../evidencias/p07/resumo_tabelas_piloto.csv). A base complementar de cedentes contém 7.004 registros no período e não integra a soma das 18 tabelas acima.
 
 ## Contrato de leitura e preservação dos campos
 
-[P04_ESQUEMA_OBSERVADO_PILOTO.csv](P04_ESQUEMA_OBSERVADO_PILOTO.csv) compara dicionário com nomes/tipos realmente recebidos: 11 ocorrências de campos novos e cinco ausentes, por leiaute. X_1/X_2/X_3/X_4/X_6 recebem `CNPJ_FUNDO_CLASSE` e `TP_FUNDO_CLASSE` onde o metadado declara `CNPJ_FUNDO`; X_1 inclui `ID_SUBCLASSE`. Não foram fabricados aliases/semânticas. O leitor conserva atributos originais e registra `campo_identidade`, campos desconhecidos e ausentes.
+[referencias/cvm/esquema_observado_piloto.csv](../referencias/cvm/esquema_observado_piloto.csv) compara dicionário com nomes/tipos realmente recebidos: 11 ocorrências de campos novos e cinco ausentes, por leiaute. X_1/X_2/X_3/X_4/X_6 recebem `CNPJ_FUNDO_CLASSE` e `TP_FUNDO_CLASSE` onde o metadado declara `CNPJ_FUNDO`; X_1 inclui `ID_SUBCLASSE`. Não foram fabricados aliases/semânticas. O leitor conserva atributos originais e registra `campo_identidade`, campos desconhecidos e ausentes.
 
 Identificadores entram como texto, sem completar zeros automaticamente ou retirar letras. Valores numéricos declarados são validados com decimal ponto e guardam representação original em colunas próprias. `SEQUENCIAL` bigint permanece texto. Datas são ISO. Fallback Latin-1 é registrado quando o arquivo não passa UTF-8 estrito; não se afirma distinção CP1252/Latin-1 nos bytes compartilhados.
 
@@ -133,14 +133,14 @@ Piloto curto, sem homologação de todo o histórico, serviço contínuo ou repr
 
 | Incremento | Evidência e alcance |
 |---|---|
-| Dependências | `renv.lock` registra R 4.5.1 e 48 pacotes diretos/transitivos; restauração e verificação executadas no ambiente atual, reutilizando versões disponíveis. [Ambiente observado](P02_AMBIENTE_VALIDADO.json). |
+| Dependências | `renv.lock` registra R 4.5.1 e 48 pacotes diretos/transitivos; restauração e verificação executadas no ambiente atual, reutilizando versões disponíveis. [Ambiente observado](../evidencias/ambiente/ambiente_validado.json). |
 | CI | Workflow Windows/Linux executa fixtures e registra artefatos, sem CVM/credenciais. Resultado remoto deve ser consultado na [página Actions](https://github.com/amarallr/akcit_c4_mini_projeto/actions); configurar o workflow não equivale a observar sua execução. |
 | Recuperação | Testes simulam rollback, manifesto corrompido, falha entre ZIP e manifesto final, falha de rename e falha de gravação do flat. Versões anteriores ficam preservadas; o marcador da tentativa impede sucesso anterior como atual. |
-| Qualidade | [Relatório estruturado do piloto](P06_QUALIDADE_PILOTO.csv), por tabela/competência. Campos novos/ausentes, multiplicidades, repetições, formato/DV e conversões registrados sem descarte. Erros de leitura produzem relatório local antes de interromper. |
-| Desempenho | Concatenação única por tabela, montagem do flat por coluna e validação com menos cópias. [Método e medidas](DESEMPENHO.md); 21 CSVs conservaram SHA-256. O flat RDS teve hash binário diferente, mas todas as colunas, tipos e valores foram idênticos e `all.equal()` retornou TRUE. |
+| Qualidade | [Relatório estruturado do piloto](../evidencias/p06/qualidade_piloto.csv), por tabela/competência. Campos novos/ausentes, multiplicidades, repetições, formato/DV e conversões registrados sem descarte. Erros de leitura produzem relatório local antes de interromper. |
+| Desempenho | Concatenação única por tabela, montagem do flat por coluna e validação com menos cópias. [Método e medidas](desempenho.md); 21 CSVs conservaram SHA-256. O flat RDS teve hash binário diferente, mas todas as colunas, tipos e valores foram idênticos e `all.equal()` retornou TRUE. |
 | Parquet | Exportação e round-trip das tabelas IV/VIII reais com Arrow 25.0.1; menor que CSV e maior que RDS nos exemplos. Formato permanece opcional, sem dependência obrigatória. |
 | Aceite | Produtor automatizado executa suíte e retomada/repetição em processos distintos, vinculando provas ao conteúdo de código/testes/lockfile, configuração e geração. |
-| Documentação/licença | README separa reprodução pelos prompts e execução da implementação; arquitetura contém somente DFD. [Contribuição](CONTRIBUICAO.md) registra que não há licença de distribuição declarada; nenhuma licença foi atribuída sem escolha do autor. |
+| Documentação/licença | README separa reprodução pelos prompts e execução da implementação; arquitetura contém somente DFD. [Contribuição](como_contribuir.md) registra que não há licença de distribuição declarada; nenhuma licença foi atribuída sem escolha do autor. |
 
 O dicionário oficial local descreve `TAB_IV_A_VL_PL` como patrimônio líquido e informa tipo numérico, sem explicitar unidade/escala no texto examinado. A página do [conjunto CVM](https://dados.cvm.gov.br/dataset/fidc-doc-inf_mensal) e o dicionário são as referências desta revisão. Evidência insuficiente mantém unidade/escala como não confirmadas; valores plausíveis e fontes secundárias não foram usados para confirmá-las.
 

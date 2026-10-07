@@ -7,10 +7,10 @@ Autorização atual substitui limite de leitura do dicionário: implementar pilo
 README/RETOMADA/arquitetura/SWEBOK/prompts/IDs e relatório P07 atualizados. Dados/resultados/logs/tmp ignorados; publicar apenas código/documentação e evidências agregadas. Após envio confirmado, bola com usuário para revisar resultados e decidir eventual melhoria, sem pendência necessária ao incremento autorizado.
 HISTÓRICO ABAIXO — RESUMOS E LIMITES ANTERIORES SUPERADOS PELA AUTORIZAÇÃO VIGENTE
 RESUMO VIGENTE — DICIONÁRIO P04 E PILOTO CONFIRMADO — 01/10/2026
-Usuário confirmou 2026-07-01 a 2026-08-31 e autorizou somente ler o dicionário. ZIP oficial de metadados: 15.942 bytes; 18 textos; 455 definições; oito descrições vazias. Evidência/hash e limites em P04_LEITURA_DICIONARIO_CVM.md; inventário documental P04_CAMPOS_DECLARADOS_DICIONARIO.csv. Original local ignorado pelo Git. Nenhum informe mensal baixado, implementação ou teste funcional executado. P04 parcial; P03 documental concluído; P05–P07 não iniciados. Bola com usuário após publicação para escolher escopo de tabelas/contratos provisórios. Resumos anteriores abaixo são históricos.
+Usuário confirmou 2026-07-01 a 2026-08-31 e autorizou somente ler o dicionário. ZIP oficial de metadados: 15.942 bytes; 18 textos; 455 definições; oito descrições vazias. Evidência/hash e limites em documentacao/dicionario_cvm.md; inventário documental referencias/cvm/dicionario_campos_declarados.csv. Original local ignorado pelo Git. Nenhum informe mensal baixado, implementação ou teste funcional executado. P04 parcial; P03 documental concluído; P05–P07 não iniciados. Bola com usuário após publicação para escolher escopo de tabelas/contratos provisórios. Resumos anteriores abaixo são históricos.
 
 RESUMO VIGENTE — LEVANTAMENTO INICIAL P04 — 01/10/2026
-Item 1 autorizado: páginas oficiais consultadas, ZIPs não baixados, dicionário somente localizado. Evidência: P04_LEVANTAMENTO_FONTES_CVM.md. P04 parcial, período piloto não selecionado, contratos e implementação pendentes. P04-TST-004 consulta manual parcial, não aprovado como teste funcional. P03 documental concluído; P05–P07 não iniciados. Bola com usuário após fechamento para escolher próximo incremento. Estados anteriores abaixo são históricos.
+Item 1 autorizado: páginas oficiais consultadas, ZIPs não baixados, dicionário somente localizado. Evidência: documentacao/fontes_cvm.md. P04 parcial, período piloto não selecionado, contratos e implementação pendentes. P04-TST-004 consulta manual parcial, não aprovado como teste funcional. P03 documental concluído; P05–P07 não iniciados. Bola com usuário após fechamento para escolher próximo incremento. Estados anteriores abaixo são históricos.
 
 ORIENTAÇÃO VIGENTE — BASE DA IMPLEMENTAÇÃO — 01/10/2026
 A implementação deve utilizar somente os comandos e requisitos dos sete prompts atuais. As consultas oficiais explicitamente previstas nesses prompts servem para confirmar dados e contratos; seguir requisitos atualizados e instruções específicas posteriores do usuário.
@@ -34,7 +34,7 @@ RESUMO VIGENTE — PLANEJAMENTO DA VALIDAÇÃO LIMPA
 
 ## Planejamento da validação independente de P03
 
-Concluído somente o item 1 autorizado: preparar roteiro de validação. Criado VALIDACAO_P03_AMBIENTE_LIMPO.md, com decisões futuras, condição inicial, 12 etapas incrementais, resultados/evidências, critérios de aceite, tratamento de falhas e limites. Criado prompts/modelo_evidencias_P03-TST-004.csv com 12 controles não executados, sem resultados observados ou aprovações importados.
+Concluído somente o item 1 autorizado: preparar roteiro de validação. Criado documentacao/validacao_ambiente_limpo.md, com decisões futuras, condição inicial, 12 etapas incrementais, resultados/evidências, critérios de aceite, tratamento de falhas e limites. Criado prompts/modelo_evidencias_P03-TST-004.csv com 12 controles não executados, sem resultados observados ou aprovações importados.
 
 Requisito P03-RF-005 registrado e regra incorporada aos sete prompts. P03-TST-005 aprovado como revisão documental do planejamento; não executa nem aprova P03-TST-004. Modelo de evidências é apoio do avaliador e deve ser gerado na reprodução, sem virar entrada adicional aos sete prompts. A preparação anterior ao primeiro uso do Codex depende de leitura humana dos prompts/fontes oficiais, não de Codex preinstalado.
 
@@ -66,7 +66,7 @@ RESUMO VIGENTE — ARQUITETURA TÉCNICA DETALHADA
 
 ## Detalhamento técnico da arquitetura — revisão documental
 
-Criado ARQUITETURA.md na raiz, com quatro diagramas Mermaid: ambiente e ferramentas; dependências e chamadas atuais; sequência P01; fluxo de dados futuro planejado. O texto explica R/Rscript, RStudio, Codex/IA, PowerShell, Git/GitHub, GitHub CLI e pacotes, separando desenvolvimento de execução local e publicação.
+Criado documentacao/arquitetura.md na raiz, com quatro diagramas Mermaid: ambiente e ferramentas; dependências e chamadas atuais; sequência P01; fluxo de dados futuro planejado. O texto explica R/Rscript, RStudio, Codex/IA, PowerShell, Git/GitHub, GitHub CLI e pacotes, separando desenvolvimento de execução local e publicação.
 
 Contratos atuais conferidos nos scripts: P01 carrega funções P03, não chama runner, instalação, Git ou etapas futuras; criação do plano é condicional à ausência de pendências; continuidade é opcional e não transacional entre matriz operacional e registro. Wrapper, diagnóstico, console e testes têm entradas próprias. Diagnóstico de remoto do autor e reprodução limpa permanecem limites pendentes.
 
@@ -84,7 +84,7 @@ RESUMO VIGENTE — CICLO DIDÁTICO SWEBOK
 
 ## Ciclo de desenvolvimento baseado no SWEBOK — revisão documental
 
-Criado na raiz o documento Fases do Ciclo de Desenvolvimento de Software SWEBOK.md. Referência consultada: SWEBOK v4.0a da IEEE Computer Society. O guia organiza áreas de conhecimento; as dez etapas do documento são adaptação didática do mini projeto, sem impor execução linear nem equivalência entre prompts e fases.
+Criado na raiz o documento documentacao/ciclo_desenvolvimento_swebok.md. Referência consultada: SWEBOK v4.0a da IEEE Computer Society. O guia organiza áreas de conhecimento; as dez etapas do documento são adaptação didática do mini projeto, sem impor execução linear nem equivalência entre prompts e fases.
 
 Etapas: 1 concepção/planejamento/viabilidade; 2 requisitos; 3 arquitetura/projeto; 4 preparação; 5 construção; 6 verificação/validação/testes; 7 entrega/implantação local/aceite; 8 operação/acompanhamento; 9 manutenção/evolução; 10 encerramento/retirada/preservação. Cada etapa tem explicação, aplicação ao projeto, atuação da IA e revisão humana, artefatos, critérios, áreas relacionadas e estado.
 
@@ -177,7 +177,7 @@ Responsável pelo próximo movimento: usuário, para indicar o primeiro incremen
 O texto abaixo conserva o histórico em ordem de registro. Declarações de
 pendência anteriores foram superadas pelos fechamentos ao final; este bloco
 resume o estado vigente. E-mail real substituído por exemplo fictício.
-Originais preservados em locais/, excluída do Git. Consulte RETOMADA.md.
+Originais preservados em locais/, excluída do Git. Consulte documentacao/retomada.md.
 REGISTRO DO PROJETO — v2026-10-01
 ATUALIZAÇÃO P03 — CONSOLE RSTUDIO — 01/10/2026
 Evidência: saída dos quatro comandos fornecida pelo usuário nesta conversa;
@@ -220,10 +220,10 @@ CONFIRMADO LOCALMENTE
   não consultadas; confirmação anterior permanece evidência histórica.
 - git check-ignore confirmou exclusões de .env, dados/, saidas/, checkpoints/,
   logs/, tmp/, .R-library/ e .Rproj.user/. .env.example é rastreado e fictício.
-- git status --short observou .Rproj modificado e RETOMADA.md/scripts/p03_verificar_sessao.R/prompts/ não rastreados no levantamento. Alterações preservadas.
+- git status --short observou .Rproj modificado e documentacao/retomada.md/scripts/p03_verificar_sessao.R/prompts/ não rastreados no levantamento. Alterações preservadas.
 
 LACUNAS E PRÓXIMO INCREMENTO A DISCUTIR
-- README e RETOMADA.md apresentavam seleção do dataset pendente; atualização documental prevista naquele levantamento.
+- README e documentacao/retomada.md apresentavam seleção do dataset pendente; atualização documental prevista naquele levantamento.
 - Scripts atuais são preparação anterior; não implementam integralmente os
   contratos/IDs P03-FUN-001/002 nem demonstram os testes novos.
 - Não existem scripts/p02_testar.R, scripts/p01_executar.R ou módulos R/ previstos;
@@ -493,7 +493,7 @@ Fechamento documental publicado: f174a103657e18c3528d667590e0a9f3f50b5000. Hash 
 
 REVISAO PARA PUBLICACAO — 01/10/2026
 Versoes revisadas preparadas localmente; originais preservados em locais/.
-PUBLICACAO.md lista arquivos, verificacoes e limitacoes. Sem commit/push novo.
+documentacao/publicacao.md lista arquivos, verificacoes e limitacoes. Sem commit/push novo.
 P03 concluida; P04 nao iniciada. Proximo movimento: usuario indica publicacao.
 
 
@@ -518,7 +518,7 @@ Arquivos preservados:
 Próximo movimento: Resolver as pendências da etapa solicitada.
 Matriz operacional: logs/p01/matriz_execucoes.csv; catálogo normativo preservado.
 
-## Correção Mermaid — item 5 de ARQUITETURA.md
+## Correção Mermaid — item 5 de documentacao/arquitetura.md
 
 O usuário encontrou erro de renderização no GitHub. A revisão estrutural anterior não detectou ponto e vírgula literal em mensagens do diagrama de sequência; Mermaid o interpreta como separador de instruções. Substituídos por vírgulas no item 5, preservando o fluxo. Os outros três blocos foram conferidos quanto a esse problema.
 
@@ -540,10 +540,10 @@ Leia este fechamento antes dos registros históricos abaixo/acima. Implementar i
 FECHAMENTO LOCAL DO INCREMENTO — 02/10/2026
 36 casos/275 verificações aprovados. Evidências automáticas de interrupção, retomada e repetição em três processos, 36 checkpoints e 42 arquivos CSV/RDS de dados/qualidade com hashes iguais. Flat preserva 8.783 linhas/14.749 colunas; 21 CSVs equivalentes à revisão pré-otimização. renv restaurado/verificado; Parquet avaliado em IV/VIII; unidade/escala não confirmadas. A bola permanece com o agente para publicar o novo versão de referência, verificar CI e limpar o histórico. Não reativar P03 ou VM.
 
-02/10/2026 — Incremento de robustez solicitado em tmp/tmp.txt; referência ddd8b1e. doit significa ler tmp/tmp.txt. Problemas reproduzidos em código de referência com fixtures: download ausente concluiu, mudança de lógica reutilizou e chave temporal vazia aprovou. Contratos e detalhes em INCREMENTO_ROBUSTEZ.md; validação final em andamento. Revisão de arquitetura mantém somente um DFD e P03 documental. Pedido adicional: PL máximo/P75/mediana/P25/mínimo/CV calculados por data completa DT_COMPTC, sem juntar datas distintas no mesmo mês. Soma original e datasets preservados. Testes de quantis tipo 7, CV amostral e separação de datas incluídos.
+02/10/2026 — Incremento de robustez solicitado em tmp/tmp.txt; referência ddd8b1e. doit significa ler tmp/tmp.txt. Problemas reproduzidos em código de referência com fixtures: download ausente concluiu, mudança de lógica reutilizou e chave temporal vazia aprovou. Contratos e detalhes em documentacao/incremento_robustez.md; validação final em andamento. Revisão de arquitetura mantém somente um DFD e P03 documental. Pedido adicional: PL máximo/P75/mediana/P25/mínimo/CV calculados por data completa DT_COMPTC, sem juntar datas distintas no mesmo mês. Soma original e datasets preservados. Testes de quantis tipo 7, CV amostral e separação de datas incluídos.
 
 Preferência atual do usuário: atualizações sempre que possível, bola explicitada e prazo estimado para finalizar. Incorporada em P01 e continuidade; bola com o agente durante execução autorizada.
 
 Validação local concluída: **47 casos e 402 verificações**, zero falhas/erros/avisos/skips. Produtor operacional aprovado com dados reais locais em quatro processos R: checkpoint novo 1, retomada reutilizando 1; repetição e execução solicitada têm hashes iguais. **412 arquivos normais** permaneceram com hashes idênticos. Comparação do piloto preservou os **42 arquivos** byte a byte. R 4.5.1 e dependências conferidas com renv.lock. A biblioteca testthat informa compilação em R 4.5.3 ao carregar, com versões fixadas e sem avisos nos casos. Git: histórico anterior preservado; publicação remota deste incremento não executada. A CI consultada passou somente para a referência ddd8b1e; CI do incremento e aceite com sincronização remota permanecem pendentes. Linux não foi executado nesta máquina. P03 não foi reativado.
 
-2026-10-02T23:56:54-0300 Publicação autorizada pelo usuário e confirmada no GitHub: os três commits do incremento chegaram ao main, com HEAD local/remoto ba7564354a2d819adcff54abe9efa4b1bb449889. CI do incremento aprovada em Windows e Linux: https://github.com/amarallr/akcit_c4_mini_projeto/actions/runs/37091112129. Aceite completo do piloto confirmado após conferir sincronização e evidências locais. Detalhes em P07_SINCRONIZACAO_GITHUB.json. Dados, checkpoints, gerações e bibliotecas permanecem locais e ignorados pelo Git. O commit seguinte registra somente este fechamento documental; o resultado de CI acima refere-se exatamente ao commit informado.
+2026-10-02T23:56:54-0300 Publicação autorizada pelo usuário e confirmada no GitHub: os três commits do incremento chegaram ao main, com HEAD local/remoto ba7564354a2d819adcff54abe9efa4b1bb449889. CI do incremento aprovada em Windows e Linux: https://github.com/amarallr/akcit_c4_mini_projeto/actions/runs/37091112129. Aceite completo do piloto confirmado após conferir sincronização e evidências locais. Detalhes em evidencias/p07/sincronizacao_github.json. Dados, checkpoints, gerações e bibliotecas permanecem locais e ignorados pelo Git. O commit seguinte registra somente este fechamento documental; o resultado de CI acima refere-se exatamente ao commit informado.

@@ -5,7 +5,7 @@ medir_pipeline <- function(config=list(),raiz='.') {
   config <- p$validar_configuracao(config,raiz)
   downloads <- p$ler_rds_recuperavel(file.path(raiz,config$dados,'downloads.rds'))
   if (is.null(downloads)) stop('Downloads locais válidos necessários.')
-  mapa <- read.csv(file.path(raiz,'P04_CAMPOS_DECLARADOS_DICIONARIO.csv'),stringsAsFactors=FALSE)
+  mapa <- read.csv(file.path(raiz,'referencias/cvm/dicionario_campos_declarados.csv'),stringsAsFactors=FALSE)
   medicoes <- list()
   for (modo in c('temporal','completo')) {
     config$gerar_flat <- modo=='completo'

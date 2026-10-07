@@ -30,7 +30,7 @@
   },
   "contratos": {
     "dicionario": {
-      "caminho": "P04_CAMPOS_DECLARADOS_DICIONARIO.csv",
+      "caminho": "referencias/cvm/dicionario_campos_declarados.csv",
       "hash": "4def10470e1dfc5b0ff3646cac6460b5dea49bf18cf1b63eb5ab0479b26d33f1"
     }
   },
@@ -340,7 +340,7 @@
     "incremento": "nao_executado_na_CI_sem_publicacao"
   },
   "resumo_pl": {
-    "arquivo": "P07_RESUMO_COMPETENCIAS.csv",
+    "arquivo": "resultados/estatisticas/estatisticas_por_competencia.csv",
     "grupo": "DT_COMPTC_data_completa",
     "quantis": "R_tipo_7",
     "cv": "sd_amostral/media*100",

@@ -2,11 +2,11 @@
 
 Este documento descreve como os informes mensais de FIDCs da CVM se tornam datasets consolidados no tempo e uma tabela final única (flat). O diagrama de fluxo de dados (DFD) representa as entradas, as transformações, os depósitos locais e os resultados do pipeline. Sua referência é o piloto de julho/agosto de 2026, validado localmente.
 
-A arquitetura resulta dos sete prompts P01–P07. P04, P05 e P06 definem as transformações dos dados, enquanto P07 verifica a entrega. P01 organiza a execução dessas etapas, P02 fornece funções comuns e P03 orienta a preparação do ambiente. Essa distinção explica por que os sete prompts não aparecem como sete processos de transformação no DFD.
+A arquitetura reúne os prompts P01–P08. P04, P05 e P06 definem as transformações dos dados, P07 verifica a entrega e P08 calcula estatísticas e documenta a análise a partir de uma geração temporal concluída. P01 organiza a execução, P02 fornece funções comuns e P03 orienta a preparação. P08 é uma análise derivada, não uma transformação adicional dos dados originais.
 
 ## Diagrama de fluxo de dados
 
-O DFD abaixo apresenta o pipeline em um único nível de detalhe. Retângulos representam entidades externas, formas arredondadas representam processos e cilindros representam depósitos de dados. Cada seta nomeia a informação transferida. A numeração dos processos identifica sua responsabilidade no diagrama; os códigos P04–P07 indicam os prompts correspondentes.
+O DFD abaixo apresenta o pipeline em um único nível de detalhe. Retângulos representam entidades externas, formas arredondadas representam processos e cilindros representam depósitos de dados. Cada seta nomeia a informação transferida. A numeração dos processos identifica sua responsabilidade no diagrama; P08 acrescenta análise derivada da geração temporal.
 
 ```mermaid
 flowchart TB
@@ -17,6 +17,7 @@ flowchart TB
     P5("2. Obter e validar arquivos — P05")
     P6("3. Consolidar dados — P06")
     P7("4. Verificar entrega — P07")
+    P8("5. Resumir estatísticas — P08")
 
     D1[("D1 — Configuração, inventário e plano")]
     D2[("D2 — ZIPs, CSVs extraídos e manifestos")]
@@ -24,6 +25,7 @@ flowchart TB
     D4[("D4 — Checkpoints e assinaturas")]
     D5[("D5 — Datasets, manifesto e estado atual")]
     D6[("D6 — Evidências de testes e retomada")]
+    D7[("D7 — Estatísticas, ranking e resumo público")]
 
     U -->|"Período, tabelas e políticas"| P4
     P4 -->|"Consulta de arquivos disponíveis"| C
@@ -50,6 +52,10 @@ flowchart TB
     D6 -->|"Resultados vinculados à seleção e assinatura"| P7
     P7 -->|"Resultado do aceite local e pendências"| U
     D5 -->|"Datasets consolidados em CSV e RDS"| U
+    D1 -->|"Período e política winsorização"| P8
+    D5 -->|"Tabelas I/IV, hashes e assinatura"| P8
+    P8 -->|"Estatísticas por competência, top 25 e análise"| D7
+    D7 -->|"Resumo e CSVs"| U
 ```
 
 O estudante informa o período, as tabelas e as políticas de processamento. P04 confronta essa seleção com as listagens da CVM e grava a configuração, o inventário e o plano em D1. P05 lê esse plano, obtém os ZIPs e valida seu conteúdo antes de registrar os originais, a extração e os manifestos em D2. Quando há arquivos anteriores válidos, os mesmos registros sustentam sua reutilização.
@@ -62,7 +68,7 @@ D5 contém a geração de saída, seu manifesto de hashes, o relatório de quali
 
 Os temporais abrangem I, II, III, IV, V, VI, VII, VIII, IX, X, X_1, X_1_1, X_2, X_3, X_4, X_5, X_6 e X_7. A referência atual identifica a geração validada; `execucao.rds` registra a tentativa mais recente e impede que uma falha seja apresentada como sucesso anterior. As partes de cada tabela são reunidas uma vez antes da escrita, reduzindo concatenações repetidas.
 
-P07 consulta essa entrega e a seleção esperada, confere plano/unidades, arquivos, hashes, identidade/datas e esquema/contagens CSV/RDS em ambos modos; exige igualdade entre a união temporal e a chave única do flat quando habilitado e avalia as evidências em D6. O produtor de evidências executa a suíte e usa área nova em logs/evidencias/<id>, com cópias de ZIPs íntegros e checkpoints inicialmente ausentes. Em processos R distintos verifica a política solicitada e demonstra persistência/interrupção/retomada/repetição com checkpoints habilitados. Registra explicitamente a configuração derivada e as diferenças. Não altera checkpoints, gerações ou ponteiros normais. O executor de testes pode ser injetado nas fixtures; o runner impede recursão inadvertida. Cada evidência vincula configuração completa, assinatura da geração, hash dos artefatos e hash do conteúdo dos scripts, testes e lockfile. Booleanos manuais não aprovam o aceite operacional. O resultado informa ao estudante o aceite do modo e as pendências; o [relatório de aceite](P07_ACEITE_ENTREGA.md) distingue as evidências locais da CI e do piloto real.
+P07 consulta essa entrega e a seleção esperada, confere plano/unidades, arquivos, hashes, identidade/datas e esquema/contagens CSV/RDS em ambos modos; exige igualdade entre a união temporal e a chave única do flat quando habilitado e avalia as evidências em D6. O produtor de evidências executa a suíte e usa área nova em logs/evidencias/<id>, com cópias de ZIPs íntegros e checkpoints inicialmente ausentes. Em processos R distintos verifica a política solicitada e demonstra persistência/interrupção/retomada/repetição com checkpoints habilitados. Registra explicitamente a configuração derivada e as diferenças. Não altera checkpoints, gerações ou ponteiros normais. O executor de testes pode ser injetado nas fixtures; o runner impede recursão inadvertida. Cada evidência vincula configuração completa, assinatura da geração, hash dos artefatos e hash do conteúdo dos scripts, testes e lockfile. Booleanos manuais não aprovam o aceite operacional. O resultado informa ao estudante o aceite do modo e as pendências; o [relatório de aceite](aceite_entrega.md) distingue as evidências locais da CI e do piloto real.
 
 ## Relação entre o DFD e os prompts
 
@@ -77,17 +83,18 @@ Os prompts são instruções para construir e verificar o software com IA e revi
 | **P05 — Obtenção dos dados** | Corresponde ao processo 2 e a D2. Especifica download, validação, preservação dos originais, extração e manifestos. |
 | **P06 — Consolidação** | Corresponde ao processo 3 e aos depósitos D4/D5. Define leitura, qualidade, retomada, temporais, flat opcional e cedentes. As medições de tempo, tamanho e heap R ficam em logs, com método documentado. |
 | **P07 — Aceite e entrega** | Corresponde ao processo 4, que examina D5 com apoio de D1/D6. Define os critérios e as evidências necessários para aceitar o conjunto de resultados. |
+| **P08 — Estatísticas consolidadas** | Corresponde ao processo 5, que lê a geração temporal em D5 e grava estatísticas, ranking e documentação em D7. Não modifica os datasets de origem. |
 
-Essa relação permite rastrear uma alteração do resultado até o prompt responsável. Uma mudança na seleção pertence a P04 e modifica D1; uma mudança na leitura ou na consolidação pertence a P06 e exige revisar o mapa ou a versão da transformação, os checkpoints e as saídas afetadas. P07 deve então verificar a nova geração com evidências correspondentes. P01 e P02 mantêm a coordenação e os serviços comuns necessários a essas operações.
+Essa relação permite rastrear uma alteração do resultado até o prompt responsável. Uma mudança na seleção pertence a P04 e modifica D1; uma mudança na leitura ou na consolidação pertence a P06; uma mudança nas métricas ou apresentação pertence a P08 e gera novamente D7 a partir de hashes conferidos. P07 verifica a geração consolidada. P01 e P02 mantêm coordenação e serviços comuns.
 
 ## Persistência e limites da representação
 
-Os depósitos do DFD são arquivos locais. D1 corresponde a `dados/configuracao.rds`; D2 reúne `dados/originais`, `dados/extraidos`, manifestos e o registro de downloads; D3 corresponde a `P04_CAMPOS_DECLARADOS_DICIONARIO.csv`; D4 fica em `checkpoints`; D5 reúne `saidas/geracoes` e `saidas/atual.rds`; D6 inclui os resultados de testes e o registro `logs/evidencias_aceite.rds`. O [README](README.md) apresenta os comandos para produzir e consultar esses artefatos.
+Os depósitos do DFD são arquivos locais. D1 corresponde a `dados/configuracao.rds`; D2 reúne `dados/originais`, `dados/extraidos`, manifestos e o registro de downloads; D3 corresponde a `referencias/cvm/dicionario_campos_declarados.csv`; D4 fica em `checkpoints`; D5 reúne `saidas/geracoes` e `saidas/atual.rds`; D6 inclui os resultados de testes e o registro `logs/evidencias_aceite.rds`. O [README](../README.md) apresenta os comandos para produzir e consultar esses artefatos.
 
-O fluxo executa localmente em R. RStudio e Codex apoiam o desenvolvimento; Git e GitHub publicam código e documentação em um fechamento separado. A função de aceite não consulta o GitHub: a sincronização remota exige conferência própria, descrita em [PUBLICACAO](PUBLICACAO.md). Dados, saídas, checkpoints e logs permanecem locais e fora do Git.
+O fluxo executa localmente em R. RStudio e Codex apoiam o desenvolvimento; Git e GitHub publicam código e documentação em um fechamento separado. A função de aceite não consulta o GitHub: a sincronização remota exige conferência própria, descrita em [PUBLICACAO](publicacao.md). Dados, saídas, checkpoints e logs permanecem locais e fora do Git.
 
 Rollback válido é restaurado conservadoramente e o destino interrompido fica preservado. Manifestos RDS corrompidos são segregados para diagnóstico; não viram prova de sucesso. No download, o ZIP anterior é mantido até a confirmação do manifesto final. Nas saídas, o marcador da tentativa e a referência atual são conferidos pelo aceite. Uma falha de gravação impede a aprovação, mesmo quando a geração anterior ainda existe. Essa recuperação não oferece transação conjunta entre arquivos nem resolve automaticamente backup inválido ou bloqueio do OneDrive.
 
-O diagrama descreve o protótipo e seus modos, sem homologar todos os leiautes históricos, unidades monetárias ou escalas percentuais. Dependências fixadas tornam a execução verificável, sem provar reprodução em máquina limpa. A conferência do DFD foi textual, contra os scripts; não foi executado um renderizador Mermaid nesta revisão. [DESEMPENHO](DESEMPENHO.md) documenta as medidas e seus limites.
+O diagrama descreve o protótipo e seus modos, sem homologar todos os leiautes históricos, unidades monetárias ou escalas percentuais. Dependências fixadas tornam a execução verificável, sem provar reprodução em máquina limpa. A conferência do DFD foi textual, contra os scripts; não foi executado um renderizador Mermaid nesta revisão. [DESEMPENHO](desempenho.md) documenta as medidas e seus limites.
 
-Consulte [INCREMENTO_ROBUSTEZ.md](INCREMENTO_ROBUSTEZ.md) para contratos, estados por tentativa, migração conservadora e verificações recentes. O diagrama vigente é somente o DFD acima; P03 permanece documental.
+Consulte [documentacao/incremento_robustez.md](incremento_robustez.md) para contratos, estados por tentativa, migração conservadora e verificações recentes. O diagrama vigente é somente o DFD acima; P03 permanece documental.

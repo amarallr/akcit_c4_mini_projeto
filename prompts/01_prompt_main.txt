@@ -57,7 +57,7 @@ Durante execução, responder dúvidas e continuar o escopo autorizado.
 
 HIERARQUIA E CHAMADAS
 P01 chama P02 como contrato comum de TODAS as etapas, não como etapa de dados.
-P01 chama P03 → P04 → P05 → P06 → P07, observando pré-condições.
+P01 chama P03 → P04 → P05 → P06 → P07, observando pré-condições. P08 é invocado separadamente após uma geração P06 concluída para calcular estatísticas derivadas; não altera a execução de P04–P07.
 P03 a P07 referenciam P02; P04 depende do ambiente necessário; P05 do plano
 P04; P06 de originais validados P05 e contratos P04; P07 das entregas anteriores.
 "Chamar" significa ler o arquivo e seguir suas instruções; não é função R,

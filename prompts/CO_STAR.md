@@ -7,7 +7,7 @@ testes continuam sendo os critérios verificáveis da implementação.
 
 | Parte | Pergunta orientadora | Aplicação no projeto |
 |---|---|---|
-| C — Context | Em qual situação o trabalho acontece? | Mini projeto acadêmico, somente sete prompts, ferramentas e artefatos a criar |
+| C — Context | Em qual situação o trabalho acontece? | Mini projeto acadêmico, oito prompts, ferramentas e artefatos a criar |
 | O — Objective | Qual resultado este incremento deve produzir? | Entrega da etapa, seu limite e condições para encerrá-la |
 | S — Style | Como apresentar explicações e código? | Português, exemplos pequenos, tabelas de status e código simples |
 | T — Tone | Qual postura manter na conversa? | Colaboração, paciência, precisão e transparência sobre falhas |
@@ -61,10 +61,11 @@ movimento. Se ainda há trabalho autorizado do agente, ele deve continuá-lo.
 | P05 | Obter originais e extrações válidas | Estados por unidade, hashes, manifestos e retomada |
 | P06 | Transformar e consolidar com rastreabilidade | Saídas, qualidade, conflitos, checkpoints e equivalência |
 | P07 | Avaliar e demonstrar a entrega | Inventário final, provas e aceite local/completo separado |
+| P08 | Analisar uma série consolidada | Estatísticas por competência, ranking winsorizado e limites interpretativos |
 
-P01 coordena; P02 é comum; P03 a P07 acrescentam orientação específica.
+P01 coordena; P02 é comum; P03 a P08 acrescentam orientação específica.
 Ler CO-STAR não autoriza avançar de etapa. O estado vigente continua em
-RETOMADA.md e registro_projeto.txt. Especificação documental não substitui
+documentacao/retomada.md e registro_projeto.txt. Especificação documental não substitui
 implementação, consulta oficial, execução de teste ou publicação confirmada.
 
 ## Exemplo de fechamento de um incremento
@@ -77,7 +78,7 @@ não significa que P04 já tenha sido iniciada ou que seus testes passaram.
 
 ## Premissa acadêmica e ponto de partida obrigatório
 
-Este é um mini projeto didático da especialização em Engenharia de Software com IA Generativa. R, RStudio, Codex, Git e GitHub têm instalação/configuração descrita no roteiro; P03 não executa essas ações; ferramentas auxiliares terão seus próprios pré-requisitos explicados. O leitor parte somente dos sete prompts atuais. Não precisa de códigos, scripts, documentos, contas ou repositórios previamente configurados. Guias, registros e artefatos desta cópia são resultados da execução do autor, não entradas obrigatórias para outra reprodução.
+Este é um mini projeto didático da especialização em Engenharia de Software com IA Generativa. R, RStudio, Codex, Git e GitHub têm instalação/configuração descrita no roteiro; P03 não executa essas ações; ferramentas auxiliares terão seus próprios pré-requisitos explicados. O leitor parte somente dos oito prompts atuais. Não precisa de códigos, scripts, documentos, contas ou repositórios previamente configurados. Guias, registros e artefatos desta cópia são resultados da execução do autor, não entradas obrigatórias para outra reprodução.
 
 A IA participa de todo o ciclo, com decisões e revisão humana: requisitos, planejamento, ambiente, código, testes, revisão, documentação e versionamento. O CO-STAR deve traduzir esse processo em instruções verificáveis. Contexto explicita a ausência inicial de recursos; Objetivo define o incremento; Estilo identifica onde executar cada comando; Tom explica dificuldades; Público inclui estudantes iniciantes nas ferramentas; Resposta entrega artefatos, evidências e responsabilidade pelo próximo movimento.
 
@@ -85,14 +86,14 @@ Consultar AMBIENTE_DO_ZERO.md como apoio opcional. Na primeira execução, gerar
 
 Nomenclatura (P02-RNF-008): scripts próprios usam pNN_nome_da_funcao.ext; testes usam test-pNN-finalidade.R. O prefixo registra responsabilidade; cabeçalhos, chamadas e matriz explicam dependências. Uma renomeação preserva IDs e exige atualização e validação das referências.
 
-Mapa SWEBOK: documento Fases do Ciclo de Desenvolvimento de Software SWEBOK.md na raiz; dez etapas didáticas explicadas e aplicadas ao projeto. Regras P01-RF-004/P02-RNF-009 e revisão P02-TST-009. Fonte e adaptação são distintas; não comprova conclusão integral do ciclo. Na primeira reprodução, gerar esse documento a partir dos sete prompts, sem exigir sua existência prévia.
+Mapa SWEBOK: documento documentacao/ciclo_desenvolvimento_swebok.md na raiz; dez etapas didáticas explicadas e aplicadas ao projeto. Regras P01-RF-004/P02-RNF-009 e revisão P02-TST-009. Fonte e adaptação são distintas; não comprova conclusão integral do ciclo. Na primeira reprodução, gerar esse documento a partir dos prompts vigentes, sem exigir sua existência prévia.
 
-Arquitetura detalhada em [ARQUITETURA.md](../ARQUITETURA.md): quatro diagramas, ferramentas, contratos, chamadas, sequência, persistência e limites. Regras P01-RF-005/P02-RNF-010; revisão P02-TST-010. Novos pedidos devem atualizar os requisitos responsáveis antes da implementação dependente. Na reprodução inicial, gerar o documento; não exigir sua existência prévia.
+Arquitetura detalhada em [documentacao/arquitetura.md](../documentacao/arquitetura.md): quatro diagramas, ferramentas, contratos, chamadas, sequência, persistência e limites. Regras P01-RF-005/P02-RNF-010; revisão P02-TST-010. Novos pedidos devem atualizar os requisitos responsáveis antes da implementação dependente. Na reprodução inicial, gerar o documento; não exigir sua existência prévia.
 
 Incremento inicial P04: Contexto = fontes oficiais ainda a confirmar, Objetivo = levantamento externo, Estilo = evidências/limites tabulados, Tom = precisão sobre o não verificado, Público = estudante/revisor, Resposta = documento de fontes e status parcial, sem implementação ou download. Próxima decisão humana: escolher o incremento seguinte.
 
 Incremento de leitura P04: Objetivo limitado ao dicionário oficial, com julho/agosto de 2026 confirmado; Resposta documenta 18 textos/455 definições e suas lacunas. Tipos declarados não são contrato validado contra informes, não autorizam download nem implementação automática. A decisão humana limita o próximo incremento.
 
-## Incremento vigente P04–P07
+## Incremento vigente P04–P08
 
-Os dois exemplos de incrementos P04 acima são históricos. A autorização atual cobre implementação e piloto real julho/agosto de 2026, com CNPJ/competência, origem e CSV temporal/flat. Contexto identifica o mini projeto didático e os recursos; Objetivo limita cada chamada à etapa pedida; Estilo ensina comandos e contratos; Tom distingue dados observados e hipóteses; Público parte de ambiente sem ferramentas; Resposta traz resultados, testes, limites e responsável. IA participou de requisitos, arquitetura, código, testes e revisão/publicação; os prompts registram decisões humanas. P03 permanece roteiro sem testar sua execução. O sucesso do autor não aprova outra reprodução. Após publicação, a bola fica com o usuário para revisar os resultados.
+Os exemplos de incrementos P04 acima são históricos. A série analítica desta atualização vai de janeiro de 2020 a setembro de 2026. P08 associa administradores por CNPJ, tipo Fundo/Classe e data; produz estatísticas, ranking winsorizado e metadados da fonte, período, leiautes, campos, linhagem e limites, descritos no README e no Pages. Contexto identifica o mini projeto didático; Objetivo limita cada chamada à etapa pedida; Estilo ensina comandos e contratos; Tom distingue dados observados e hipóteses; Público parte de ambiente sem ferramentas; Resposta traz resultados, testes realmente executados, limites e responsável. IA participa de requisitos, arquitetura, código, testes e revisão/publicação, com decisões humanas registradas. P03 permanece roteiro sem testar sua execução. Uma análise não homologa todo o histórico CVM nem aprova outra reprodução.
