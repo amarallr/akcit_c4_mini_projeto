@@ -5,6 +5,11 @@ t <- t[order(-t$pl_soma_periodo,t$cnpj_admin,na.last=TRUE),]
 fmt <- function(x) formatC(x,format='f',digits=2,big.mark='.',decimal.mark=',')
 data_legivel <- function(x) format(as.Date(x),'%d/%m/%Y')
 data_geracao <- format(Sys.Date(),'%d/%m/%Y')
+ultima_data <- max(as.Date(r$data_competencia))
+ultimo_ano_completo <- as.integer(format(ultima_data,'%Y')) - as.integer(format(ultima_data,'%m') != '12')
+anos_exibidos <- seq.int(ultimo_ano_completo - 4L,ultimo_ano_completo)
+ano_competencia <- as.integer(format(as.Date(r$data_competencia),'%Y'))
+mes_competencia <- as.integer(format(as.Date(r$data_competencia),'%m'))
 linhas_temporais <- sum(atual$linhas_tabelas)
 linhas_cedentes <- atual$linhas_cedentes
 campos_declarados <- nrow(read.csv('referencias/cvm/dicionario_campos_declarados.csv',stringsAsFactors=FALSE,fileEncoding='UTF-8'))
@@ -29,18 +34,19 @@ linhas <- c('# Estatísticas dos FIDC','',
  '| Limites conhecidos | A tabela X não está presente nos pacotes históricos de 2020–2022. A CVM pode revisar arquivos; unidade monetária e escala percentual não foram confirmadas. |',
  '', 'Esta descrição se refere à geração consolidada deste relatório. O dicionário declara o leiaute; o esquema observado do piloto é uma evidência de julho/agosto de 2026, não uma afirmação de esquema idêntico em todas as competências.',
  '', '## PL por data de competência','',
- 'Estatísticas por DT_COMPTC sobre o PL original, com quantis tipo 7 de R. Fundos/classes e administradores contam CNPJs distintos por data. A associação entre as tabelas I e IV usa CNPJ, tipo (fundo/classe) e data exata.',
+ paste0('As tabelas exibem somente as competências do quarto trimestre nos cinco anos completos mais recentes (',min(anos_exibidos),'–',max(anos_exibidos),'). As séries completas continuam disponíveis nos CSVs para download. Estatísticas por DT_COMPTC sobre o PL original, com quantis tipo 7 de R. Fundos/classes e administradores contam CNPJs distintos por data. A associação entre as tabelas I e IV usa CNPJ, tipo (fundo/classe) e data exata.'),
  '', '| Data de competência | Fundos/classes (CNPJs distintos) | Administradores distintos |', '|:---|---:|---:|')
-for(i in seq_len(nrow(r))) linhas <- c(linhas,paste0('| ',data_legivel(r$data_competencia[i]),' | ',r$fundos_cnpj[i],' | ',r$quantidade_administradores[i],' |'))
+indices_exibidos <- which(ano_competencia %in% anos_exibidos & mes_competencia %in% 10:12)
+for(i in indices_exibidos) linhas <- c(linhas,paste0('| ',data_legivel(r$data_competencia[i]),' | ',r$fundos_cnpj[i],' | ',r$quantidade_administradores[i],' |'))
 linhas <- c(linhas,'','**Distribuição do PL — valores em milhões**','',
  '| Data de competência | Fundos/classes | PL mínimo | Percentil 25 | Mediana | PL médio | Percentil 75 | PL máximo |',
  '|:---|---:|---:|---:|---:|---:|---:|---:|')
-for(i in seq_len(nrow(r))) linhas <- c(linhas,paste0('| ',data_legivel(r$data_competencia[i]),' | ',r$fundos_cnpj[i],' | ',paste(fmt(unlist(r[i,c('pl_min_valor_fonte','pl_percentil_25_valor_fonte','pl_mediana_valor_fonte','pl_media_valor_fonte','pl_percentil_75_valor_fonte','pl_max_valor_fonte')])/1e6),collapse=' | '),' |'))
-trimestres <- grep('^pl_[0-9]{4}_T[1-4]$',names(t),value=TRUE)
+for(i in indices_exibidos) linhas <- c(linhas,paste0('| ',data_legivel(r$data_competencia[i]),' | ',r$fundos_cnpj[i],' | ',paste(fmt(unlist(r[i,c('pl_min_valor_fonte','pl_percentil_25_valor_fonte','pl_mediana_valor_fonte','pl_media_valor_fonte','pl_percentil_75_valor_fonte','pl_max_valor_fonte')])/1e6),collapse=' | '),' |'))
+trimestres <- intersect(paste0('pl_',anos_exibidos,'_T4'),names(t))
 rotulos <- sub('^pl_([0-9]{4})_T([1-4])$','PL — \\2º trim./\\1',trimestres)
 linhas <- c(linhas,'','## Top 25 administradores por PL','',
  '**Ordenação:** PL acumulado do período, do maior para o menor. Valores de PL em milhões; participação em percentual. A quantidade de fundos/classes conta CNPJs distintos por administrador no período, sem repetir um fundo presente em mais de um mês. Um fundo que muda de administrador pode aparecer na contagem de ambos.','',
- 'PL winsorizado antes da soma: valores inferiores ao P2,5 são substituídos pelo P2,5 e superiores ao P97,5 pelo P97,5, calculados separadamente em cada data sobre todos os PLs disponíveis. Os dados originais permanecem preservados. Ranking decrescente pela soma do período; percentual usa a soma winsorizada dos administradores identificados, incluindo os fora do top 25. PL ausente é excluído e grupos inteiramente ausentes ficam sem valor. Registros sem administrador identificado permanecem nas estatísticas por competência, mas não entram no ranking nem em seu denominador.',
+ 'PL winsorizado antes da soma: valores inferiores ao P2,5 são substituídos pelo P2,5 e superiores ao P97,5 pelo P97,5, calculados separadamente em cada data sobre todos os PLs disponíveis. Os dados originais permanecem preservados. A ordenação do ranking e o PL acumulado consideram todo o período; as colunas trimestrais exibem somente o quarto trimestre dos cinco anos completos mais recentes. Percentual usa a soma winsorizada dos administradores identificados, incluindo os fora do top 25. PL ausente é excluído e grupos inteiramente ausentes ficam sem valor. Registros sem administrador identificado permanecem nas estatísticas por competência, mas não entram no ranking nem em seu denominador.',
  paste0('Repetições com a mesma chave, PL e administrador foram contadas uma vez (IV: ',iv_dedup$removidas,'; I: ',i_dedup$removidas,'). Registros repetidos com valores conflitantes interrompem a geração para revisão.'),
  '', 'A coluna trimestral soma posições mensais winsorizadas dentro de cada trimestre; trimestres no início ou fim do período podem estar incompletos. As somas não representam fluxo financeiro nem necessariamente PL de encerramento trimestral. Unidade e escala da fonte continuam não confirmadas.',
  '',paste0('| Posição | Administrador | CNPJ do administrador | Fundos/classes no período | ',paste(c(rotulos,'PL acumulado no período','Participação no PL total (%)'),collapse=' | '),' |'),

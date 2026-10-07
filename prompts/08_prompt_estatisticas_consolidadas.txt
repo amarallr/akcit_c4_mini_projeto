@@ -5,8 +5,8 @@ Prompt responsável: P08
 P08-RF-001 | RF | Receber a configuração de uma consolidação P06 concluída e verificar estado, intervalo, plano, assinatura e hashes das tabelas IV e I antes de calcular estatísticas. Aceitar seleção de 2020 em diante, sem presumir período fixo.
 P08-RF-002 | RF | Calcular por DT_COMPTC mínimo, percentis 25/75, mediana, média, máximo, total, registros válidos/ausentes e quantidades de CNPJs e administradores. A chave da posição é CNPJ, TP_FUNDO_CLASSE e data. Associar I↔IV por essas dimensões. Repetições só podem ser descartadas se PL (IV) ou administrador (I) não divergirem; conflito interrompe a geração. PL sem administrador fica nas estatísticas por competência e fora do ranking.
 P08-RF-003 | RF | Winsorizar PL em 2,5% e 97,5% por data, quantis tipo 7 de R. Somar por CNPJ de administrador e trimestre, contar CNPJs distintos no período, classificar os 25 maiores pela soma e calcular participação sobre todo PL winsorizado atribuível a administradores identificados. Explicar trimestres parciais, posições mensais e exclusões de PL sem administrador.
-P08-RF-004 | RF | Gerar `resultados/estatisticas/estatisticas_por_competencia.csv`, `top25_administradores.csv`, artefato RDS ligado à assinatura e `relatorio_estatisticas.md`. A página estática inclui metadados, CSVs e dicionários publicados, preservando originais/consolidados.
-P08-RNF-001 | RNF | Registrar fonte, período, método, ausências, unidade monetária não confirmada e limites. Não interpretar soma de posições como fluxo ou patrimônio próprio do administrador. Não declarar conclusão se hash, cobertura ou período forem incompatíveis.
+P08-RF-004 | RF | Gerar `resultados/estatisticas/estatisticas_por_competencia.csv`, `top25_administradores.csv`, artefato RDS ligado à assinatura e `relatorio_estatisticas.md`. A página estática inclui metadados, CSVs e dicionários publicados, preservando originais/consolidados. Nas tabelas visíveis, exibir apenas outubro–dezembro dos cinco anos completos mais recentes; manter a série integral nos CSVs.
+P08-RNF-001 | RNF | Registrar fonte, período, método, ausências, unidade monetária não confirmada e limites. Não interpretar soma de posições como fluxo ou patrimônio próprio do administrador. Não declarar conclusão se hash, cobertura ou período forem incompatíveis. As tabelas do Pages não devem criar rolagem horizontal; em telas estreitas, reorganizar os valores em cartões.
 
 P08-MOD-001 | MOD | scripts/p08_resumo_dados.R
 P08-FUN-001 | FUN | gerar_resumo_dados_fidc | Validar geração concluída e hashes; resolver repetições sem conflito e rejeitar conflitos; produzir estatísticas por competência e top 25, com CNPJ/tipo/data e trimestre.
@@ -35,7 +35,7 @@ EXECUÇÃO
 1. Ler registros vigentes e configuração, selecionar explicitamente a geração concluída.
 2. Validar hashes e chaves de IV/I por CNPJ, tipo e data. Descartar repetição apenas se os campos analíticos não divergirem; conflitos impedem geração. Contar CNPJs distintos por competência. Administradores sem identificador não entram no ranking nem no denominador de participação.
 3. Winsorizar separadamente cada data antes da soma por administrador/trimestre; reportar quantis, ausências, denominador das participações e trimestres incompletos.
-4. Atualizar código, registros, testes e documentação, incluindo metadados no README e no Pages. Não editar arquivos de origem. Verificar diff e artefatos gerados.
+4. Atualizar código, registros, testes e documentação, incluindo metadados no README e no Pages. Na página, mostrar apenas o quarto trimestre dos cinco anos completos mais recentes; manter os CSVs completos e garantir apresentação sem barra horizontal. Não editar arquivos de origem. Verificar diff e artefatos gerados.
 5. Publicar na página apenas quando solicitado; informar o estado de CI/deploy observado.
 
 ENTRADAS: seleção validada, manifestos, configuração e tabelas I/IV da mesma geração P06.
