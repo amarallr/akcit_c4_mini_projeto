@@ -1,12 +1,12 @@
 {
   "estado": "concluido",
-  "gerado_em": "2026-10-07T13:03:17.013Z",
+  "gerado_em": "2026-10-07T12:41:32.944Z",
   "browser": "Chromium headless",
   "resultados": [
     {
       "teste": "Carga inicial",
-      "ms": 947,
-      "url": "https://amarallr.github.io/akcit_c4_mini_projeto/",
+      "ms": 638,
+      "url": "http://127.0.0.1:8833/akcit_c4_mini_projeto/",
       "generation": "6e27d320806f0a0f180ff8f483bb4700106cda816336910dd747e011ac3efee0"
     },
     {

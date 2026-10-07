@@ -1,0 +1,43 @@
+{
+  "estado": "concluido",
+  "conferido_em": "2026-10-07T10:03:46-0300",
+  "sha_implementacao": "be0e3e84edf319186b3564d87ae6f4483cd9823f",
+  "assinatura_p06": "6e27d320806f0a0f180ff8f483bb4700106cda816336910dd747e011ac3efee0",
+  "codigo": "ce4fcd9b87d6959dd7baae2bd6708d3f0e7159113a8966f281dbd7d5acae4796",
+  "periodo": ["2020-01-31", "2026-09-30"],
+  "competencias": 81,
+  "posicoes": 186655,
+  "universos": ["Classe", "Fundo", "Fundo legado"],
+  "suite": {
+    "casos": 56,
+    "verificacoes": 471,
+    "falhas": 0,
+    "erros": 0
+  },
+  "navegador": {
+    "verificacoes": 45,
+    "carga_local_ms": 638,
+    "carga_publica_ms": 947,
+    "erros": 0
+  },
+  "artefatos": {
+    "quantidade": 281,
+    "bytes": 477323855,
+    "segundos_geracao": 133.78,
+    "hashes_build_indice_git": true
+  },
+  "github": {
+    "ci": {
+      "id": 37624515510,
+      "conclusao": "success",
+      "url": "https://github.com/amarallr/akcit_c4_mini_projeto/actions/runs/37624515510"
+    },
+    "pages": {
+      "id": 37624515531,
+      "conclusao": "success",
+      "url": "https://github.com/amarallr/akcit_c4_mini_projeto/actions/runs/37624515531"
+    }
+  },
+  "url": "https://amarallr.github.io/akcit_c4_mini_projeto/",
+  "observacao": "CI/deploy correspondem ao SHA de implementação; commit posterior preserva somente documentação/evidências."
+}

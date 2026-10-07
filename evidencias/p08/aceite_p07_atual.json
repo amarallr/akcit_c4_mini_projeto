@@ -4,8 +4,8 @@
   "assinatura": "699995604861239c78047cabb3d77fe8031eba9e1f8af83d41b9e8cc7861d306",
   "aceite": {
     "aceite_local": true,
-    "aceite_completo": false,
-    "pendencias": "Sincronização não confirmada",
+    "aceite_completo": true,
+    "pendencias": [],
     "modo": "temporal",
     "aceite_piloto_completo": false
   },
@@ -22,5 +22,9 @@
       "caminho": "logs/evidencias/demo-17000-42683b237d90/retomada.rds",
       "hash": "33d198380d29ed7fc711f571ba8352c4f3e09a662e9b6ad3e4d60327b2c23308"
     }
+  },
+  "sincronizacao": {
+    "sha_observado": "be0e3e84edf319186b3564d87ae6f4483cd9823f",
+    "origem": "git ls-remote origin refs/heads/main e HEAD local conferidos"
   }
 }

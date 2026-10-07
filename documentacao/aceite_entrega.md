@@ -4,7 +4,7 @@ Aceite local renovado na geração temporal filtrada de julho/agosto de 2026: 1.
 
 A suíte atual aprovou 56 casos e 471 verificações, incluindo oito casos P08, sem falhas, erros, avisos ou skips nos casos. Ao carregar, testthat informa compilação em R 4.5.3, enquanto o ambiente executa R 4.5.1. O Chrome concluiu 45 verificações, incluindo celular 360/390px, tablet, desktops, zoom e modal. A montagem e o índice Git preservam os 281 hashes do manifesto e suas 81 partições mensais.
 
-Evidências atuais: [aceite P07](../evidencias/p08/aceite_p07_atual.json), [suíte](../evidencias/p08/testes_resumo.json), [navegador](../evidencias/p08/navegador.json). Sincronização, CI e deploy serão registrados por SHA observado no fechamento. Os registros abaixo são históricos e não substituem estas evidências.
+Evidências atuais: [aceite P07](../evidencias/p08/aceite_p07_atual.json), [suíte](../evidencias/p08/testes_resumo.json), [navegador](../evidencias/p08/navegador.json). Sincronização confirmada para be0e3e84edf319186b3564d87ae6f4483cd9823f, com CI Windows/Linux e deploy aprovados. O aceite temporal filtrado agora registra aceite_completo=TRUE; aceite_piloto_completo=FALSE porque esta seleção não gera flat. Veja evidencias/p08/fechamento.json. Os registros abaixo são históricos e não substituem estas evidências.
 
 ---
 
