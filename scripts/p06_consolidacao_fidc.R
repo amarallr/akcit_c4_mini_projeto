@@ -1,6 +1,83 @@
 # P06-MOD-001 | Consolidação temporal, flat sem produto cartesiano e cedentes.
 # Dependências P02/P04/P05, data.table. source() não executa processamento.
 
+# P06-FUN-011 | P06-RF-014: identidade histórica explícita, nunca inferida por PL.
+chaves_posicoes_fidc <- function(d) {
+  tipo <- if('TP_FUNDO_CLASSE' %in% names(d)) as.character(d$TP_FUNDO_CLASSE) else rep(NA_character_,nrow(d))
+  historico <- is.na(tipo)|!nzchar(tipo)
+  if('campo_identidade' %in% names(d)) tipo[historico & d$campo_identidade=='CNPJ_FUNDO'] <- 'Fundo legado'
+  else if('CNPJ_FUNDO' %in% names(d)) tipo[historico & !is.na(d$CNPJ_FUNDO)] <- 'Fundo legado'
+  tipo[is.na(tipo)|!nzchar(tipo)] <- 'Tipo não informado'
+  cnpj <- if('cnpj' %in% names(d)) as.character(d$cnpj) else {
+    campo <- if('CNPJ_FUNDO_CLASSE' %in% names(d)) 'CNPJ_FUNDO_CLASSE' else 'CNPJ_FUNDO'
+    toupper(gsub('[./ -]','',d[[campo]]))
+  }
+  data <- if('dt_comptc' %in% names(d)) as.character(d$dt_comptc) else as.character(d$DT_COMPTC)
+  if(anyNA(cnpj)||any(!nzchar(cnpj))||anyNA(data)||anyNA(as.Date(data))) stop('Chave analítica inválida.')
+  data.table::data.table(cnpj=cnpj,tipo=tipo,data=data)
+}
+
+# P06-FUN-012 | P06-RF-014: leitura estreita de atributos antes das demais tabelas.
+preparar_indice_filtros_fidc <- function(downloads,config,raiz='.') {
+  f <- validar_filtros_fidc(if(is.null(config$filtros)) list() else config$filtros)
+  ativo <- f$interesse!='Todos'||f$exclusivo!='Todos'||length(f$condominio)>0L||
+    any(vapply(f[c('cotistas_igual','cotistas_min','cotistas_max')],Negate(is.null),logical(1)))
+  if(!ativo) return(NULL)
+  if(!'I' %in% config$tabelas) stop('Pré-filtros requerem tabela I.')
+  precisa_cotistas <- any(vapply(f[c('cotistas_igual','cotistas_min','cotistas_max')],Negate(is.null),logical(1)))
+  if(precisa_cotistas && !'X_1' %in% config$tabelas) stop('Filtro de cotistas requer X_1.')
+  bases <- list(); cotistas <- list(); hashes <- list()
+  for(r in downloads) {
+    if(!identical(r$estado,'concluido')) stop('Pré-filtro exige originais concluídos.')
+    membros <- extrair_zip_fidc(r,config,raiz)
+    ids <- sub('^inf_mensal_fidc_tab_(.+)_[0-9]{4}([0-9]{2})?\\.csv$','\\1',membros$Name)
+    for(j in which(ids %in% c('I',if(precisa_cotistas) 'X_1'))) {
+      cab <- names(data.table::fread(membros$caminho[j],sep=';',nrows=0,showProgress=FALSE))
+      campos <- intersect(c('CNPJ_FUNDO','CNPJ_FUNDO_CLASSE','TP_FUNDO_CLASSE','DT_COMPTC',
+        'COTST_INTERESSE','FUNDO_EXCLUSIVO','CONDOM','TAB_X_NR_COTST','TAB_X_CLASSE_SERIE','ID_SUBCLASSE'),cab)
+      d <- data.table::fread(membros$caminho[j],sep=';',select=campos,colClasses='character',
+        encoding='Latin-1',na.strings=c('','NA'),showProgress=FALSE)
+      d <- d[DT_COMPTC>=config$inicio & DT_COMPTC<=config$fim]
+      k <- chaves_posicoes_fidc(d)
+      d <- cbind(k,d[,setdiff(names(d),names(k)),with=FALSE])
+      if(ids[j]=='I') bases[[length(bases)+1L]] <- d else cotistas[[length(cotistas)+1L]] <- d
+      hashes[[membros$Name[j]]] <- membros$hash[j]
+    }
+  }
+  atributos <- data.table::rbindlist(bases,fill=TRUE)
+  campos <- intersect(c('COTST_INTERESSE','FUNDO_EXCLUSIVO','CONDOM'),names(atributos))
+  repetidas <- duplicated(atributos,by=c('cnpj','tipo','data')) | duplicated(atributos,by=c('cnpj','tipo','data'),fromLast=TRUE)
+  if(any(repetidas)) {
+    conflitos <- atributos[repetidas,lapply(.SD,function(x)length(unique(x))),by=.(cnpj,tipo,data),.SDcols=campos]
+    if(any(as.matrix(conflitos[,..campos])>1L)) stop('Atributos conflitantes na chave mensal.')
+  }
+  atributos <- unique(atributos,by=c('cnpj','tipo','data'))
+  if(precisa_cotistas) {
+    if(!length(cotistas)) stop('Quantidade de cotistas indisponível.')
+    x <- data.table::rbindlist(cotistas,fill=TRUE)
+    if(!'TAB_X_NR_COTST' %in% names(x)) stop('TAB_X_NR_COTST ausente.')
+    # X_1 é por série/subclasse: somente posição com uma linha permite total direto.
+    q <- x[,.(cotistas=if(.N==1L) suppressWarnings(as.numeric(TAB_X_NR_COTST[1])) else NA_real_),by=.(cnpj,tipo,data)]
+    atributos <- merge(atributos,q,by=c('cnpj','tipo','data'),all.x=TRUE,sort=FALSE)
+    if(all(is.na(atributos$cotistas))) stop('Cotistas distintos por entidade não confirmados: X_1 tem múltiplas séries ou relação de identidade ausente.')
+  }
+  selecao <- avaliar_filtros_fidc(atributos,f)
+  atributos[, `:=`(elegivel=selecao$elegivel,motivo=selecao$motivo)]
+  list(chaves=atributos[elegivel==TRUE,.(cnpj,tipo,data)],
+    contagens=atributos[,.(antes=.N,depois=sum(elegivel),excluidas=sum(!elegivel),
+      desconhecidas=sum(Reduce(`|`,lapply(.SD,is.na)))),by=.(data,tipo),.SDcols=c(campos,if(precisa_cotistas)'cotistas')],
+    exclusoes=atributos[elegivel==FALSE,.(cnpj,tipo,data,motivo)],
+    criterios=f,expressao=expressao_filtros_fidc(f),
+    assinatura=calcular_hash_assinatura(list(filtros=f,entradas=hashes,regra='indice-mensal-v1')))
+}
+
+# P06-FUN-013 | P06-RF-014: semijoin mantém multiplicidade legítima sem produto cartesiano.
+aplicar_indice_filtros_fidc <- function(dados,chaves) {
+  k <- chaves_posicoes_fidc(dados)
+  elegiveis <- paste(chaves$cnpj,chaves$tipo,chaves$data,sep='|')
+  dados[paste(k$cnpj,k$tipo,k$data,sep='|') %in% elegiveis,]
+}
+
 # P06-FUN-001 | Identificadores textuais, datas/decimais por contrato e origem.
 ler_padronizar_fidc <- function(arquivo, tabela, config, dicionario = NULL, zip_origem = '') {
   bytes <- readBin(arquivo, 'raw', n = file.info(arquivo)$size)
@@ -262,6 +339,8 @@ retomar_consolidacao_fidc <- function(downloads, config, raiz = '.', dicionario 
   },add=TRUE)
   withCallingHandlers({
   vinculo <- validar_downloads_plano(downloads,config,raiz)
+  filtro <- preparar_indice_filtros_fidc(downloads,config,raiz)
+  message('Pré-consolidação: ',expressao_filtros_fidc(if(is.null(config$filtros)) list() else config$filtros))
   logica <- assinatura_transformacao()
   checkpoint <- validar_destino(raiz, config$checkpoints)
   dir.create(checkpoint, recursive = TRUE, showWarnings = FALSE)
@@ -284,7 +363,7 @@ retomar_consolidacao_fidc <- function(downloads, config, raiz = '.', dicionario 
         mapa <- if (is.null(dicionario)) NULL else dicionario[dicionario$tabela == id, ]
         assinatura <- calcular_hash_assinatura(list(hash = membros$hash[i],
           inicio = config$inicio, fim = config$fim, versao = config$versao_transformacao,
-          logica=logica, mapa = mapa))
+          logica=logica, mapa = mapa, filtro=if(is.null(filtro)) NULL else filtro$assinatura))
         anterior <- ler_rds_recuperavel(manifesto, function(x)
           is.list(x) && is.character(x$estado) && length(x$estado)==1L)
         recuperar_rollback(caminho, function(arq) {
@@ -309,6 +388,7 @@ retomar_consolidacao_fidc <- function(downloads, config, raiz = '.', dicionario 
               gravar_validado_atomico(e$qualidade,erro_qualidade,'csv')
               stop(e)
             })
+          if(!is.null(filtro)) unidade$dados <- aplicar_indice_filtros_fidc(unidade$dados,filtro$chaves)
           meta <- gravar_validado_atomico(unidade, caminho)
           gravar_validado_atomico(list(estado = 'concluido', assinatura = assinatura,
             hash = meta$hash, linhas = nrow(unidade$dados), entrada = membros$hash[i]), manifesto)
@@ -339,7 +419,7 @@ retomar_consolidacao_fidc <- function(downloads, config, raiz = '.', dicionario 
     list(flat=NULL,auditoria=lapply(tabelas,auditar_chaves_fidc))
   cedentes <- if ('I' %in% names(tabelas)) extrair_cedentes_fidc(tabelas[['I']], config) else NULL
   assinatura_saida <- calcular_hash_assinatura(list(config = config[c('inicio','fim','tabelas',
-    'versao_transformacao','completar_zeros','escala_percentual','gerar_flat','exportar_parquet')],
+    'versao_transformacao','completar_zeros','escala_percentual','gerar_flat','exportar_parquet','filtros')],
     plano=vinculo$assinatura, logica=assinatura_transformacao('saida'), mapa=calcular_hash_assinatura(dicionario),
     conteudo = lapply(tabelas, calcular_hash_assinatura)))
   pasta <- validar_destino(raiz, paste0(config$saidas, '/geracoes/', assinatura_saida))
@@ -367,9 +447,10 @@ retomar_consolidacao_fidc <- function(downloads, config, raiz = '.', dicionario 
     for (id in names(exportaveis)) arquivos[[paste0(id,'_parquet')]] <-
       exportar_parquet_fidc(exportaveis[[id]],file.path(pasta,paste0(id,'.parquet')))
   }
-  resultado <- list(estado = if (incompleto) 'parcial' else 'concluido', incompleto = incompleto,
+  vazio_filtrado <- !is.null(filtro) && sum(vapply(tabelas,nrow,integer(1)))==0L
+  resultado <- list(estado = if(vazio_filtrado) 'sem_registros_elegiveis' else if (incompleto) 'parcial' else 'concluido', incompleto = incompleto,
     faltas = faltas, geracao = pasta, assinatura = assinatura_saida,
-    arquivos = arquivos, config = config, codigo = assinatura_codigo(raiz),
+    arquivos = arquivos, config = config, filtros=filtro, codigo = assinatura_codigo(raiz),
     assinatura_plano=vinculo$assinatura, unidades=vinculo$unidades,
     logica=logica, mapa=calcular_hash_assinatura(dicionario),
     logica_saida=assinatura_transformacao('saida'),

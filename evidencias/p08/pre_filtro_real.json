@@ -1,0 +1,60 @@
+{
+  "estado": "concluido",
+  "assinatura": "699995604861239c78047cabb3d77fe8031eba9e1f8af83d41b9e8cc7861d306",
+  "expressao": "(interesse = Sim OU exclusivo = Sim) | desconhecidos: excluídos nos critérios ativos",
+  "contagens": [
+    {
+      "data": "2026-07-31",
+      "tipo": "Classe",
+      "antes": 4365,
+      "depois": 689,
+      "excluidas": 3676,
+      "desconhecidas": 0
+    },
+    {
+      "data": "2026-07-31",
+      "tipo": "Fundo",
+      "antes": 21,
+      "depois": 3,
+      "excluidas": 18,
+      "desconhecidas": 0
+    },
+    {
+      "data": "2026-08-31",
+      "tipo": "Classe",
+      "antes": 4372,
+      "depois": 615,
+      "excluidas": 3757,
+      "desconhecidas": 0
+    },
+    {
+      "data": "2026-08-31",
+      "tipo": "Fundo",
+      "antes": 25,
+      "depois": 5,
+      "excluidas": 20,
+      "desconhecidas": 0
+    }
+  ],
+  "linhas_tabelas": {
+    "I": 1312,
+    "II": 1312,
+    "III": 1312,
+    "IV": 1312,
+    "IX": 1312,
+    "V": 1312,
+    "VI": 1312,
+    "VII": 1312,
+    "VIII": 9984,
+    "X": 1312,
+    "X_1": 2403,
+    "X_1_1": 1312,
+    "X_2": 2917,
+    "X_3": 2910,
+    "X_4": 11227,
+    "X_5": 1312,
+    "X_6": 2755,
+    "X_7": 1312
+  },
+  "politica": "ZIPs locais íntegros; índice seletivo I antes da materialização; sem download"
+}

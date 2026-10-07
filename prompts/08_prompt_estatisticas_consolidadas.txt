@@ -1,17 +1,38 @@
 PROMPT 08 — ESTATÍSTICAS CONSOLIDADAS E ANÁLISE
-Versão: v2026-10-06
+Versão: v2026-10-07 — painel exploratório e pré-filtros
 Prompt responsável: P08
+
+P08-RF-005 | RF | Validar todas as entradas utilizadas, plano/tentativa e cardinalidade; separar universos Fundo/Classe/Fundo legado sem vínculo patrimonial confirmado (seção 2).
+P08-RF-006 | RF | Estatísticas completas, P97,5 original visível e exportado, quantis tipo 7 e winsorização global por competência/universo (seção 3).
+P08-RF-007 | RF | Ranking por competência comum e histórico winsorizado, denominadores integrais, cobertura, concentração e desempate por CNPJ (seções 3/6).
+P08-RF-008 | RF | Mapa hierárquico de carteira, composição longa, razões de somas comparáveis, negativos, cobertura e reconciliação (seção 5).
+P08-RF-009 | RF | Exportar bases estreitas, dados mensais/históricos sob demanda, CSVs integrais, schema, hashes e métricas (seção 10).
+P08-RF-010 | RF | Dicionário textual de negócios com campos disponíveis/usados, origem, cobertura, fórmulas e limites (seção 8).
+P08-RF-011 | RF | Relatório analítico real Markdown/HTML imprimível, achados reproduzíveis e recorte fixo, compartilhando cálculos (seção 9).
+P08-RF-012 | RF | Navegação visão geral/administrador/entidade/carteira, filtros de alcance explícito, busca, Voltar/Limpar e reconciliação de detalhes (seções 4/7).
+P08-RF-013 | RF | Gráficos interativos de barras, séries e boxplots com estatísticas R, lacunas, valores visíveis e tabelas equivalentes (seção 6).
+P08-RF-014 | RF | Tabelas responsivas, rolagem somente vertical, expansão acessível, teclado/Esc/foco e estados de erro recuperáveis (seção 7).
+P08-RF-015 | RF | Publicar todos os artefatos e assets no Pages existente; build/testes, paths de workflow, SHA e verificação pública (seção 12).
+P08-RF-016 | RF | Usar 1920×1080 paisagem como referência principal; controles zoom +/−/Restaurar de 50% a 200%, preservando proporções e redimensionando gráficos. Pedido adicional de 07/10/2026.
+P08-RNF-002 | RNF | Navegador sem servidor R/credenciais, assets versionados, metodologia acessível e desempenho medido.
+P08-TST-001 | TST | Fixtures de quantis/winsorização, chaves, conflitos, admins históricos, universos, rankings e ausências.
+P08-TST-002 | TST | Carteira hierárquica, razões ponderadas, zero/nulos/negativos e reconciliação.
+P08-TST-003 | TST | Pré-filtros E/OU, domínio, limites inclusivos, mudança mensal, aplicação antecipada e invalidação de checkpoints.
+P08-TST-004 | TST | Build/manifesto/links/downloads e navegação no Chromium real sob o subdiretório Pages.
+P08-TST-005 | TST | Layout nos tamanhos previstos, 1920×1080 paisagem, zoom 50/200%, modal/Esc/foco e inspeção visual.
+
+Os refinamentos acima preservam os IDs P08-RF-001–004 e substituem a limitação Q4 por preset. A especificação detalhada abaixo é normativa; estados de execução ficam nos registros, não nesta especificação.
 
 P08-RF-001 | RF | Receber a configuração de uma consolidação P06 concluída e verificar estado, intervalo, plano, assinatura e hashes das tabelas IV e I antes de calcular estatísticas. Aceitar seleção de 2020 em diante, sem presumir período fixo.
 P08-RF-002 | RF | Calcular por DT_COMPTC mínimo, percentis 25/75, mediana, média, máximo, total, registros válidos/ausentes e quantidades de CNPJs e administradores. A chave da posição é CNPJ, TP_FUNDO_CLASSE e data. Associar I↔IV por essas dimensões. Repetições só podem ser descartadas se PL (IV) ou administrador (I) não divergirem; conflito interrompe a geração. PL sem administrador fica nas estatísticas por competência e fora do ranking.
 P08-RF-003 | RF | Winsorizar PL em 2,5% e 97,5% por data, quantis tipo 7 de R. Classificar os 25 maiores pela soma mensal winsorizada no período e calcular participação sobre todo PL winsorizado atribuível a administradores identificados. Para cada trimestre, informar a posição como soma do PL original no último mês do trimestre, sem somar meses anteriores; associar o administrador vigente nessa competência. Contar CNPJs distintos no período e explicar ausências e exclusões de PL sem administrador.
-P08-RF-004 | RF | Gerar `resultados/estatisticas/estatisticas_por_competencia.csv`, `top25_administradores.csv`, artefato RDS ligado à assinatura e `relatorio_estatisticas.md`. A página estática inclui metadados, CSVs e dicionários publicados, preservando originais/consolidados. Nas tabelas visíveis, exibir apenas outubro–dezembro dos cinco anos completos mais recentes; manter a série integral nos CSVs.
+P08-RF-004 | RF | Gerar `resultados/estatisticas/estatisticas_por_competencia.csv`, `top25_administradores.csv`, artefato RDS ligado à assinatura e `relatorio_estatisticas.md`. A página estática inclui metadados, CSVs e dicionários publicados, preservando originais/consolidados. Permitir todo o período; oferecer Histórico Q4 como preset, mantendo a série integral.
 P08-RNF-001 | RNF | Registrar fonte, período, método, ausências, unidade monetária não confirmada e limites. Não interpretar soma de posições como fluxo ou patrimônio próprio do administrador. Não declarar conclusão se hash, cobertura ou período forem incompatíveis. As tabelas do Pages não devem criar rolagem horizontal; em telas estreitas, reorganizar os valores em cartões.
 
 P08-MOD-001 | MOD | scripts/p08_resumo_dados.R
 P08-FUN-001 | FUN | gerar_resumo_dados_fidc | Validar geração concluída e hashes; resolver repetições sem conflito e rejeitar conflitos; produzir estatísticas por competência e top 25, com CNPJ/tipo/data e trimestre.
 P08-FUN-002 | FUN | documentar_resumo_dados_fidc | Renderizar Markdown com período, metadados do conjunto, tabelas, análise e links para CSVs/dicionários.
-P08-TST-001 | TST | Ainda planejado: quantis, winsorização, chaves CNPJ/tipo/data, repetições conflitantes, administradores ausentes, metadados e rejeição de hash incompatível.
+Refinamento do teste P08-TST-001: incluir quantis, winsorização, chaves CNPJ/tipo/data, repetições conflitantes, administradores ausentes, metadados e rejeição de hash incompatível.
 
 C — CONTEXTO
 P08 sucede P06, cuja consolidação temporal guarda as observações originais. É uma etapa didática da Especialização em Engenharia de Software: Automação e Inovação com Inteligência Artificial Generativa, da Universidade Federal de Goiás (UFG). P01/P02 e os contratos compartilhados continuam vigentes. Dados CVM podem ser revisados; conferir fontes e geração persistida, não usar números copiados de uma execução anterior.
@@ -29,15 +50,132 @@ A — PÚBLICO
 Estudante iniciante em análise de dados, professor e revisor que precisam reproduzir a tabela e entender o significado e os limites dos números.
 
 R — RESPOSTA
-Entregar código, testes e referências atualizadas no README, LEIA_ME, CO-STAR, arquitetura, SWEBOK, catálogo e matriz. Informar período e datas cobertos, número de competências e administradores, método, arquivos gerados, testes realmente executados, limites e destino da página. Sincronizar/publicar apenas quando autorizado no pedido ativo.
+Entregar código, testes e referências atualizadas no README, LEIA_ME, CO-STAR, arquitetura, SWEBOK, catálogo e matriz. Informar período e datas cobertos, número de competências e administradores, método, arquivos gerados, testes realmente executados, limites e destino da página. Commits, push e publicação no Pages existente autorizados no pedido de 07/10/2026.
 
 EXECUÇÃO
 1. Ler registros vigentes e configuração, selecionar explicitamente a geração concluída.
 2. Validar hashes e chaves de IV/I por CNPJ, tipo e data. Descartar repetição apenas se os campos analíticos não divergirem; conflitos impedem geração. Contar CNPJs distintos por competência. Administradores sem identificador não entram no ranking nem no denominador de participação.
 3. Winsorizar separadamente cada data para o ranking e participação acumulados no período. As colunas trimestrais devem somar o PL original apenas na competência do último mês de cada trimestre. Reportar quantis, ausências, denominador das participações e meses de referência.
-4. Atualizar código, registros, testes e documentação, incluindo metadados no README e no Pages. Na página, mostrar apenas o quarto trimestre dos cinco anos completos mais recentes; manter os CSVs completos e garantir apresentação sem barra horizontal. Não editar arquivos de origem. Verificar diff e artefatos gerados.
-5. Publicar na página apenas quando solicitado; informar o estado de CI/deploy observado.
+4. Atualizar código, registros, testes e documentação, incluindo metadados no README e no Pages. Na página, permitir todo o período e preset Histórico Q4; manter os CSVs completos e garantir apresentação sem barra horizontal. Não editar arquivos de origem. Verificar diff e artefatos gerados.
+5. Publicar na página nesta execução autorizada; informar o estado de CI/deploy observado.
 
 ENTRADAS: seleção validada, manifestos, configuração e tabelas I/IV da mesma geração P06.
 SAÍDAS: resultados/estatisticas/estatisticas_por_competencia.csv, resultados/estatisticas/top25_administradores.csv, resumo_historico.rds, resultados/estatisticas/relatorio_estatisticas.md e página derivada.
 CONCLUSÃO: período, assinatura, contagens, hashes, testes e publicação confirmados ou pendências explícitas.
+
+
+REQUISITOS DO INCREMENTO — 07/10/2026
+1. DIAGNÓSTICO E ATUALIZAÇÃO DO P08
+1.1 Confira branch, remoto, status, alterações locais e divergências. Preserve trabalho preexistente. Faça fetch antes de definir a sincronização; nunca force push, apague histórico ou sobrescreva alterações para limpar o ambiente.
+1.2 Leia a implementação e os artefatos existentes. Identifique cobertura, competências, tabelas, tamanhos, chaves, unidades e campos utilizáveis. Registre lacunas de dados para composição da carteira e drill down.
+1.3 Atualize o P08 canônico, mantendo sua identidade, dependências e requisitos ainda válidos. Preserve IDs existentes; acrescente IDs RF/RNF/TST/MOD/FUN sem colisões. Documente alterações de método e apresentação na matriz e no registro do projeto.
+1.4 A antiga restrição visual a outubro–dezembro dos cinco anos completos mais recentes passa a ser um preset “Histórico Q4”. A exploração principal deve permitir todo o período disponível, incluindo o ano corrente incompleto, claramente identificado. Não descartar dados anteriores por uma escolha de apresentação.
+1.5 Substitua a restrição antiga de publicação “apenas quando autorizado” pela autorização explícita desta execução. Não alterar permissões/audiência do repositório nem publicar dados locais fora do escopo dos artefatos públicos derivados.
+
+2. CONTRATO ANALÍTICO, INTEGRIDADE E GRANULARIDADE
+2.1 Selecione uma geração P06 concluída, validando estado, configuração, plano, assinatura, cobertura e hashes. Verifique todas as tabelas utilizadas, não apenas I e IV. Saídas parciais ou antigas não representam a execução atual.
+2.2 Conserve a chave analítica vigente: CNPJ, TP_FUNDO_CLASSE e DT_COMPTC. Use identidade de fundo/classe confirmada no leiaute. Não some fundos e suas classes quando representarem o mesmo patrimônio; se não houver relação comprovada, ofereça universos separados e declare o limite. Conte “fundos/classes” pela chave composta e “CNPJs distintos” separadamente.
+2.3 Associe administrador pela competência. Identifique-o por CNPJ validado como texto, com nome de exibição; mudança de nome não cria outro administrador. Não substitua administrador histórico pelo atual. Registros sem administrador identificado permanecem nas estatísticas gerais, mas ficam fora do ranking e de seu denominador, com valor e quantidade explicitados.
+2.4 Antes de joins, teste cardinalidade por tabela. Resolva repetições apenas se campos analíticos não divergirem. Conflito de PL ou administrador interrompe a geração. Multiplicidade legítima de séries/cotas/cedentes exige agregação específica, jamais join muitos-para-muitos que multiplique PL.
+2.5 Preserve identificadores, zeros iniciais e valores originais. Valide unidades monetárias e escala percentual no dicionário oficial e no esquema utilizado. Até confirmação, use “unidade da fonte”, sem prefixo R$. Registre evidência da confirmação. Arredonde apenas na apresentação; evite perda desnecessária de precisão nos cálculos/exportações.
+2.6 Nulo não é zero. Denominador nulo/zero torna razão indisponível; negativos exigem indicação e tratamento documentado. Não preencher lacunas temporais com zero nem interpolar silenciosamente. Dados ou campos indisponíveis geram mensagem clara, sem valores simulados.
+
+2A. FILTROS ANTES DA CONSOLIDAÇÃO — INTEGRAÇÃO P04/P06/P08
+2A.1 Permitir configurar e aplicar filtros ANTES da consolidação P06 e antes de qualquer agregação estatística: (a) fundos/classes com cotistas de interesse único e indissociável; (b) fundos/classes exclusivos; (c) tipo de condomínio; (d) quantidade de cotistas. Integrar a seleção ao contrato de configuração P04 e ao processamento P06; P08 registra e utiliza o universo resultante. Oferecer configuração documentada no R/RStudio/CLI e na interface local de configuração, se existente. O Pages estático não executa P06: seus filtros exploratórios atuam somente sobre os dados publicados e devem indicar essa diferença.
+2A.2 Descobrir nomes exatos, tabela, domínio e disponibilidade histórica de cada campo no dicionário CVM e nos arquivos observados. Não inferir “interesse único e indissociável” apenas de exclusividade, quantidade de cotistas, pertencimento a grupo econômico ou concentração. Manter os dois indicadores separados. Se um campo não existir ou não tiver significado confirmado, informar a indisponibilidade e impedir sua ativação silenciosa; não inventar classificação.
+2A.3 Para os dois indicadores, oferecer Todos / Sim / Não e política explícita para Desconhecido. Permitir combinar “interesse único e indissociável” e “exclusivo” com E (interseção) ou OU (união), selecionável e visível. Por padrão, os critérios ativos de condomínio e quantidade de cotistas combinam-se por E com esse grupo lógico. Opções inativas não restringem o universo. Exibir a expressão completa aplicada antes de executar.
+2A.4 Tipo de condomínio: seleção múltipla dos valores confirmados, incluindo aberto/fechado somente quando previstos no domínio. Quantidade de cotistas: permitir igualdade e intervalo inclusivo com mínimo/máximo opcionais, validando inteiros não negativos e mínimo <= máximo. Ausência não equivale a zero. Por padrão, um critério ativo não aceita desconhecidos; permitir inclusão explícita e registrar a escolha. Nunca interpretar desconhecido como Não.
+2A.5 Avaliar atributos na competência de cada posição, por chave CNPJ/tipo/data. A regra padrão seleciona posições mensais elegíveis, sem aplicar retroativamente a condição atual a todo o histórico da entidade. Antes de consolidar as demais tabelas e produzir flat/cedentes, realizar leitura seletiva das tabelas de atributos, criar índice de chaves elegíveis e aplicar semijoin às entradas, respeitando a granularidade e as relações confirmadas de cada tabela. Preservar todas as linhas legítimas das chaves selecionadas, sem multiplicá-las. Não simular pré-filtro descartando linhas somente depois de materializar a consolidação completa.
+2A.6 Preservar originais e gerações anteriores. Registrar critérios, operador E/OU, domínios, política de desconhecidos e versão das regras na configuração, manifesto, assinatura e checkpoints. Mudança de filtro deve invalidar/reconstruir apenas os derivados dependentes, sem reutilizar consolidação incompatível nem exigir novos downloads de arquivos íntegros. Quando já houver geração completa, preservá-la como fonte e distinguir claramente uma seleção derivada de uma nova consolidação com pré-filtro.
+2A.7 Registrar por competência contagens antes/depois, entidades elegíveis/excluídas/desconhecidas e motivo de exclusão. Uma seleção vazia deve gerar estado claro de “sem registros elegíveis”, sem sucesso analítico fabricado. Rankings, percentis, composição, participações e relatórios usam o MESMO universo filtrado; denominadores são calculados antes do corte top 25. Os limiares de winsorização por competência são calculados nesse universo completo, antes de filtrar administrador ou selecionar barras.
+2A.8 Exibir os critérios de pré-consolidação no painel, nos CSVs/metadados e no relatório final. Mostrar que a série de posições elegíveis pode mudar de composição ao longo do tempo; não descrevê-la como coorte fixa. Acrescentar ao dicionário textual os campos realmente usados nesses filtros, sua origem, cobertura e limitações.
+
+3. ESTATÍSTICAS E RANKING DOS TOP 25 ADMINISTRADORES
+3.1 Preserve estatisticas_por_competencia.csv e top25_administradores.csv e sua compatibilidade quando possível. Calcule, por competência e nos recortes aplicáveis: n válido, n ausente, cobertura, mínimo, P25, mediana, P75, P97,5, média, máximo, desvio padrão amostral quando n>=2, IQR e total do PL original. Use quantis tipo 7 de R; documente convenção e amostra. Acrescente P2,5 para rastrear winsorização. P97,5 deve ser coluna VISÍVEL nas tabelas de estatísticas descritivas da página, nas versões expandidas, no relatório e nos CSVs, não apenas metadado ou tooltip. Use rótulo “Percentil 97,5 (P97,5)” e campo exportado p97_5. Calcule sobre valores originais válidos de cada competência/grupo e recorte, antes da winsorização. No detalhe por administrador, P97,5 descreve a distribuição do PL de seus fundos/classes, não o percentil de uma única soma agregada. Diferencie esse percentil descritivo por grupo do limiar global de winsorização da competência. Para n=0, indisponível; para n=1, o único valor, com n explícito. Não acrescentar percentis a tabelas cadastrais ou de composição sem variável e população definidas. Explique quantile(x, probs=0.975, type=7, na.rm=TRUE) e o significado como ponto de corte da distribuição, sujeito à interpolação.
+3.2 Preserve o ranking histórico existente: soma das posições mensais winsorizadas em P2,5/P97,5, calculados separadamente por competência no universo definido, sem alterar originais. Nomeie “Ranking histórico por soma de posições mensais winsorizadas”. Essa soma não é fluxo nem PL de encerramento. Informe período, meses observados e possível influência de cobertura desigual. Não refaça limiares por administrador ou apenas pelos top 25.
+3.3 Acrescente visão padrão de negócio: top 25 pela soma do PL ORIGINAL numa competência comum selecionada, inicialmente a última disponível. Nomeie “Top 25 por PL na competência”. Não reunir a última observação de cada fundo em datas diferentes. Informe ausências na data; permita troca de competência e modo de ranking.
+3.4 Participação = medida do administrador / mesma medida total dos administradores identificados no universo e data/período ativos. Calcule o denominador antes de cortar os top 25. Exiba cobertura sobre o PL geral, inclusive exclusões, top 5/10/25 e “Demais administradores” sem ocultar o restante.
+3.5 Mostre os 25 nomes, posição, CNPJ, valor, participação e quantidade de fundos/classes. Se houver menos de 25, mostre os disponíveis. Ordene descendentemente; empate com critério determinístico documentado. Gráfico de barras horizontais com eixo iniciando em zero e valores escritos nas barras ou ao lado; sinalize negativos. Valores não podem depender apenas de tooltip. Tabela com números completos e exportação sem arredondamento.
+3.6 Posições trimestrais usam somente o último mês do trimestre. Na ausência desse mês, indique indisponibilidade; não substitua por outro sem nomear o período observado. Para trimestre em andamento, use “Parcial até [data]”. Não somar PL de meses para representar patrimônio trimestral.
+
+4. DRILL DOWN: ADMINISTRADOR → FUNDOS/CLASSES
+4.1 Clique na barra, nome ou linha do ranking aplica filtro e abre página/detalhe do administrador; mantenha opção acessível por teclado e botão explícito. Mostre nome, CNPJ, competência, PL agregado, participação e quantidade de fundos/classes.
+4.2 Liste TODOS os fundos/classes vinculados ao administrador na competência selecionada, com nome, CNPJ, tipo, PL e participação no PL do administrador. Permita pesquisa, ordenação e seleção de fundo. Some/reconcilie a lista com o total mostrado. Não limitar a lista aos fundos que geraram o top 25.
+4.3 Ao selecionar fundo/classe, mostre evolução do PL, composição da carteira, indicadores disponíveis, descrição de campos e cobertura. Identifique mudanças históricas de administrador. Diferencie “histórico da entidade” de “período sob este administrador”.
+4.4 Use breadcrumb e ações “Voltar” e “Limpar filtros”; preserve filtros relevantes entre páginas e gráficos. Filtros ativos e escopo devem ficar visíveis. Evite páginas órfãs e seleções que aparentem comparar universos distintos.
+
+5. COMPOSIÇÃO DA CARTEIRA
+5.1 Descubra campos efetivos de ativo, direitos creditórios, disponibilidades, títulos, valores mobiliários, créditos judiciais, precatórios, provisões e outros componentes no dicionário e nas tabelas presentes. Esses itens são candidatos; publique somente categorias comprovadamente disponíveis e com significado confirmado. Não invente nomes de coluna.
+5.2 Construa mapa auditável: tabela, campo original, rótulo, nível hierárquico, categoria pai, unidade, sinal, regra de agregação, denominador e disponibilidade temporal. Separe categorias agregadas de suas subcategorias. Nunca some um total com seus componentes.
+5.3 Use ativo total para participação na composição do ativo somente quando essa base estiver disponível e confirmada. Se usar outro denominador, nomeie-o explicitamente. Não force composição a somar 100% dividindo por PL; “categoria/PL” é exposição relativa ao PL e deve ser outro indicador. Percentuais agregados = soma dos numeradores / soma dos denominadores comparáveis, não média simples de percentuais dos fundos.
+5.4 Gere tabela longa de composição por entidade/competência/categoria, tabela de agregados por administrador e universo, barras por categoria e barras empilhadas de 100% quando componentes forem não negativos, comparáveis e reconciliados. Ofereça alternância entre valores absolutos e percentuais. Evolução em linhas ou área empilhada somente para categorias exclusivas e coerentes.
+5.5 Reconcilie componentes com o total, usando tolerância explícita e justificada pela precisão da fonte. Mostre diferença e cobertura. “Não detalhado” pode ser residual calculado e rotulado se economicamente consistente; divergência negativa é alerta, não categoria fabricada. Campos ausentes não viram carteira vazia.
+5.6 Separe carteira, passivo, PL e provisões segundo o significado contábil dos campos. Documente limites de comparação entre leiautes e períodos. Para cada agregado, informe entidades elegíveis e PL/ativo coberto; não compare percentuais calculados sobre populações incompatíveis sem aviso.
+
+6. EXPLORAÇÃO VISUAL E ESTATÍSTICA
+6.1 Barras: ranking e comparação de categorias, ordem lógica, rótulos e valores visíveis. Sem 3D, duplo eixo ou escala que distorça a comparação.
+6.2 Linhas: série integral do PL e indicadores selecionados, datas reais, unidade no eixo, lacunas aparentes e tooltip com valor completo. Limite séries simultâneas para legibilidade, oferecendo seleção e pequenos múltiplos. Identifique se o conjunto de fundos é variável ou uma coorte fixa. Variação percentual com base positiva e comparável; caso contrário, mostre diferença absoluta ou indisponibilidade.
+6.3 Boxplot: distribuição do PL dos fundos/classes na MESMA competência, por administrador ou grupo. Caixa P25–P75, linha na mediana, cercas 1,5×IQR e bigodes até observações dentro das cercas; pontos fora são potenciais outliers, não erros comprovados. Exiba n, quartis, mediana e unidade. Evite misturar observações mensais repetidas como se fossem fundos independentes. Grupos com poucas observações devem ser sinalizados e podem usar pontos individuais.
+6.4 Use dados originais por padrão nas distribuições. Ofereça visão winsorizada claramente identificada e documente quantos valores foram alterados. Outliers não devem ser removidos apenas por serem extremos. Se houver amostragem de pontos por desempenho, sinalize amostragem e preserve estatísticas calculadas sobre a população elegível inteira.
+6.5 Escala linear padrão. Log opcional somente para positivos, com excluídos explicitados; negativos/zeros exigem alternativa apropriada e explicada. Não apresentar variação de PL como retorno da cota.
+6.6 Concentracão: participações top 5/10/25, curva de participação acumulada e HHI opcional por competência, apenas se PL elegível não negativo e soma positiva. Explicite universo, fórmula e escala; não emitir classificação regulatória automática. Não adicionar modelos preditivos, p-valores ou inferência causal sem pergunta e pressupostos definidos.
+6.7 Todos os gráficos têm título informativo, período, unidade, fonte, legenda, filtro ativo, texto alternativo/resumo acessível e tabela equivalente. Paleta acessível; estado não comunicado apenas por cor. Permitir baixar dados e imagem quando suportado.
+
+7. PÁGINAS, TABELAS E EXPANSÃO
+7.1 Navegação consistente: Visão geral; Administradores; Fundos/classes; Carteira; Distribuições; Relatório final; Dados e metodologia. Pode usar abas/rotas adequadas à arquitetura vigente. Filtros globais de competência/período, administrador e entidade devem ter alcance explícito e estados vazios claros.
+7.2 Tabelas com rolagem APENAS vertical, cabeçalho fixo e alturas adequadas. Nenhuma barra horizontal na tabela, modal ou página. Não resolver escondendo overflow e cortando dados. Mostre poucas colunas essenciais; ofereça seletor de colunas, quebra de nomes, grupos de métricas e detalhes expansíveis por linha. Em celular, transforme linhas em cartões rotulados, mantendo acesso a todos os valores e ao CSV completo.
+7.3 Ranking deve mostrar os 25 itens pela rolagem vertical. Bases maiores podem usar virtualização com altura limitada e busca; declare limites de prévia quando houver. Evite tabelas com centenas de colunas/competências; use recortes, formato longo e seletor de medida.
+7.4 Cada tabela e gráfico possui “Expandir”, abrindo modal acessível ou tela ampla. Na expansão, mantenha filtros, legenda e valores, recalcule dimensões do gráfico e preserve ausência de rolagem horizontal. Suporte Esc, foco inicial, retorno do foco e botão Fechar. Gráficos longos podem crescer verticalmente.
+7.5 Valide desktop 1920×1080 e 1366×768, tablet 768px e celular 390px/360px, zoom 200%, teclado e textos longos. Contraste legível, fonte adequada e áreas de toque confortáveis. Estados de carregamento/erro devem oferecer recuperação.
+
+8. DESCRIÇÃO TEXTUAL DOS CAMPOS
+8.1 Produza seção de texto em linguagem de negócio explicando as PRINCIPAIS COLUNAS DISPONÍVEIS e quais foram efetivamente UTILIZADAS em cada análise. Inclua identidade, competência, tipo, administrador, PL, ativos/componentes, cotistas/cotas ou indicadores adicionais apenas quando presentes e confirmados.
+8.2 Para cada campo usado: nome exato e tabela de origem; rótulo; significado econômico; tipo; unidade/escala; granularidade; cobertura; tratamento de nulos; transformações; fórmula derivada e páginas que o utilizam. Explique chaves e diferenças entre Fundo/Classe e entre administrador/gestor.
+8.3 Publique dicionário consultável e CSV do mapa analítico. Separe campos originais de derivados. Nomes existentes no leiaute mas ausentes na geração devem constar como ausentes. Descrição desconhecida deve permanecer “não confirmada”. Cite a fonte oficial e sua versão/data de consulta.
+
+9. RELATÓRIO FINAL DE ANÁLISE DOS DADOS E ESTATÍSTICAS
+9.1 Gere resultados/estatisticas/relatorio_analise_fidc.md e versão HTML integrada à página, imprimível e com links para tabelas e CSVs. Preserve o resumo existente, atualizando-o ou apontando para o relatório detalhado. Gere o relatório a partir dos mesmos cálculos do painel, sem copiar manualmente valores.
+9.2 Conteúdo obrigatório:
+- Resumo executivo com os principais achados REAIS, valores, datas e cobertura.
+- Fonte, geração, período solicitado/observado, número de competências, fundos/classes, CNPJs e administradores; tabelas disponíveis/ausentes.
+- Descrição das principais colunas disponíveis e utilizadas.
+- Metodologia: chaves, joins, unidades, quantis, winsorização, dois rankings, denominadores, critérios de cobertura e limitações.
+- Estatísticas do PL por competência; comparação média/mediana e dispersão; períodos extremos e mudanças observadas, considerando alterações na população.
+- Top 25 com valores/participações, concentração, diferença entre ranking por posição e ranking histórico; não tratar histórico como patrimônio atual.
+- Evolução temporal com comparação homogênea quando possível; entradas, saídas e lacunas que afetem interpretação.
+- Composição da carteira, valores/percentuais, evolução, cobertura e reconciliação.
+- Distribuições e outliers, sem equiparar extremo estatístico a erro ou irregularidade.
+- Qualidade dos dados, exclusões e seu impacto, campos não confirmados e análises inviáveis com as entradas atuais.
+- Conclusões proporcionais à evidência e perguntas recomendadas para aprofundamento.
+- Apêndice de fórmulas, linhagem, versões, arquivos, hashes e instruções de reprodução.
+9.3 Toda afirmação quantitativa deve apontar para tabela/indicador reproduzível. Separe constatação e hipótese. Se só houver duas competências, descreva comparação entre elas e a insuficiência para tendência longa. Não gere conclusões de exemplo nem use aprovação técnica como prova de qualidade econômica dos dados.
+9.4 Identifique recorte do relatório: o publicado usa seleção registrada e data de geração; mudanças de filtro do painel não alteram silenciosamente o relatório. Se implementar relatório do recorte ativo, mostre filtros e timestamp no exportado.
+
+10. ARQUITETURA E DESEMPENHO
+10.1 Cálculos em R reutilizando funções vigentes; publicação estática com HTML/CSS/JavaScript e dados derivados. GitHub Pages não deve depender de Shiny, API local, credenciais ou caminhos do computador do autor. Não introduza servidor apenas para drill down.
+10.2 Prepare bases estreitas para estatísticas, administrador/competência, fundos/classes e carteira. Use leitura seletiva e processamento proporcional; não carregue o flat inteiro de milhares de colunas. Gere detalhes particionados por administrador/entidade/período se necessário, com carregamento sob demanda e índice/manifesto público.
+10.3 Registre schema, unidade, período, assinatura, hashes e data de geração dos artefatos públicos. Mantenha compatibilidade dos CSVs existentes; mudanças necessárias exigem atualização explícita dos consumidores e documentação.
+10.4 Meça volume publicado, tempo de geração e carregamento no ambiente disponível. Evite enviar todo o histórico ao abrir a página. Paths de assets/downloads devem funcionar sob /akcit_c4_mini_projeto/; links relativos e navegação resistem a recarregamento. Bibliotecas/assets devem ter versões definidas e licenças respeitadas.
+
+11. TESTES E ACEITE
+11.1 Fixtures pequenas, isoladas e sem rede CVM: cálculos manuais conhecidos de quantis tipo 7, winsorização por competência, totais, ranking original/histórico, participação sobre universo inteiro, empates, ausências e n insuficiente.
+11.2 Valide CNPJ/tipo/data, mudanças de administrador, nomes variantes, repetições/conflitos e bloqueio de join multiplicador; teste presença de fundo e classe para evitar dupla contagem.
+11.3 Carteira: categorias pai/filha, nulos, denominador zero, negativos, cobertura parcial, médias ponderadas/razão de somas e diferenças de reconciliação; dicionário real guia a regra.
+11.4 Interface em navegador: barra/linha abre administrador, lista abre fundo, valores reconciliam, filtro se mantém, Voltar e Limpar funcionam; expansão preserva dados e fecha por teclado. Teste boxplot e séries com lacunas.
+11.5 Ausência de rolagem horizontal deve ser comprovada no documento, tabelas e modais nos tamanhos definidos, combinando medidas de layout e inspeção visual. Verifique nomes longos e zoom; overflow escondido não constitui aprovação.
+11.6 Relatório, gráficos e CSVs devem concordar nos valores, unidades, datas e denominadores. Teste HTML público, links, dados sob demanda, downloads e caminhos do subdiretório. Fixtures não podem ser publicadas como análise real.
+11.8 Teste os pré-filtros isolados e combinados com E/OU, limites inclusivos de cotistas, desconhecidos, condomínio multisseleção, atributos que mudam entre competências, campos ausentes, seleção vazia, aplicação antes da materialização e invalidação de checkpoints por mudança de critérios. Compare contagens esperadas em fixtures e reconcilie o universo filtrado entre P06/P08/painel/relatório. Teste P97,5 tipo 7 com interpolação conhecida, n=0/n=1 e igualdade dos resultados exibidos/exportados; confirme que o cálculo antecede a winsorização.
+11.7 Execute os testes existentes pertinentes e novas verificações; corrija falhas. Produza evidências atuais e invalide/reproduza P07 quando mudanças afetarem seu contrato. Não declare CI ou deploy aprovados sem observar a execução correspondente ao commit.
+
+12. COMMITS, SINCRONIZAÇÃO E GITHUB PAGES
+12.1 Atualize P01/P02 somente onde a integração exigir, além de README, LEIA_ME, CO-STAR, arquitetura, SWEBOK, catálogo, matriz e registro vigentes. Mantenha IDs históricos e marque requisitos substituídos.
+12.2 Revise diff, arquivos gerados e exclusões. Faça commits de TODAS as alterações desta tarefa, em incrementos coerentes, com mensagens conventional commits. Não incluir alterações alheias, segredos, logs sensíveis ou datasets brutos locais; apenas derivados públicos necessários.
+12.3 Faça push ao branch usado para publicar a página vigente, respeitando proteções. Se o fluxo exigir PR, use-o e informe a dependência real para publicação; não contorne proteção nem anuncie deploy de um branch que não publica.
+12.4 Aproveite scripts/publicar_resumo.ps1 e .github/workflows/pages.yml; estenda-os para os novos assets, dados, páginas e relatório. Atualize filtros paths do workflow, pois mudanças somente em arquivos novos precisam disparar publicação. Registre build e testes antes do deploy e preserve a URL existente.
+12.5 Compare SHA local com remoto e acompanhe CI/deploy até estado terminal, dentro dos limites disponíveis. Após deploy, verifique a URL pública, marcador da versão/generation, navegação, um drill down, um gráfico e downloads. HTTP 200 isolado não prova que a versão nova está publicada.
+12.6 Autenticação/permissão ausente é bloqueio: preserve commits e forneça ação mínima pendente, sem expor credenciais. Só declare “página atualizada e repositório sincronizado” quando houver evidência. Não peça confirmação adicional para commits/push/publicação já autorizados.
+
+ORDEM DE EXECUÇÃO
+Diagnosticar estado → atualizar P08 e rastreabilidade → validar bases/mapas e configurar pré-filtros → consolidar o universo elegível → implementar cálculos e artefatos → evoluir página/drill down → gerar relatório real → testar e corrigir → atualizar documentação → commits/push → acompanhar CI/Pages → verificar publicação e entregar evidências.
+
+Execute este incremento até sua conclusão. A entrega deve permitir entender os dados, explorar administradores e fundos/classes, comparar carteiras e consultar um relatório analítico fundamentado, na página já existente.

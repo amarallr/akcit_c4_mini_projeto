@@ -2,6 +2,11 @@ PROMPT 06 — CONSOLIDAÇÃO E CHECKPOINTS
 Versão: v2026-10-02 — incrementos autorizados e arquitetura DFD
 Prompt responsável: P06
 
+P06-RF-014 | RF | Ler seletivamente atributos I/X_1 antes da materialização; criar índice mensal CNPJ/tipo/data e aplicar semijoin antes de temporais, flat e cedentes. Assinar critérios/regras/entradas nos checkpoints e manifesto, preservar gerações anteriores e registrar contagens/exclusões. X_1 por série não autoriza soma de cotistas distintos: múltiplas linhas ficam desconhecidas. Seleção vazia é sem_registros_elegiveis, sem sucesso analítico (P08 seção 2A).
+P06-FUN-011 | FUN | chaves_posicoes_fidc | Identidade composta e Fundo legado pelo campo de identidade.
+P06-FUN-012 | FUN | preparar_indice_filtros_fidc | Leitura estreita e índice de posições elegíveis.
+P06-FUN-013 | FUN | aplicar_indice_filtros_fidc | Semijoin sem multiplicação, preservando linhas legítimas.
+
 P06-RF-014 | RF | Conferir downloads com P04-FUN-005 antes de transformar, inclusive chamada direta. Assinar lógica relevante e mapa por tabela; geração identifica plano, unidades, contratos e lógica efetivamente usados. Falha preserva geração concluída e registra tentativa recente separadamente.
 P06-TST-013 | TST | Mudança de mapa invalida apenas afetados; lógica invalida incompatíveis; documentação não invalida; preservar saída e origem.
 

@@ -1,3 +1,13 @@
+# Aceite P07 no incremento P08 — 07/10/2026
+
+Aceite local renovado na geração temporal filtrada de julho/agosto de 2026: 1.312 posições na tabela I/IV, interesse=Sim OU exclusivo=Sim e desconhecidos excluídos. Quatro processos R demonstraram materialização, interrupção após checkpoint, retomada e repetição com hashes iguais. Esta prova é do modo temporal filtrado; o histórico integral e o piloto com flat permanecem preservados.
+
+A suíte atual aprovou 56 casos e 471 verificações, incluindo oito casos P08, sem falhas, erros, avisos ou skips nos casos. Ao carregar, testthat informa compilação em R 4.5.3, enquanto o ambiente executa R 4.5.1. O Chrome concluiu 45 verificações, incluindo celular 360/390px, tablet, desktops, zoom e modal. A montagem e o índice Git preservam os 281 hashes do manifesto e suas 81 partições mensais.
+
+Evidências atuais: [aceite P07](../evidencias/p08/aceite_p07_atual.json), [suíte](../evidencias/p08/testes_resumo.json), [navegador](../evidencias/p08/navegador.json). Sincronização, CI e deploy serão registrados por SHA observado no fechamento. Os registros abaixo são históricos e não substituem estas evidências.
+
+---
+
 # P07 — Aceite do incremento de robustez
 
 Validação local concluída: **47 casos e 402 verificações**, zero falhas/erros/avisos/skips. Produtor operacional aprovado com dados reais locais em quatro processos R: checkpoint novo 1, retomada reutilizando 1; repetição e execução solicitada têm hashes iguais. **412 arquivos normais** permaneceram com hashes idênticos. Comparação do piloto preservou os **42 arquivos** byte a byte. R 4.5.1 e dependências conferidas com renv.lock. A biblioteca testthat informa compilação em R 4.5.3 ao carregar, com versões fixadas e sem avisos nos casos. Publicação autorizada pelo usuário e confirmada no GitHub: os três commits do incremento chegaram ao main, com HEAD local/remoto ba7564354a2d819adcff54abe9efa4b1bb449889. CI do incremento aprovada em Windows e Linux (47 casos/401 verificações em cada ambiente, zero falhas/erros/avisos/skips; suíte local: 47/402, com uma verificação adicional do Parquet opcional instalado): https://github.com/amarallr/akcit_c4_mini_projeto/actions/runs/37091112129. Aceite completo do piloto confirmado após conferir sincronização e evidências locais. Detalhes em evidencias/p07/sincronizacao_github.json. Dados, checkpoints, gerações e bibliotecas permanecem locais e ignorados pelo Git. O commit seguinte registra somente este fechamento documental; o resultado de CI acima refere-se exatamente ao commit informado. P03 não foi reativado.

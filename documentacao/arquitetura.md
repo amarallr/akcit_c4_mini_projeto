@@ -1,5 +1,7 @@
 # Arquitetura — diagrama de fluxo de dados
 
+Atualização P08 de 07/10/2026: P04 valida critérios → P06 lê seletivamente I/X_1, constrói índice mensal elegível e aplica semijoin antes de temporais/flat/cedentes → P08 valida geração e calcula estatísticas/carteira → exporta CSV/JSON particionados e relatório → HTML/CSS/JavaScript exploram os derivados no Pages. A versão sem pré-filtro continua preservada. O navegador não processa P06 nem requer R; filtros exploratórios selecionam somente posições publicadas. [Contrato detalhado](p08_painel.md). O DFD abaixo permanece o único diagrama; este refinamento descreve os processos adicionais, sem criar diagrama concorrente.
+
 Este documento descreve como os informes mensais de FIDCs da CVM se tornam datasets consolidados no tempo e uma tabela final única (flat). O diagrama de fluxo de dados (DFD) representa as entradas, as transformações, os depósitos locais e os resultados do pipeline. Sua referência é o piloto de julho/agosto de 2026, validado localmente.
 
 A arquitetura reúne os prompts P01–P08. P04, P05 e P06 definem as transformações dos dados, P07 verifica a entrega e P08 calcula estatísticas e documenta a análise a partir de uma geração temporal concluída. P01 organiza a execução, P02 fornece funções comuns e P03 orienta a preparação. P08 é uma análise derivada, não uma transformação adicional dos dados originais.

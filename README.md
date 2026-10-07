@@ -2,9 +2,9 @@
 
 Este protótipo foi desenvolvido como projeto da **Especialização em Engenharia de Software: Automação e Inovação com Inteligência Artificial Generativa**, da Universidade Federal de Goiás (UFG). Ele obtém informes mensais de FIDCs da CVM e produz datasets consolidados no tempo por tabela, uma tabela final única (flat) e uma base de cedentes. O desenvolvimento usa R, RStudio, Codex, Git e GitHub, com decisões e revisão humanas.
 
-**[Acesse a página de análises e metadados no GitHub Pages](https://amarallr.github.io/akcit_c4_mini_projeto/)**: descrição do conjunto CVM/FIDC, estatísticas do PL por competência, ranking dos top 25 administradores, análise da concentração e downloads dos CSVs.
+**[Acesse o painel exploratório FIDC](https://amarallr.github.io/akcit_c4_mini_projeto/)**: PL por competência, P97,5, top25 original/histórico, navegação administrador → fundo/classe, carteira e distribuições. Referência visual 1920×1080 em paisagem, com zoom proporcional +/− e Restaurar.
 
-O conteúdo também está disponível no [resumo das estatísticas em Markdown](resultados/estatisticas/relatorio_estatisticas.md). A publicação acompanha alterações no resumo e nos CSVs pela [rotina de publicação](.github/workflows/pages.yml). Para gerar a página localmente, execute `powershell -File scripts/publicar_resumo.ps1`.
+Consulte o [relatório final de análise dos dados](resultados/estatisticas/relatorio_analise_fidc.md), também [em HTML imprimível](https://amarallr.github.io/akcit_c4_mini_projeto/relatorio_analise_fidc.html). A [documentação P08](documentacao/p08_painel.md) explica pré-filtros P04/P06, cálculos, artefatos, limitações e reprodução. A [rotina de publicação](.github/workflows/pages.yml) acompanha todos os derivados/assets e valida o build antes do deploy. Gere localmente com `powershell -File scripts/publicar_resumo.ps1`.
 
 Há dois caminhos de uso: **reproduzir o desenvolvimento** a partir dos [oito prompts P01–P08](prompts/LEIA_ME.md), gerando os artefatos com IA no próprio ambiente, ou **executar a implementação existente**, abrindo este projeto no RStudio e seguindo os comandos abaixo. As evidências do autor não aprovam automaticamente outra reprodução.
 
@@ -58,7 +58,7 @@ Nesse caminho, o ponto de partida são somente os oito prompts e as instruções
 | P05 — Obtenção | Baixa e valida ZIPs, preserva originais, extrai CSVs e mantém manifestos. |
 | P06 — Consolidação | Produz temporais, flat opcional, cedentes, checkpoints e relatório de qualidade. |
 | P07 — Aceite | Confere entregas e evidências vinculadas à seleção, à geração e ao conteúdo do código. |
-| P08 — Estatísticas consolidadas | Calcula estatísticas por competência e top 25 de administradores após P06, documentando método e limites. |
+| P08 — Análise exploratória | Calcula estatísticas e P97,5 original, dois rankings, composição e relatório; publica painel estático com drill down após P06. |
 
 [CO-STAR](prompts/CO_STAR.md) explica a estrutura dos prompts. Catálogo, matriz e registros ficam em `prompts`. P03-RF-006/P03-TST-004 continuam cancelados; diagnósticos e testes históricos de P03 não comprovam a execução do roteiro atual.
 
@@ -77,7 +77,7 @@ O conjunto reúne informes mensais públicos de Fundos de Investimento em Direit
 | Formatos | As tabelas consolidadas têm CSV e RDS em diretórios locais ignorados pelo Git. Os CSVs públicos do resumo usam UTF-8, vírgula como separador e ponto decimal; os identificadores devem ser lidos como texto. |
 | Limites | A tabela X não consta dos pacotes oficiais de 2020–2022. Os arquivos históricos podem ser revistos pela CVM. A unidade monetária e a escala percentual da fonte não foram confirmadas. O conjunto não representa, por si, avaliação de risco, rentabilidade ou qualidade dos fundos/administradores. |
 
-O P08 gera o [relatório legível](resultados/estatisticas/relatorio_estatisticas.md), o [CSV completo por competência](resultados/estatisticas/estatisticas_por_competencia.csv) e o [ranking dos 25 administradores](resultados/estatisticas/top25_administradores.csv), depois de uma consolidação P06 concluída. Para facilitar a leitura no Pages, as tabelas visíveis mostram apenas outubro–dezembro dos cinco anos completos mais recentes; os CSVs para download mantêm a série integral. Em telas estreitas, as tabelas se reorganizam em cartões, sem barra de rolagem horizontal. Os valores trimestrais representam a soma do PL informado no último mês do trimestre (dezembro nas colunas mostradas), sem somar os meses anteriores. Para reproduzir o resumo desta seleção, execute `Rscript --vanilla scripts/p08_resumo_dados.R dados/atualizacao_2020/configuracao.rds`. As estatísticas descritivas usam `TAB_IV_A_VL_PL`; o ranking e o PL acumulado continuam baseados na soma mensal winsorizada no período. Registros sem administrador identificado ficam nas estatísticas por competência e fora do ranking e de seu denominador. Os valores não representam fluxo financeiro nem patrimônio próprio do administrador.
+O P08 gera estatísticas e P97,5 original, rankings por competência e histórico winsorizado, carteira, CSVs e relatório usando os mesmos cálculos R. O painel permite todo o período; Histórico Q4 é um preset. Fundo, Classe e Fundo legado são universos separados: não somar suas linhas/patrimônios. O denominador do ranking considera todos os administradores identificados antes de cortar top25. Setembro de 2026 tem cobertura bem menor que agosto; confira as contagens e a comparação homogênea no relatório. Pré-filtros mensais de interesse único e indissociável, exclusividade, condomínio e cotistas são configurados em P04 e aplicados antes da materialização P06; filtros do Pages só exploram os dados já publicados. Consulte [P08: contratos e reprodução](documentacao/p08_painel.md).
 
 Os arquivos de referência, documentos e evidências estão organizados em `referencias/`, `documentacao/` e `evidencias/`; os artefatos públicos derivados ficam em `resultados/estatisticas/`. A página Pages explica esses metadados e publica também os dicionários e CSVs. O relatório histórico de aceite continua em [documentacao/aceite_entrega.md](documentacao/aceite_entrega.md) e descreve o piloto anterior, separado desta atualização de 2020–2026.
 
@@ -143,10 +143,12 @@ Fontes oficiais: [catálogo CVM](https://dados.cvm.gov.br/dataset/fidc-doc-inf_m
 
 Erros comuns são pacote ausente, execução fora da raiz, ZIP inválido, configuração divergente e arquivo bloqueado no OneDrive. Consulte estado, diagnóstico e manifestos; não apague uma versão válida para resolver a falha. [CONTRIBUICAO](documentacao/como_contribuir.md) orienta alterações e informa que o repositório ainda não declara licença de distribuição. [RETOMADA](documentacao/retomada.md) registra a situação, e [PUBLICACAO](documentacao/publicacao.md) explica o fechamento do versão de referência.
 
-O prompt [P08](prompts/08_prompt_estatisticas_consolidadas.txt) especifica as estatísticas e o ranking derivados de uma geração P06. O resumo discrimina cada data de competência e conta fundos e administradores por CNPJ. O ranking acumulado winsoriza PL em 2,5%/97,5%; as colunas trimestrais representam o PL observado no último mês de cada trimestre. O CSV guarda valores integrais; a página apresenta milhões da unidade fonte, que continua não confirmada. Para reproduzir após P06:
+O prompt [P08](prompts/08_prompt_estatisticas_consolidadas.txt) especifica a análise exploratória de uma geração P06 concluída. O relatório e painel usam quantis tipo 7, P97,5 original e winsorização global por universo/competência, com dois rankings distintos e cobertura explícita. Unidade monetária não confirmada; os valores visuais usam milhões da unidade da fonte. Reproduzir após P06:
 
 ```powershell
 Rscript --vanilla scripts/p08_resumo_dados.R dados/atualizacao_2020/configuracao.rds
 ```
 
 Datasets permanecem intactos. O período da análise é o definido na configuração passada ao P08; trimestres de ponta podem estar incompletos. P08 não interpreta soma de posições mensais como fluxo financeiro ou PL de encerramento.
+
+O painel também permite navegação em celular: seletor de análises, filtros recolhíveis, tabelas em cartões e controles de toque. Os eixos monetários usam milhões da unidade da fonte, preservando os valores integrais nos CSVs. Consulte o guia de leitura em Dados e metodologia.

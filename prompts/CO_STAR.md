@@ -1,5 +1,7 @@
 # Como interpretar o CO-STAR dos prompts
 
+Em 07/10/2026, o P08 preserva CO-STAR e incorpora a análise exploratória, pré-filtros P04/P06 e relatório real. Contexto: geração CVM íntegra; objetivo: exploração auditável; estilo: interface pt-BR com visão geral → administrador → entidade → carteira, referência 1920×1080 paisagem e zoom proporcional; tom: conclusões limitadas pela cobertura; público: analistas/leitores; resposta: artefatos, testes e publicação verificável. [Especificação P08](08_prompt_estatisticas_consolidadas.txt) e [reprodução](../documentacao/p08_painel.md).
+
 CO-STAR organiza a orientação de cada prompt em seis partes. No projeto,
 essas partes explicam a situação de trabalho, o resultado esperado e como
 o agente deve comunicar sua execução. Os requisitos com IDs, contratos e

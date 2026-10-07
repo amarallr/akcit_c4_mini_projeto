@@ -11,9 +11,13 @@ validar_configuracao <- function(config = list(), raiz = '.') {
     tentativas = 3L, timeout = 90, max_bytes_zip = 1024^3,
     max_colunas_flat = 20000L, versao_transformacao = 'fidc-v2',
     gerar_flat = TRUE, exportar_parquet = FALSE,
-    completar_zeros = FALSE, escala_percentual = NA_character_, permitir_parcial = FALSE)
+    completar_zeros = FALSE, escala_percentual = NA_character_, permitir_parcial = FALSE,
+    filtros = list(interesse='Todos', exclusivo='Todos', operador='E',
+      incluir_desconhecidos=FALSE, condominio=character(), cotistas_igual=NULL,
+      cotistas_min=NULL, cotistas_max=NULL, versao='filtros-v1'))
   if (!is.list(config) || any(!names(config) %in% names(defaults))) stop('Parâmetro desconhecido.')
   config <- utils::modifyList(defaults, config)
+  config$filtros <- validar_filtros_fidc(config$filtros)
   if (!identical(config$dataset, 'FIDC')) stop('Dataset não suportado.')
   for (nome in c('inicio','fim')) {
     v <- config[[nome]]
@@ -39,6 +43,68 @@ validar_configuracao <- function(config = list(), raiz = '.') {
       is.na(config$versao_transformacao) || !nzchar(config$versao_transformacao)) stop('Versão inválida.')
   if (config$tentativas != as.integer(config$tentativas)) stop('Tentativas deve ser inteiro.')
   config
+}
+
+# P04-FUN-006 | P04-RF-008: valida expressão antes de qualquer materialização.
+validar_filtros_fidc <- function(filtros=list()) {
+  padrao <- list(interesse='Todos',exclusivo='Todos',operador='E',
+    incluir_desconhecidos=FALSE,condominio=character(),cotistas_igual=NULL,
+    cotistas_min=NULL,cotistas_max=NULL,versao='filtros-v1')
+  if(!is.list(filtros) || any(!names(filtros) %in% names(padrao))) stop('Filtro desconhecido.')
+  f <- utils::modifyList(padrao,filtros)
+  for(n in c('interesse','exclusivo'))
+    if(length(f[[n]])!=1L || is.na(f[[n]]) || !f[[n]] %in% c('Todos','Sim','Não')) stop('Indicador inválido.')
+  if(length(f$operador)!=1L || !f$operador %in% c('E','OU')) stop('Operador inválido.')
+  if(!is.logical(f$incluir_desconhecidos)||length(f$incluir_desconhecidos)!=1L||is.na(f$incluir_desconhecidos)) stop('Política de desconhecidos inválida.')
+  if(!is.character(f$condominio)||anyNA(f$condominio)||any(!f$condominio %in% c('ABERTO','FECHADO'))) stop('Condomínio fora do domínio CVM.')
+  for(n in c('cotistas_igual','cotistas_min','cotistas_max')) {
+    v <- f[[n]]
+    if(!is.null(v) && (!is.numeric(v)||length(v)!=1L||!is.finite(v)||v<0||v!=floor(v))) stop('Quantidade de cotistas deve ser inteiro não negativo.')
+  }
+  if(!is.null(f$cotistas_min)&&!is.null(f$cotistas_max)&&f$cotistas_min>f$cotistas_max) stop('Intervalo de cotistas invertido.')
+  if(!is.null(f$cotistas_igual)&&(!is.null(f$cotistas_min)||!is.null(f$cotistas_max))) stop('Escolha igualdade ou intervalo de cotistas.')
+  if(!identical(f$versao,'filtros-v1')) stop('Versão de filtros não suportada.')
+  f
+}
+
+# P04-FUN-007 | P04-RF-008: opções inativas não entram no E/OU.
+expressao_filtros_fidc <- function(f) {
+  f <- validar_filtros_fidc(f); grupo <- character(); resto <- character()
+  for(n in c('interesse','exclusivo')) if(f[[n]]!='Todos') grupo <- c(grupo,paste(n,'=',f[[n]]))
+  if(length(grupo)) resto <- paste0('(',paste(grupo,collapse=paste0(' ',f$operador,' ')),')')
+  if(length(f$condominio)) resto <- c(resto,paste('condomínio em',paste(f$condominio,collapse=', ')))
+  for(n in c('cotistas_igual','cotistas_min','cotistas_max')) if(!is.null(f[[n]])) resto <- c(resto,paste(n,'=',f[[n]]))
+  paste(if(length(resto)) paste(resto,collapse=' E ') else 'Todas as posições',
+    '| desconhecidos:',if(f$incluir_desconhecidos) 'incluídos nos critérios ativos' else 'excluídos nos critérios ativos')
+}
+
+# P04-FUN-008 | P04-RF-008: nulo nunca equivale a Não/zero; avaliação mensal.
+avaliar_filtros_fidc <- function(atributos,f) {
+  f <- validar_filtros_fidc(f); n <- nrow(atributos); resultados <- list(); motivos <- rep('',n)
+  indicadores <- list()
+  for(nome in c('interesse','exclusivo')) if(f[[nome]]!='Todos') {
+    campo <- c(interesse='COTST_INTERESSE',exclusivo='FUNDO_EXCLUSIVO')[[nome]]
+    if(!campo %in% names(atributos)) stop('Campo indisponível para filtro: ',campo)
+    x <- atributos[[campo]]; desconhecido <- is.na(x)|!x %in% c('S','N')
+    indicadores[[nome]] <- ifelse(desconhecido,f$incluir_desconhecidos,x==if(f[[nome]]=='Sim') 'S' else 'N')
+  }
+  if(length(indicadores)) resultados$indicadores <- Reduce(if(f$operador=='E') `&` else `|`,indicadores)
+  if(length(f$condominio)) {
+    if(!'CONDOM' %in% names(atributos)) stop('Campo indisponível para filtro: CONDOM')
+    x <- atributos$CONDOM; desconhecido <- is.na(x)|!x %in% c('ABERTO','FECHADO')
+    resultados$condominio <- ifelse(desconhecido,f$incluir_desconhecidos,x %in% f$condominio)
+  }
+  if(any(vapply(f[c('cotistas_igual','cotistas_min','cotistas_max')],Negate(is.null),logical(1)))) {
+    if(!'cotistas' %in% names(atributos)) stop('Quantidade de cotistas indisponível.')
+    x <- atributos$cotistas; desconhecido <- is.na(x)|!is.finite(x)|x<0|x!=floor(x)
+    ok <- rep(TRUE,n)
+    if(!is.null(f$cotistas_igual)) ok <- ok & x==f$cotistas_igual
+    if(!is.null(f$cotistas_min)) ok <- ok & x>=f$cotistas_min
+    if(!is.null(f$cotistas_max)) ok <- ok & x<=f$cotistas_max
+    resultados$cotistas <- ifelse(desconhecido,f$incluir_desconhecidos,ok)
+  }
+  for(k in names(resultados)) motivos[!resultados[[k]]] <- paste0(motivos[!resultados[[k]]],k,';')
+  list(elegivel=if(length(resultados)) Reduce(`&`,resultados) else rep(TRUE,n),motivo=motivos)
 }
 
 # P04-FUN-002 | Inventário apenas de nomes efetivamente listados, sem ZIP fictício.

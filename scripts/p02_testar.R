@@ -4,8 +4,8 @@
 # P02-TST-005: seleção e suíte das etapas implementadas, sem presumir futuras.
 argumentos <- commandArgs(trailingOnly = TRUE)
 etapa <- if (length(argumentos)) argumentos[1] else 'todas'
-if (length(argumentos) > 1 || !etapa %in% c(paste0('P0', 1:7), 'todas'))
-  stop('Use P01 a P07 ou todas.')
+if (length(argumentos) > 1 || !etapa %in% c(paste0('P0', 1:8), 'todas'))
+  stop('Use P01 a P08 ou todas.')
 if (!file.exists('C4-Mini-projeto.Rproj')) stop('Execute da raiz do projeto.')
 bibliotecas_anteriores <- .libPaths()
 Sys.setenv(FIDC_TESTES_ATIVOS='1')
@@ -19,14 +19,15 @@ tryCatch({
   codigo_teste <- assinatura_codigo('.')
   jsonlite::write_json(list(estado='em_processamento',codigo=codigo_teste),
     'logs/testes_resumo.json',auto_unbox=TRUE,pretty=TRUE)
-  cat('Suíte local P01 a P07; P03 conserva apenas testes históricos, sem testar o roteiro de instalação.\n')
+  cat('Suíte local P01 a P08; P03 conserva apenas testes históricos, sem testar o roteiro de instalação.\n')
   suites <- c(P01 = 'tests/testthat/test-p01-orquestracao.R',
     P02 = 'tests/testthat/test-p02-utilitarios.R',
     P03 = 'tests/testthat/test-p03-ambiente.R',
     P04 = 'tests/testthat/test-p04-configuracao.R',
     P05 = 'tests/testthat/test-p05-download.R',
     P06 = 'tests/testthat/test-p06-consolidacao.R',
-    P07 = 'tests/testthat/test-p07-aceite.R')
+    P07 = 'tests/testthat/test-p07-aceite.R',
+    P08 = 'tests/testthat/test-p08-analise.R')
   selecionadas <- if (etapa == 'todas') suites else suites[etapa]
   resultados <- lapply(selecionadas, function(arquivo)
     testthat::test_file(arquivo, reporter = 'summary', stop_on_failure = TRUE))

@@ -101,9 +101,11 @@ ler_rds_recuperavel <- function(caminho, validador = function(x) is.list(x)) {
 # P02-FUN-009 | P07-RF-004: hash de conteúdo, estável após commit/reescrita Git.
 assinatura_codigo <- function(raiz = '.') {
   raiz <- normalizePath(raiz,winslash='/',mustWork=TRUE)
-  arquivos <- c(list.files(file.path(raiz,'scripts'), '\\.(R|ps1)$', full.names = TRUE),
+  arquivos <- c(list.files(file.path(raiz,'scripts'), '\\.(R|ps1|cjs)$', full.names = TRUE),
+    list.files(file.path(raiz,'web'), '\\.(html|css|js)$', recursive=TRUE, full.names=TRUE),
     list.files(file.path(raiz,'tests'), '\\.R$', recursive = TRUE, full.names = TRUE),
-    file.path(raiz, c('renv.lock','referencias/cvm/dicionario_campos_declarados.csv')))
+    file.path(raiz, c('renv.lock','referencias/cvm/dicionario_campos_declarados.csv',
+      'referencias/cvm/dicionario_textual_2026-10-07.csv')))
   arquivos <- sort(arquivos[file.exists(arquivos)])
   calcular_hash_assinatura(setNames(lapply(arquivos, calcular_hash_assinatura, arquivo = TRUE),
     substring(arquivos, nchar(raiz)+2L)))
@@ -113,7 +115,8 @@ assinatura_codigo <- function(raiz = '.') {
 assinatura_transformacao <- function(escopo='leitura') {
   nomes <- c('ler_padronizar_fidc','relatar_qualidade_fidc','validar_dv_ni')
   if(escopo=='saida') nomes <- c(nomes,'consolidar_tabelas_fidc','auditar_chaves_fidc',
-    'extrair_cedentes_fidc','avaliar_identificador_cedente')
+    'extrair_cedentes_fidc','avaliar_identificador_cedente','validar_filtros_fidc',
+    'avaliar_filtros_fidc','preparar_indice_filtros_fidc','aplicar_indice_filtros_fidc','chaves_posicoes_fidc')
   calcular_hash_assinatura(setNames(lapply(nomes,function(n) {
     f <- get(n,envir=environment(assinatura_transformacao))
     list(argumentos=formals(f),corpo=deparse(body(f),width.cutoff=500L))

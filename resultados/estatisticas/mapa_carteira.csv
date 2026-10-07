@@ -1,0 +1,15 @@
+campo,rotulo,nivel,pai,tabela,unidade,sinal,regra
+TAB_I1_VL_DISP,Disponibilidades,Ativo,TAB_I_VL_ATIVO,I,unidade da fonte,Preservado,Soma somente de posições com numerador e denominador presentes
+TAB_I2_VL_CARTEIRA,Carteira,Ativo,TAB_I_VL_ATIVO,I,unidade da fonte,Preservado,Soma somente de posições com numerador e denominador presentes
+TAB_I3_VL_POSICAO_DERIV,Posição em derivativos,Ativo,TAB_I_VL_ATIVO,I,unidade da fonte,Preservado,Soma somente de posições com numerador e denominador presentes
+TAB_I4_VL_OUTRO_ATIVO,Outros ativos,Ativo,TAB_I_VL_ATIVO,I,unidade da fonte,Preservado,Soma somente de posições com numerador e denominador presentes
+TAB_I2A_VL_DIRCRED_RISCO,Direitos creditórios com riscos e benefícios,Detalhe da carteira,TAB_I2_VL_CARTEIRA,I,unidade da fonte,Preservado,Soma somente de posições com numerador e denominador presentes
+TAB_I2B_VL_DIRCRED_SEM_RISCO,Direitos creditórios sem riscos e benefícios,Detalhe da carteira,TAB_I2_VL_CARTEIRA,I,unidade da fonte,Preservado,Soma somente de posições com numerador e denominador presentes
+TAB_I2C_VL_VLMOB,Valores mobiliários,Detalhe da carteira,TAB_I2_VL_CARTEIRA,I,unidade da fonte,Preservado,Soma somente de posições com numerador e denominador presentes
+TAB_I2D_VL_TITPUB_FED,Títulos públicos federais,Detalhe da carteira,TAB_I2_VL_CARTEIRA,I,unidade da fonte,Preservado,Soma somente de posições com numerador e denominador presentes
+TAB_I2E_VL_CDB,CDB,Detalhe da carteira,TAB_I2_VL_CARTEIRA,I,unidade da fonte,Preservado,Soma somente de posições com numerador e denominador presentes
+TAB_I2F_VL_OPER_COMPROM,Operações compromissadas,Detalhe da carteira,TAB_I2_VL_CARTEIRA,I,unidade da fonte,Preservado,Soma somente de posições com numerador e denominador presentes
+TAB_I2G_VL_OUTRO_RF,Outros títulos de renda fixa,Detalhe da carteira,TAB_I2_VL_CARTEIRA,I,unidade da fonte,Preservado,Soma somente de posições com numerador e denominador presentes
+TAB_I2H_VL_COTA_FIDC,Cotas de FIDC,Detalhe da carteira,TAB_I2_VL_CARTEIRA,I,unidade da fonte,Preservado,Soma somente de posições com numerador e denominador presentes
+TAB_I2I_VL_COTA_FIDC_NP,Cotas de FIDC não padronizado,Detalhe da carteira,TAB_I2_VL_CARTEIRA,I,unidade da fonte,Preservado,Soma somente de posições com numerador e denominador presentes
+TAB_I2J_VL_CONTRATO_FUTURO,Contratos futuros,Detalhe da carteira,TAB_I2_VL_CARTEIRA,I,unidade da fonte,Preservado,Soma somente de posições com numerador e denominador presentes

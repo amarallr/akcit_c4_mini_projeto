@@ -1,0 +1,640 @@
+{
+  "estado": "concluido",
+  "gerado_em": "2026-10-07T12:41:32.944Z",
+  "browser": "Chromium headless",
+  "resultados": [
+    {
+      "teste": "Carga inicial",
+      "ms": 638,
+      "url": "http://127.0.0.1:8833/akcit_c4_mini_projeto/",
+      "generation": "6e27d320806f0a0f180ff8f483bb4700106cda816336910dd747e011ac3efee0"
+    },
+    {
+      "teste": "1920x1080 · visão geral",
+      "document": 0,
+      "regions": [
+        {
+          "name": "Competência, PL original, n válido, P97,5 original",
+          "overflow": 0
+        },
+        {
+          "name": "Indicador, Valor observado",
+          "overflow": 0
+        },
+        {
+          "name": "Indicador, Valor",
+          "overflow": 0
+        }
+      ],
+      "zoom": "1"
+    },
+    {
+      "teste": "Clique real na barra do ranking",
+      "estado": "aprovado"
+    },
+    {
+      "teste": "Administrador → entidade → histórico",
+      "admin": "62285390000140",
+      "entidade": "58900579000129|Classe"
+    },
+    {
+      "teste": "1920x1080 · carteira/entidade",
+      "document": 0,
+      "regions": [
+        {
+          "name": "Categoria, Valor observado, % da base comparável, Cobertos/elegíveis",
+          "overflow": 0
+        },
+        {
+          "name": "Indicador, Resultado",
+          "overflow": 0
+        },
+        {
+          "name": "Competência · categoria, Valor, % da base, Cobertos/elegíveis",
+          "overflow": 0
+        }
+      ],
+      "zoom": "1"
+    },
+    {
+      "teste": "Ranking histórico e vínculos distintos",
+      "estado": "aprovado"
+    },
+    {
+      "teste": "Downloads CSV públicos",
+      "arquivos": [
+        {
+          "path": "estatisticas_por_competencia.csv",
+          "status": 200
+        },
+        {
+          "path": "top25_administradores.csv",
+          "status": 200
+        },
+        {
+          "path": "dados/carteira_2026-09-30.csv",
+          "status": 200
+        },
+        {
+          "path": "dicionario_analitico.csv",
+          "status": 200
+        }
+      ]
+    },
+    {
+      "teste": "1920x1080 · overview",
+      "document": 0,
+      "regions": [
+        {
+          "name": "Competência, PL original, n válido, P97,5 original",
+          "overflow": 0
+        },
+        {
+          "name": "Indicador, Valor observado",
+          "overflow": 0
+        },
+        {
+          "name": "Indicador, Valor",
+          "overflow": 0
+        }
+      ],
+      "zoom": "1"
+    },
+    {
+      "teste": "1920x1080 · admins",
+      "document": 0,
+      "regions": [
+        {
+          "name": "chart-viewport",
+          "overflow": 0
+        },
+        {
+          "name": "Posição, Administrador · CNPJ, PL original, Participação, Fundos/classes",
+          "overflow": 0
+        }
+      ],
+      "zoom": "1"
+    },
+    {
+      "teste": "1920x1080 · funds",
+      "document": 0,
+      "regions": [
+        {
+          "name": "Fundo/classe · CNPJ, PL original, Participação, Administrador",
+          "overflow": 0
+        }
+      ],
+      "zoom": "1"
+    },
+    {
+      "teste": "1920x1080 · portfolio",
+      "document": 0,
+      "regions": [
+        {
+          "name": "Categoria, Valor observado, % da base comparável, Cobertos/elegíveis",
+          "overflow": 0
+        },
+        {
+          "name": "Indicador, Resultado",
+          "overflow": 0
+        },
+        {
+          "name": "Competência · categoria, Valor, % da base, Cobertos/elegíveis",
+          "overflow": 0
+        }
+      ],
+      "zoom": "1"
+    },
+    {
+      "teste": "1920x1080 · distribution",
+      "document": 0,
+      "regions": [
+        {
+          "name": "Administrador · n, P25 / mediana / P75, Percentil 97,5 (P97,5) original, Potenciais outliers",
+          "overflow": 0
+        }
+      ],
+      "zoom": "1"
+    },
+    {
+      "teste": "1920x1080 · method",
+      "document": 0,
+      "regions": [],
+      "zoom": "1"
+    },
+    {
+      "teste": "1366x768 · overview",
+      "document": 0,
+      "regions": [
+        {
+          "name": "Competência, PL original, n válido, P97,5 original",
+          "overflow": 0
+        },
+        {
+          "name": "Indicador, Valor observado",
+          "overflow": 0
+        },
+        {
+          "name": "Indicador, Valor",
+          "overflow": 0
+        }
+      ],
+      "zoom": "1"
+    },
+    {
+      "teste": "1366x768 · admins",
+      "document": 0,
+      "regions": [
+        {
+          "name": "chart-viewport",
+          "overflow": 0
+        },
+        {
+          "name": "Posição, Administrador · CNPJ, PL original, Participação, Fundos/classes",
+          "overflow": 0
+        }
+      ],
+      "zoom": "1"
+    },
+    {
+      "teste": "1366x768 · funds",
+      "document": 0,
+      "regions": [
+        {
+          "name": "Fundo/classe · CNPJ, PL original, Participação, Administrador",
+          "overflow": 0
+        }
+      ],
+      "zoom": "1"
+    },
+    {
+      "teste": "1366x768 · portfolio",
+      "document": 0,
+      "regions": [
+        {
+          "name": "Categoria, Valor observado, % da base comparável, Cobertos/elegíveis",
+          "overflow": 0
+        },
+        {
+          "name": "Indicador, Resultado",
+          "overflow": 0
+        },
+        {
+          "name": "Competência · categoria, Valor, % da base, Cobertos/elegíveis",
+          "overflow": 0
+        }
+      ],
+      "zoom": "1"
+    },
+    {
+      "teste": "1366x768 · distribution",
+      "document": 0,
+      "regions": [
+        {
+          "name": "Administrador · n, P25 / mediana / P75, Percentil 97,5 (P97,5) original, Potenciais outliers",
+          "overflow": 0
+        }
+      ],
+      "zoom": "1"
+    },
+    {
+      "teste": "1366x768 · method",
+      "document": 0,
+      "regions": [],
+      "zoom": "1"
+    },
+    {
+      "teste": "768x1024 · overview",
+      "document": 0,
+      "regions": [
+        {
+          "name": "Competência, PL original, n válido, P97,5 original",
+          "overflow": 0
+        },
+        {
+          "name": "Indicador, Valor observado",
+          "overflow": 0
+        },
+        {
+          "name": "Indicador, Valor",
+          "overflow": 0
+        }
+      ],
+      "zoom": "1"
+    },
+    {
+      "teste": "768x1024 · admins",
+      "document": 0,
+      "regions": [
+        {
+          "name": "chart-viewport",
+          "overflow": 0
+        },
+        {
+          "name": "Posição, Administrador · CNPJ, PL original, Participação, Fundos/classes",
+          "overflow": 0
+        }
+      ],
+      "zoom": "1"
+    },
+    {
+      "teste": "768x1024 · funds",
+      "document": 0,
+      "regions": [
+        {
+          "name": "Fundo/classe · CNPJ, PL original, Participação, Administrador",
+          "overflow": 0
+        }
+      ],
+      "zoom": "1"
+    },
+    {
+      "teste": "768x1024 · portfolio",
+      "document": 0,
+      "regions": [
+        {
+          "name": "Categoria, Valor observado, % da base comparável, Cobertos/elegíveis",
+          "overflow": 0
+        },
+        {
+          "name": "Indicador, Resultado",
+          "overflow": 0
+        },
+        {
+          "name": "Competência · categoria, Valor, % da base, Cobertos/elegíveis",
+          "overflow": 0
+        }
+      ],
+      "zoom": "1"
+    },
+    {
+      "teste": "768x1024 · distribution",
+      "document": 0,
+      "regions": [
+        {
+          "name": "Administrador · n, P25 / mediana / P75, Percentil 97,5 (P97,5) original, Potenciais outliers",
+          "overflow": 0
+        }
+      ],
+      "zoom": "1"
+    },
+    {
+      "teste": "768x1024 · method",
+      "document": 0,
+      "regions": [],
+      "zoom": "1"
+    },
+    {
+      "teste": "390x844 · overview",
+      "document": 0,
+      "regions": [
+        {
+          "name": "Competência, PL original, n válido, P97,5 original",
+          "overflow": 0
+        },
+        {
+          "name": "Indicador, Valor observado",
+          "overflow": 0
+        },
+        {
+          "name": "Indicador, Valor",
+          "overflow": 0
+        }
+      ],
+      "zoom": "1"
+    },
+    {
+      "teste": "390x844 · admins",
+      "document": 0,
+      "regions": [
+        {
+          "name": "chart-viewport",
+          "overflow": 0
+        },
+        {
+          "name": "Posição, Administrador · CNPJ, PL original, Participação, Fundos/classes",
+          "overflow": 0
+        }
+      ],
+      "zoom": "1"
+    },
+    {
+      "teste": "390x844 · funds",
+      "document": 0,
+      "regions": [
+        {
+          "name": "Fundo/classe · CNPJ, PL original, Participação, Administrador",
+          "overflow": 0
+        }
+      ],
+      "zoom": "1"
+    },
+    {
+      "teste": "390x844 · portfolio",
+      "document": 0,
+      "regions": [
+        {
+          "name": "Categoria, Valor observado, % da base comparável, Cobertos/elegíveis",
+          "overflow": 0
+        },
+        {
+          "name": "Indicador, Resultado",
+          "overflow": 0
+        },
+        {
+          "name": "Competência · categoria, Valor, % da base, Cobertos/elegíveis",
+          "overflow": 0
+        }
+      ],
+      "zoom": "1"
+    },
+    {
+      "teste": "390x844 · distribution",
+      "document": 0,
+      "regions": [
+        {
+          "name": "Administrador · n, P25 / mediana / P75, Percentil 97,5 (P97,5) original, Potenciais outliers",
+          "overflow": 0
+        }
+      ],
+      "zoom": "1"
+    },
+    {
+      "teste": "390x844 · method",
+      "document": 0,
+      "regions": [],
+      "zoom": "1"
+    },
+    {
+      "teste": "360x800 · overview",
+      "document": 0,
+      "regions": [
+        {
+          "name": "Competência, PL original, n válido, P97,5 original",
+          "overflow": 0
+        },
+        {
+          "name": "Indicador, Valor observado",
+          "overflow": 0
+        },
+        {
+          "name": "Indicador, Valor",
+          "overflow": 0
+        }
+      ],
+      "zoom": "1"
+    },
+    {
+      "teste": "360x800 · admins",
+      "document": 0,
+      "regions": [
+        {
+          "name": "chart-viewport",
+          "overflow": 0
+        },
+        {
+          "name": "Posição, Administrador · CNPJ, PL original, Participação, Fundos/classes",
+          "overflow": 0
+        }
+      ],
+      "zoom": "1"
+    },
+    {
+      "teste": "360x800 · funds",
+      "document": 0,
+      "regions": [
+        {
+          "name": "Fundo/classe · CNPJ, PL original, Participação, Administrador",
+          "overflow": 0
+        }
+      ],
+      "zoom": "1"
+    },
+    {
+      "teste": "360x800 · portfolio",
+      "document": 0,
+      "regions": [
+        {
+          "name": "Categoria, Valor observado, % da base comparável, Cobertos/elegíveis",
+          "overflow": 0
+        },
+        {
+          "name": "Indicador, Resultado",
+          "overflow": 0
+        },
+        {
+          "name": "Competência · categoria, Valor, % da base, Cobertos/elegíveis",
+          "overflow": 0
+        }
+      ],
+      "zoom": "1"
+    },
+    {
+      "teste": "360x800 · distribution",
+      "document": 0,
+      "regions": [
+        {
+          "name": "Administrador · n, P25 / mediana / P75, Percentil 97,5 (P97,5) original, Potenciais outliers",
+          "overflow": 0
+        }
+      ],
+      "zoom": "1"
+    },
+    {
+      "teste": "360x800 · method",
+      "document": 0,
+      "regions": [],
+      "zoom": "1"
+    },
+    {
+      "teste": "360x800 · filtros expandidos",
+      "document": 0,
+      "regions": [],
+      "zoom": "1"
+    },
+    {
+      "teste": "360x800 · dez categorias da carteira",
+      "document": 0,
+      "regions": [
+        {
+          "name": "Categoria, Valor observado, % da base comparável, Cobertos/elegíveis",
+          "overflow": 0
+        },
+        {
+          "name": "Indicador, Resultado",
+          "overflow": 0
+        },
+        {
+          "name": "Competência · categoria, Valor, % da base, Cobertos/elegíveis",
+          "overflow": 0
+        }
+      ],
+      "zoom": "1"
+    },
+    {
+      "teste": "Navegação celular, filtros recolhíveis e dez categorias da carteira",
+      "estado": "aprovado"
+    },
+    {
+      "teste": "1920x1080 · zoom 200%",
+      "document": 0,
+      "regions": [
+        {
+          "name": "Competência, PL original, n válido, P97,5 original",
+          "overflow": 0
+        },
+        {
+          "name": "Indicador, Valor observado",
+          "overflow": 0
+        },
+        {
+          "name": "Indicador, Valor",
+          "overflow": 0
+        }
+      ],
+      "zoom": "2"
+    },
+    {
+      "teste": "1920x1080 · zoom 50%",
+      "document": 0,
+      "regions": [
+        {
+          "name": "Competência, PL original, n válido, P97,5 original",
+          "overflow": 0
+        },
+        {
+          "name": "Indicador, Valor observado",
+          "overflow": 0
+        },
+        {
+          "name": "Indicador, Valor",
+          "overflow": 0
+        }
+      ],
+      "zoom": "0.5"
+    },
+    {
+      "teste": "Modal expandido · 1920x1080",
+      "document": 0,
+      "regions": [
+        {
+          "name": "Indicador, Valor observado",
+          "overflow": 0
+        },
+        {
+          "name": "Indicador, Valor",
+          "overflow": 0
+        },
+        {
+          "name": "",
+          "overflow": 0
+        },
+        {
+          "name": "Competência, PL original, n válido, P97,5 original",
+          "overflow": 0
+        }
+      ],
+      "zoom": "1"
+    },
+    {
+      "teste": "Modal/Esc/foco e zoom proporcional",
+      "estado": "aprovado"
+    },
+    {
+      "teste": "Relatório · 1920x1080",
+      "document": 0,
+      "regions": [
+        {
+          "name": "Tabela de dados",
+          "overflow": 0
+        },
+        {
+          "name": "Tabela de dados",
+          "overflow": 0
+        },
+        {
+          "name": "Tabela de dados",
+          "overflow": 0
+        },
+        {
+          "name": "Tabela de dados",
+          "overflow": 0
+        },
+        {
+          "name": "Tabela de dados",
+          "overflow": 0
+        },
+        {
+          "name": "Tabela de dados",
+          "overflow": 0
+        },
+        {
+          "name": "Tabela de dados",
+          "overflow": 0
+        },
+        {
+          "name": "Tabela de dados",
+          "overflow": 0
+        },
+        {
+          "name": "Tabela de dados",
+          "overflow": 0
+        },
+        {
+          "name": "Tabela de dados",
+          "overflow": 0
+        },
+        {
+          "name": "Tabela de dados",
+          "overflow": 0
+        },
+        {
+          "name": "Tabela de dados",
+          "overflow": 0
+        }
+      ],
+      "zoom": "1"
+    }
+  ],
+  "erros": []
+}

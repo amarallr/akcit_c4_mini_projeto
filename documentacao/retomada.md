@@ -1,5 +1,7 @@
 # Retomada do projeto
 
+Incremento ativo 07/10/2026: painel P08, relatório real, pré-filtros P04/P06 e publicação no Pages existente, autorizados. Não criar P09/Shiny nem baixar histórico novamente. O histórico 2020–2026 permanece íntegro; julho/agosto serve à prova real de pré-filtro em geração separada. Fundo/Classe/Fundo legado são universos distintos; setembro/2026 tem cobertura menor e exige cuidado na comparação. Referência visual 1920×1080 paisagem com zoom +/− proporcional. Consulte [contratos/reprodução](p08_painel.md) e evidencias/p08; CI/deploy serão registrados por SHA observado. A bola está com o agente durante a execução.
+
 O projeto transforma informes mensais de Fundos de Investimento em Direitos Creditórios (FIDC) publicados pela CVM em conjuntos temporais por tabela, registros derivados de cedentes e, opcionalmente, uma tabela flat. P01 coordena o pipeline; P02 reúne funções comuns, dependências e testes; P04 seleciona os dados; P05 obtém os arquivos; P06 consolida; P07 verifica a entrega; P08 calcula estatísticas e documenta os metadados do conjunto. P03 continua sendo um roteiro documental.
 
 ## Estado da atualização histórica
@@ -12,7 +14,7 @@ P08 produz o relatório em `resultados/estatisticas/relatorio_estatisticas.md`, 
 
 Os metadados do conjunto, as fontes, os leiautes, a linhagem e as limitações estão explicados na introdução do [README](../README.md) e na [página pública do Pages](https://amarallr.github.io/akcit_c4_mini_projeto/). Documentos estão em `documentacao/`, dicionários em `referencias/cvm/`, evidências agregadas em `evidencias/` e tabelas públicas em `resultados/estatisticas/`.
 
-A suíte de regressão local concluiu 48 casos e 413 verificações, sem falhas, erros, avisos ou skips. Os testes automatizados específicos de P08 continuam planejados; a geração P08 foi executada e conferida localmente. A CI com fixtures testa o código sem reproduzir a extração CVM histórica. Consulte [aceite](aceite_entrega.md), [desempenho](desempenho.md) e [evidências P07](../evidencias/p07/evidencias_incremento.json).
+A suíte de regressão local concluiu 56 casos e 471 verificações, sem falhas, erros, avisos ou skips. Os oito casos automatizados de P08 foram executados na suíte atual; a geração real cobre 81 competências e 186.655 posições mensais. A CI com fixtures testa o código sem reproduzir a extração CVM histórica. Consulte [aceite](aceite_entrega.md), [desempenho](desempenho.md) e [evidências P07](../evidencias/p07/evidencias_incremento.json).
 
 ## Continuidade
 

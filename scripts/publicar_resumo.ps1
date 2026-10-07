@@ -1,4 +1,4 @@
-﻿$ErrorActionPreference = 'Stop'
+$ErrorActionPreference = 'Stop'
 $raiz = Split-Path $PSScriptRoot -Parent
 $destino = Join-Path $raiz 'site'
 New-Item -ItemType Directory -Path $destino -Force | Out-Null
@@ -14,7 +14,7 @@ $emTabela = $false
 $alinhamentos = @()
 $inicioCabecalho = -1
 $rotulosCabecalho = @()
-foreach ($linha in Get-Content -LiteralPath (Join-Path $raiz 'resultados/estatisticas/relatorio_estatisticas.md') -Encoding UTF8) {
+foreach ($linha in Get-Content -LiteralPath (Join-Path $raiz 'resultados/estatisticas/relatorio_analise_fidc.md') -Encoding UTF8) {
     if ($linha.StartsWith('|')) {
         if ($linha -match '^\|[\s:|\-]+\|$') {
             $alinhamentos = @($linha.Trim().Trim('|').Split('|') | ForEach-Object {
@@ -89,7 +89,7 @@ h1{font-size:clamp(1.8rem,4vw,2.8rem);line-height:1.2;margin:0 0 24px}h2{margin-
 </html>
 '@
 $pagina = $pagina.Replace('<!-- CONTEUDO -->', ($html -join "`n"))
-[System.IO.File]::WriteAllText((Join-Path $destino 'index.html'), $pagina, (New-Object System.Text.UTF8Encoding($false)))
+[System.IO.File]::WriteAllText((Join-Path $destino 'relatorio_analise_fidc.html'), $pagina, (New-Object System.Text.UTF8Encoding($false)))
 foreach ($arquivo in @('relatorio_estatisticas.md','estatisticas_por_competencia.csv','top25_administradores.csv')) {
     $origem = Join-Path $raiz ('resultados/estatisticas/' + $arquivo)
     if ($arquivo -eq 'relatorio_estatisticas.md') {
@@ -102,4 +102,16 @@ foreach ($arquivo in @('dicionario_campos_declarados.csv','esquema_observado_pil
     New-Item -ItemType Directory -Path $siteRef -Force | Out-Null
     Copy-Item -LiteralPath (Join-Path $raiz ('referencias/cvm/' + $arquivo)) -Destination $siteRef -Force
 }
-Write-Output 'Página gerada em site/index.html.'
+# P08-MOD-005 | P08-RF-015: todos os derivados, assets e caminhos relativos.
+Copy-Item -Path (Join-Path $raiz 'resultados/estatisticas/*') -Destination $destino -Recurse -Force
+Copy-Item -Path (Join-Path $raiz 'web/*') -Destination $destino -Recurse -Force
+$relatorioPath = Join-Path $destino 'relatorio_analise_fidc.html'
+$relatorioHtml = [IO.File]::ReadAllText($relatorioPath,[Text.Encoding]::UTF8)
+$relatorioHtml = $relatorioHtml.Replace('<main>','<main class="report"><p><a href="index.html">← Voltar ao painel FIDC</a> · <button onclick="window.print()">Imprimir relatório</button></p>')
+$relatorioHtml = $relatorioHtml.Replace('</head>','<link rel="stylesheet" href="painel.css"></head>')
+[IO.File]::WriteAllText($relatorioPath,$relatorioHtml,(New-Object Text.UTF8Encoding($false)))
+$commitPublicacao = $env:GITHUB_SHA
+if ([string]::IsNullOrWhiteSpace($commitPublicacao)) { $commitPublicacao = (git -C $raiz rev-parse HEAD).Trim() }
+$versaoPublicacao = @{ sha=$commitPublicacao; schema='p08-v2026-10-07' } | ConvertTo-Json -Compress
+[IO.File]::WriteAllText((Join-Path $destino 'versao_publicacao.json'),$versaoPublicacao,(New-Object Text.UTF8Encoding($false)))
+Write-Output 'Painel e relatório gerados em site/index.html e site/relatorio_analise_fidc.html.'

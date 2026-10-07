@@ -1,4 +1,6 @@
-# Hierarquia de prompts — 06/10/2026
+# Hierarquia de prompts — 07/10/2026
+
+Incremento vigente: P08 evolui para painel exploratório estático e relatório final real, com pré-filtros em P04/P06. Preserva oito prompts, IDs e P03 documental. Todo o período é explorável; Histórico Q4 é preset. Universos Fundo/Classe/Fundo legado separados; P97,5 original visível, ranking original por competência e histórico winsorizado, drill down e carteira. Referência 1920×1080 paisagem, zoom proporcional +/−/Restaurar. [Contratos e reprodução](../documentacao/p08_painel.md). Commits, push e publicação no Pages existente autorizados em 07/10/2026. Evidências históricas não aprovam este incremento.
 
 Nova reprodução parte somente dos oito prompts atuais. Leia P01, P02 e a etapa autorizada. Ferramentas, contas, código e documentos são preparados/gerados ao longo dos incrementos, com IA e revisão humana; não são presumidos preexistentes.
 
@@ -11,7 +13,7 @@ Nova reprodução parte somente dos oito prompts atuais. Leia P01, P02 e a etapa
 | P05 | Download, ZIP, extração e manifestos | Implementado e validado no piloto julho/agosto de 2026 |
 | P06 | Normalização, temporal/flat, checkpoints e cedentes | Implementado; consolidação temporal de 2020–2026 concluída localmente nesta atualização |
 | P07 | Aceite e entrega | Aceite local aprovado no piloto julho/agosto de 2026 |
-| P08 | Estatísticas e metadados consolidados | Executado localmente para 81 competências; gera CSVs, relatório e página; testes automatizados P08 permanecem planejados |
+| P08 | Estatísticas e metadados consolidados | Executado localmente para 81 competências; gera CSVs, relatório e página; oito casos automatizados P08 aprovados |
 
 P03 não instala/cria VM/exige administrador ou teste de execução. [AMBIENTE_DO_ZERO](AMBIENTE_DO_ZERO.md) contém o roteiro; o aceite documental não significa computador preparado. RF006/TST004 cancelados, scripts/testes anteriores históricos opcionais.
 

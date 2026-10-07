@@ -3,11 +3,11 @@ on:
   push:
     branches: [main]
     paths:
-      - 'resultados/estatisticas/relatorio_estatisticas.md'
-      - 'resultados/estatisticas/estatisticas_por_competencia.csv'
-      - 'resultados/estatisticas/top25_administradores.csv'
+      - 'resultados/estatisticas/**'
+      - 'web/**'
       - 'referencias/cvm/*.csv'
       - 'scripts/publicar_resumo.ps1'
+      - 'scripts/p08_validar_publicacao.cjs'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 permissions:
@@ -28,6 +28,10 @@ jobs:
       - name: Gerar página a partir do resumo
         shell: pwsh
         run: ./scripts/publicar_resumo.ps1
+      - name: Validar JavaScript, manifesto, dados e links antes do deploy
+        run: |
+          node --check web/painel.js
+          node scripts/p08_validar_publicacao.cjs site
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -2,6 +2,11 @@ PROMPT 04 — DATASET E CONFIGURAÇÃO
 Versão: v2026-10-02 — incrementos autorizados e arquitetura DFD
 Prompt responsável: P04
 
+P04-RF-008 | RF | Configuração filtros: interesse/exclusivo Todos/Sim/Não, E/OU, condomínio multisseleção, cotistas igualdade/intervalo inclusivo e política de desconhecidos; validar campos/domínios confirmados e expressão completa (P08 seção 2A). Mudança preserva originais e invalida somente derivados dependentes.
+P04-FUN-006 | FUN | validar_filtros_fidc | Validar domínio, inteiros, intervalos e política.
+P04-FUN-007 | FUN | expressao_filtros_fidc | Expressão ativa com E/OU e desconhecidos.
+P04-FUN-008 | FUN | avaliar_filtros_fidc | Avaliar atributos mensais; nulo não é Não/zero.
+
 P04-RF-007 | RF | Assinar plano determinístico independente da ordem; validar unidades esperadas/recebidas, extras, duplicadas e incompatíveis, cobertura mensal/anual sem sobreposição. Migração antiga exige identidade exata e ZIP íntegro; caso impossível orientar P05, reutilizando ZIPs válidos.
 P04-FUN-004 | FUN | assinar_plano_fidc | Canonizar plano e verificar cobertura.
 P04-FUN-005 | FUN | validar_downloads_plano | Conferir downloads contra plano atual também em chamadas diretas de P06, evidências e medições.

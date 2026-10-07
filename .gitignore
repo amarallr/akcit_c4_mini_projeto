@@ -35,3 +35,8 @@ rsconnect/
 /locais/
 /site/
 /prompts/*.zip
+# Diagnóstico local de falha do navegador pode conter caminhos do computador.
+/evidencias/p08/navegador_falha.json
+# P08: partições públicas derivadas; a regra dados/ conserva os originais locais.
+!/resultados/estatisticas/dados/
+!/resultados/estatisticas/dados/**
