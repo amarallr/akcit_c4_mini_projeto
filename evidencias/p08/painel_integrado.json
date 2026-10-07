@@ -1,0 +1,66 @@
+{
+  "estado": "concluido",
+  "conferido_em": "2026-10-07T18:42:41.857Z",
+  "sha_implementacao": "729e43e6186706381eafb661106f2b6109b2c067",
+  "url": "https://amarallr.github.io/akcit_c4_mini_projeto/",
+  "assinatura_p06": "6e27d320806f0a0f180ff8f483bb4700106cda816336910dd747e011ac3efee0",
+  "codigo_analitico": "ce4fcd9b87d6959dd7baae2bd6708d3f0e7159113a8966f281dbd7d5acae4796",
+  "blocos": 6,
+  "navegador": {
+    "verificacoes": 56,
+    "erros": 0,
+    "url": "https://amarallr.github.io/akcit_c4_mini_projeto/",
+    "cache_desativado": true
+  },
+  "build": {
+    "hashes": 281,
+    "competencias": 81
+  },
+  "downloads": [
+    {
+      "arquivo": "estatisticas_por_competencia.csv",
+      "bytes": 60416,
+      "hash_conferido": true
+    },
+    {
+      "arquivo": "top25_administradores.csv",
+      "bytes": 33221,
+      "hash_conferido": true
+    },
+    {
+      "arquivo": "dados/2026-09-30.json",
+      "bytes": 196562,
+      "hash_conferido": true
+    },
+    {
+      "arquivo": "dados/carteira_2026-09-30.csv",
+      "bytes": 559088,
+      "hash_conferido": true
+    }
+  ],
+  "assets": [
+    {
+      "arquivo": "painel.js",
+      "sha256": "93fdac62e548ffbe40111b641af5bef922d1f06550c71d6a56d238b49706e28d",
+      "hash_conferido": true
+    },
+    {
+      "arquivo": "painel.css",
+      "sha256": "9e73a91790593b8b2f6c23bfec5fb91032fbd21df05c9a0d11db4d299310b4b7",
+      "hash_conferido": true
+    }
+  ],
+  "github": {
+    "ci": {
+      "id": 37666883479,
+      "conclusao": "success",
+      "url": "https://github.com/amarallr/akcit_c4_mini_projeto/actions/runs/37666883479"
+    },
+    "pages": {
+      "id": 37666883501,
+      "conclusao": "success",
+      "url": "https://github.com/amarallr/akcit_c4_mini_projeto/actions/runs/37666883501"
+    }
+  },
+  "observacao": "CI/deploy correspondem ao SHA de implementação. Commit posterior registra documentação, testes de navegador e evidências. Dados e cálculos R preservados."
+}
