@@ -42,6 +42,11 @@ async function click(selector){
   await until(`document.getElementById('expanded').open&&document.getElementById('expanded-body').contains(document.getElementById('admin-detail'))`);assert(await ev(`document.getElementById('admin-detail').textContent.includes('Soma reconciliada')`));
   await click('#admin-funds');await until(`document.querySelector('[data-entity]')!=null`);await click('[data-entity]');await until(`document.getElementById('entity-chart').data?.length>0`);await screenshot('desktop-fundo');
   results.push({teste:'Administrador → entidade → histórico',admin:await ev('state.admin'),entidade:await ev('state.entity')});
+  await until(`document.querySelector('#cotistas-series table')!=null`);
+  assert(await ev(`document.getElementById('entity-table').textContent.includes('Cotistas')`));
+  const countsCheck=await ev(`(async()=>{const d=await json('dados/cotistas_'+state.month+'.json');const s=unpack(d.series).filter(v=>identity(v)===state.entity);const p=unpack(d.perfil).filter(v=>identity(v)===state.entity);return {series:s.length,seriesShown:document.querySelectorAll('#cotistas-series tbody tr').length,profiles:p.length*32,profilesShown:document.querySelectorAll('#cotistas-perfil tbody tr').length};})()`);
+  assert.equal(countsCheck.seriesShown,countsCheck.series);assert.equal(countsCheck.profilesShown,countsCheck.profiles);
+  results.push({teste:'Cotistas TAB_X_1 e TAB_X_1_1 reconciliados com os dados da entidade',...countsCheck});
   await click('[data-view="portfolio"]');await until(`document.getElementById('portfolio-chart').data?.length>0`);await until(`document.getElementById('portfolio-evolution').data?.length>0`);await screenshot('desktop-carteira');await layout('1920x1080 · carteira/entidade');
   await close();await click('#back');assert.equal(await ev('state.entity'),null);assert(await ev(`state.admin!==''`));
   await click('#clear');await until(`state.admin===''&&state.entity===null&&document.getElementById('status').textContent===''`);

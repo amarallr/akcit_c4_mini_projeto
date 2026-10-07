@@ -1,4 +1,27 @@
 # P08-MOD-002 | Cálculos compartilhados pelo painel e relatório; sem efeitos em source.
+preparar_cotistas_p08 <- function(x1,x11,posicoes) {
+  preparar <- function(d,campos) {
+    x <- cbind(chaves_posicoes_fidc(d),data.table::as.data.table(d)[,intersect(campos,names(d)),with=FALSE])
+    # Semijoin por identidade mensal, sem multiplicar posições por séries.
+    x <- x[posicoes[,.(cnpj,tipo,data)],on=.(cnpj,tipo,data),nomatch=0L]
+    for(campo in intersect(grep('^TAB_X_NR_COTST',names(x),value=TRUE),names(x))) {
+      v <- suppressWarnings(as.numeric(x[[campo]]))
+      v[!is.finite(v)|v<0|v!=floor(v)] <- NA_real_
+      data.table::set(x,j=campo,value=v)
+    }
+    x
+  }
+  series <- preparar(x1,c('TAB_X_CLASSE_SERIE','TAB_X_NR_COTST'))
+  perfil <- preparar(x11,grep('^TAB_X_NR_COTST_.*(?<!__original)$',names(x11),value=TRUE,perl=TRUE))
+  # Repetições idênticas da fonte não são observações adicionais.
+  perfil <- unique(perfil)
+  if(anyDuplicated(perfil,by=c('cnpj','tipo','data'))) stop('X_1_1: valores conflitantes na chave mensal.')
+  resumo <- series[,.(cotistas=if(.N==1L) TAB_X_NR_COTST[1] else NA_real_,series_cotistas=.N),by=.(cnpj,tipo,data)]
+  posicoes[,`:=`(cotistas=NA_real_,series_cotistas=NA_integer_)]
+  posicoes[resumo,on=.(cnpj,tipo,data),`:=`(cotistas=i.cotistas,series_cotistas=i.series_cotistas)]
+  list(series=series,perfil=perfil)
+}
+
 # P08-FUN-003 | P08-RF-005: tabela estreita, chaves mensais e cardinalidade auditável.
 deduplicar_analise_fidc <- function(d,campos,rotulo) {
   k <- chaves_posicoes_fidc(d)

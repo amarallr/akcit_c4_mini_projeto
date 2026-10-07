@@ -1,6 +1,23 @@
 # P08-TST-001/002/003 | fixtures isoladas, sem rede ou artefatos públicos.
 for(n in c('p08_analise_fidc.R','p08_exportar_painel.R')) sys.source(file.path('../../scripts',n),envir=pipeline)
 
+testthat::test_that('Cotistas preservam séries, zeros e ausências sem multiplicar posições',{
+  p <- data.table::data.table(cnpj=c('1','2','3','4'),tipo='Classe',data='2026-07-31')
+  x <- data.frame(cnpj=c('1','1','2','3','5'),TP_FUNDO_CLASSE='Classe',dt_comptc='2026-07-31',
+    TAB_X_CLASSE_SERIE=c('Sênior','Subordinada','Sênior','Sênior','Sênior'),TAB_X_NR_COTST=c(2,3,0,-1,9))
+  y <- data.frame(cnpj=c('1','2'),TP_FUNDO_CLASSE='Classe',dt_comptc='2026-07-31',
+    TAB_X_NR_COTST_SENIOR_PF=c(2,0),TAB_X_NR_COTST_SUBORD_PF=c(NA,0))
+  a <- pipeline$preparar_cotistas_p08(x,y,p)
+  testthat::expect_equal(nrow(p),4L)
+  testthat::expect_equal(p$cotistas,c(NA,0,NA,NA))
+  testthat::expect_equal(p$series_cotistas,c(2L,1L,1L,NA_integer_))
+  testthat::expect_equal(nrow(a$series),4L)
+  testthat::expect_equal(a$perfil$TAB_X_NR_COTST_SUBORD_PF,c(NA,0))
+  testthat::expect_equal(nrow(pipeline$preparar_cotistas_p08(x,rbind(y,y[1,]),p)$perfil),2L)
+  y2 <- y[1,];y2$TAB_X_NR_COTST_SENIOR_PF <- 8
+  testthat::expect_error(pipeline$preparar_cotistas_p08(x,rbind(y,y2),p),'valores conflitantes')
+})
+
 testthat::test_that('P08-TST-001: P97,5 interpolado e n=0/n=1 antecedem winsorização',{
   s <- pipeline$estatisticas_pl_fidc(c(0,10,20,30,NA))
   testthat::expect_equal(s$p97_5,29.25);testthat::expect_equal(s$p2_5,.75)

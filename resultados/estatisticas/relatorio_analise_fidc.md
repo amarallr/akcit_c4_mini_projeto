@@ -1,5 +1,5 @@
 # Relatório final de análise dos FIDCs
-Geração: 2026-10-07T09:41:47-0300 | Schema: p08-v2026-10-07
+Geração: 2026-10-07T16:37:08-0300 | Schema: p08-v2026-10-07
 Assinatura P06: 6e27d320806f0a0f180ff8f483bb4700106cda816336910dd747e011ac3efee0
 ## Resumo executivo
 Período observado: 2020-01-31 a 2026-09-30 ; 81 competências.
@@ -376,3 +376,5 @@ Biblioteca: Plotly.js 3.1.0 (MIT), arquivos locais. Escolhida por linhas, barras
 Dicionário oficial consultado em2026-10-07: [metadados CVM](https://dados.cvm.gov.br/dados/FIDC/DOC/INF_MENSAL/META/meta_inf_mensal_fidc_txt.zip).
 Tabela I : inf_mensal_fidc_tab_I.csv ; SHA-256 0b99d33140b2b9e2cc7be9c3ab14647663e165fd5767c077602e4c035c736d9c
 Tabela IV : inf_mensal_fidc_tab_IV.csv ; SHA-256 06b10093835398f7fa9f318c3f2740ae01bae268cc015f0afa3e158c67778713
+Tabela X_1 : inf_mensal_fidc_tab_X_1.csv ; SHA-256 c0eef7355cc318b9fd4275e92ff5f632413f45bc83e2bf75a18ab9fba7c54837
+Tabela X_1_1 : inf_mensal_fidc_tab_X_1_1.csv ; SHA-256 9801d4b9594a7f2f990fd8d636482a5ef3c4d1a2fcf6243ba710c8bf7f6b5f79

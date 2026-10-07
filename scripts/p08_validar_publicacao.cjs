@@ -23,4 +23,15 @@ const report=read('relatorio_analise_fidc.md');for(const type of meta.universos)
 assert(all.estatisticas.every(d=>'p97_5' in d));
 assert(all.series_admin.every(d=>'p97_5' in d));
 for(const month of meta.competencias){const d=JSON.parse(read(`dados/${month}.json`));assert(d.posicoes.colunas.includes('pl'));const values=d.posicoes.valores[d.posicoes.colunas.indexOf('data')];assert((Array.isArray(values)?values:[values]).every(data=>data===month));}
+for(const month of meta.competencias){
+ const d=JSON.parse(read(`dados/cotistas_${month}.json`));
+ for(const name of ['series','perfil']){
+  const t=d[name],index=t.colunas.indexOf('data');assert(index>=0);
+  assert(t.valores[index].every(v=>v===month));
+  for(let i=0;i<t.colunas.length;i++)if(t.colunas[i].startsWith('TAB_X_NR_COTST'))assert(t.valores[i].every(v=>v===null||(Number.isInteger(v)&&v>=0)));
+ }
+ assert(d.series.colunas.includes('TAB_X_NR_COTST'));
+ assert.equal(d.perfil.colunas.filter(c=>c.startsWith('TAB_X_NR_COTST_')).length,32);
+}
+for(const file of ['cotistas_tab_x_1.csv','cotistas_tab_x_1_1.csv'])assert(fs.existsSync(path.join(root,file)));
 console.log(`Build válido: ${meta.arquivos.length} hashes, ${meta.competencias.length} partições mensais, HTML/links, P97,5 e paths relativos.`);

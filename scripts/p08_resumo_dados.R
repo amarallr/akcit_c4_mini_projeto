@@ -24,12 +24,15 @@ gerar_resumo_dados_fidc <- function(arquivo_config='dados/atualizacao_2020/confi
   campos_iv <- c('CNPJ_FUNDO','CNPJ_FUNDO_CLASSE','TP_FUNDO_CLASSE','cnpj','dt_comptc','campo_identidade',
     'DENOM_SOCIAL','TAB_IV_A_VL_PL','TAB_IV_A_VL_PL__original')
   entradas <- list(); tabelas <- list()
-  for(id in c('I','IV')) {
+  for(id in c('I','IV','X_1','X_1_1')) {
     message('Validando/leitura seletiva: ',id)
     registro <- atual$arquivos[[paste0(id,'_csv')]]
     if(is.null(registro)||!file.exists(registro$caminho)||!identical(registro$hash,e$calcular_hash_assinatura(registro$caminho,TRUE))) stop('Hash de entrada divergente: ',id)
     cab <- names(data.table::fread(registro$caminho,sep=';',nrows=0,showProgress=FALSE))
-    tabelas[[id]] <- data.table::fread(registro$caminho,sep=';',select=intersect(if(id=='I') campos_i else campos_iv,cab),
+    campos <- switch(id,I=campos_i,IV=campos_iv,
+      X_1=c(campos_iv,'TAB_X_CLASSE_SERIE','TAB_X_NR_COTST'),
+      X_1_1=c(campos_iv,grep('^TAB_X_NR_COTST_.*(?<!__original)$',cab,value=TRUE,perl=TRUE)))
+    tabelas[[id]] <- data.table::fread(registro$caminho,sep=';',select=intersect(campos,cab),
       colClasses=list(character=intersect(c('cnpj','CNPJ_ADMIN','CNPJ_FUNDO','CNPJ_FUNDO_CLASSE','TAB_IV_A_VL_PL__original'),cab)),na.strings='',encoding='UTF-8',showProgress=FALSE)
     # P08-FUN-001: alguns CSVs consolidados antigos mantêm bytes Latin-1 sem marca.
     # Corrigir somente texto de exibição inválido em UTF-8; fontes/hashes ficam intactos.
@@ -42,6 +45,7 @@ gerar_resumo_dados_fidc <- function(arquivo_config='dados/atualizacao_2020/confi
   if(any(tabelas$IV$dt_comptc<config$inicio|tabelas$IV$dt_comptc>config$fim)) stop('Competência fora da configuração.')
   message('Calculando análise compartilhada.')
   analise <- e$calcular_analise_fidc(tabelas$IV,tabelas$I)
+  analise$cotistas <- e$preparar_cotistas_p08(tabelas$X_1,tabelas$X_1_1,analise$posicoes)
   if(!nrow(analise$posicoes)) stop('Sem registros elegíveis: não há análise publicável.')
   meta <- list(schema='p08-v2026-10-07',gerado_em=format(Sys.time(),'%FT%T%z'),assinatura=atual$assinatura,
     assinatura_plano=atual$assinatura_plano,periodo_solicitado=c(config$inicio,config$fim),
@@ -55,7 +59,7 @@ gerar_resumo_dados_fidc <- function(arquivo_config='dados/atualizacao_2020/confi
     quantis='quantile(x, probs=0.975, type=7, na.rm=TRUE); P97,5 original antes da winsorização',
     dicionario_fonte='https://dados.cvm.gov.br/dados/FIDC/DOC/INF_MENSAL/META/meta_inf_mensal_fidc_txt.zip',
     dicionario_consulta='2026-10-07',separacao_universos='Fundo, Classe e Fundo legado separados; vínculo patrimonial não confirmado.',
-    cotistas='X_1 informa por classe/série; total direto somente para chave com uma linha. Múltiplas séries: desconhecido, sem soma de pessoas.',
+    cotistas='TAB_X_1 informa quantidade por classe/série; TAB_X_1_1 detalha o perfil nas classes sênior e subordinada. Total direto somente para chave com uma linha em X_1. Não somar séries, categorias ou entidades como pessoas distintas. Ausência não é zero.',
     biblioteca=list(nome='Plotly.js',versao='3.1.0',licenca='MIT',documentacao='https://plotly.com/javascript/'))
   dir.create(file.path(config$saidas,'resumo_estatisticas'),recursive=TRUE,showWarnings=FALSE)
   saveRDS(list(assinatura=atual$assinatura,config=config,metadados=meta,analise=analise),file.path(config$saidas,'resumo_estatisticas/resumo_historico.rds'))

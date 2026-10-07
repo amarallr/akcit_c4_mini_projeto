@@ -9,7 +9,8 @@ dicionario_analitico_fidc <- function(a,meta) {
   fonte <- data.table::fread('referencias/cvm/dicionario_textual_2026-10-07.csv',encoding='UTF-8',colClasses=c(consulta='character'))
   campos <- unique(c('CNPJ_FUNDO','CNPJ_FUNDO_CLASSE','TP_FUNDO_CLASSE','DT_COMPTC','DENOM_SOCIAL',
     'CNPJ_ADMIN','ADMIN','COTST_INTERESSE','FUNDO_EXCLUSIVO','CONDOM','TAB_X_NR_COTST','TAB_X_CLASSE_SERIE',
-    'TAB_IV_A_VL_PL','TAB_I_VL_ATIVO',a$mapa$campo))
+    'TAB_IV_A_VL_PL','TAB_I_VL_ATIVO',a$mapa$campo,
+    grep('^TAB_X_NR_COTST',names(a$cotistas$perfil),value=TRUE)))
   mapa <- fonte[campo %in% campos]
   mapa[,`:=`(origem='original',unidade=ifelse(tipo %in% c('numeric','float'),'unidade da fonte','texto/data'),
     granularidade=ifelse(tabela=='X_1','CNPJ/tipo/data/classe-série','CNPJ/tipo/data'),
@@ -66,13 +67,22 @@ exportar_painel_fidc <- function(a,meta,inicio) {
   csv(a$agregados_carteira,'carteira_por_administrador.csv'); csv(a$mapa,'mapa_carteira.csv')
   dic <- dicionario_analitico_fidc(a,meta); csv(dic,'dicionario_analitico.csv')
   colunas <- c('cnpj','tipo','data','DENOM_SOCIAL','cnpj_admin','nome_admin','pl','pl_wins',
+    'cotistas','series_cotistas',
     'TAB_IV_A_VL_PL__original','COTST_INTERESSE','FUNDO_EXCLUSIVO','CONDOM','TAB_I_VL_ATIVO',a$mapa$campo)
   colunas <- intersect(colunas,names(a$posicoes))
   csv(a$posicoes[,..colunas],'posicoes_fundos_classes.csv')
   # Vetores por coluna evitam serializar centenas de milhares de pequenas listas R.
   compactar <- function(d) list(colunas=names(d),valores=unname(lapply(d,I)),formato='colunas')
+  if(!is.null(a$cotistas)) {
+    csv(a$cotistas$series,'cotistas_tab_x_1.csv')
+    csv(a$cotistas$perfil,'cotistas_tab_x_1_1.csv')
+  }
   for(data_alvo in meta$competencias) {
     d <- a$posicoes[data==data_alvo,..colunas]
+    if(!is.null(a$cotistas)) gravar_json_p08(list(
+      series=compactar(a$cotistas$series[data==data_alvo]),
+      perfil=compactar(a$cotistas$perfil[data==data_alvo])),
+      file.path(pasta,'dados',paste0('cotistas_',data_alvo,'.json')))
     gravar_json_p08(list(posicoes=compactar(d),ranking=a$ranking[data==data_alvo],
       estatisticas_admin=a$estatisticas_admin[data==data_alvo],
       estatisticas_admin_wins=a$estatisticas_admin_wins[data==data_alvo],
@@ -83,6 +93,7 @@ exportar_painel_fidc <- function(a,meta,inicio) {
       paste0('dados/carteira_',data_alvo,'.csv'))
   }
   historico <- a$posicoes[,c('cnpj','tipo','data','cnpj_admin','nome_admin','pl','pl_wins','TAB_I_VL_ATIVO',
+    intersect(c('cotistas','series_cotistas'),names(a$posicoes)),
     intersect(a$mapa$campo,names(a$posicoes))),with=FALSE]
   # 100 partições estreitas de histórico; identidade permanece composta no navegador.
   historico[,bucket:=substr(cnpj,13,14)]

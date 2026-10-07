@@ -60,7 +60,7 @@ function assembleDashboard(){
 }
 async function json(path) { if(!cache.has(path)) cache.set(path,fetch(path).then(r=>{if(!r.ok)throw Error(`Falha HTTP ${r.status}: ${path}`);return r.json();}).catch(e=>{cache.delete(path);throw e;}));return cache.get(path); }
 function table(id,headers,records) {
-  const numeric=headers.map(h=>/^(PL|Valor|Soma|Participação|Posição$|Resultado$|P25|P97|Percentil|Potenciais|Fundos|Meses|Cobertos|%)/.test(h));
+  const numeric=headers.map(h=>/^(PL|Valor|Soma|Participação|Posição$|Resultado$|P25|P97|Percentil|Potenciais|Fundos|Meses|Cobertos|Cotistas|Quantidade|%)/.test(h));
   $(id).innerHTML = records.length ? `<div class="table-viewport" tabindex="0" role="region" aria-label="${esc(headers.join(', '))}"><table><thead><tr>${headers.map((h,i)=>`<th scope="col"${numeric[i]?' class="numeric"':''}>${esc(h)}</th>`).join('')}</tr></thead><tbody>${records.map(row=>`<tr>${row.map((v,i)=>`<td data-label="${esc(headers[i])}"${numeric[i]?' class="numeric"':''}>${v}</td>`).join('')}</tr>`).join('')}</tbody></table></div>` : '<p class="notice">Sem registros para este recorte.</p>';
 }
 function options(id,items,value) { $(id).innerHTML=items.map(([v,l])=>`<option value="${esc(v)}">${esc(l)}</option>`).join('');$(id).value=value; }
@@ -85,7 +85,7 @@ function chart(id,traces,title,height=430,extra={}) {
     extra={...extra,margin:{...extra.margin,l:horizontal?112:62,r:horizontal?72:18,t:compactChart(id)?12:80,b:extra.margin?.b||80}};
     if(horizontal&&traces.length===1){const labels=traces[0].y;extra.yaxis={...extra.yaxis,tickvals:labels,ticktext:labels.map(v=>String(v).length>16?String(v).slice(0,15)+'…':v)};}
   }
-  return Plotly.react($(id),traces,{title:{text:title,font:{size:15}},height,autosize:true,separators:',.',
+  return Plotly.react($(id),traces,{title:{text:title,font:{size:15}},height,width:$(id).clientWidth,autosize:false,separators:',.',
     margin:{l:68,r:24,t:68,b:66},paper_bgcolor:'#fff',plot_bgcolor:'#fff',font:{family:'system-ui',color:'#182f3d'},
     showlegend:false,...extra,xaxis:{automargin:true,gridcolor:'#edf1f3',...extra.xaxis},yaxis:{title:{text:meta.unidade},automargin:true,gridcolor:'#edf1f3',...extra.yaxis}},
     {responsive:true,displaylogo:false,scrollZoom:false,toImageButtonOptions:{format:'svg',filename:`fidc-${id}-${state.month}`}});
@@ -164,19 +164,30 @@ function funds(){
   data.sort((a,b)=>mode==='name'?String(a.DENOM_SOCIAL).localeCompare(String(b.DENOM_SOCIAL),'pt-BR'):mode==='cnpj'?a.cnpj.localeCompare(b.cnpj):(b.pl??-Infinity)-(a.pl??-Infinity)||a.cnpj.localeCompare(b.cnpj));
   const denominator=sum(all.map(d=>d.pl));
   $('fund-count').textContent=`${data.length} de ${all.length} fundos/classes do recorte. Soma do PL da lista completa: ${num(denominator)}. Prévia ${Math.min(state.limit,data.length)} registros; busca consulta todos. ${state.admin?'Participação no PL do administrador.':'Participação no PL do universo selecionado.'}`;
-  table('fund-table',['Fundo/classe · CNPJ','PL original','Participação','Administrador'],data.slice(0,state.limit).map(d=>[`<button data-entity="${esc(identity(d))}">${esc(d.DENOM_SOCIAL||'Nome indisponível')}</button><small>${esc(d.cnpj)} · ${esc(d.tipo)}</small>`,num(d.pl),percent(denominator?d.pl/denominator:null),esc(d.nome_admin||'Não identificado')]));
+  table('fund-table',['Fundo/classe · CNPJ','PL original','Participação','Cotistas · TAB_X_1','Administrador'],data.slice(0,state.limit).map(d=>[`<button data-entity="${esc(identity(d))}">${esc(d.DENOM_SOCIAL||'Nome indisponível')}</button><small>${esc(d.cnpj)} · ${esc(d.tipo)}</small>`,num(d.pl),percent(denominator?d.pl/denominator:null),cotistasLabel(d),esc(d.nome_admin||'Não identificado')]));
   $('more-funds').hidden=state.limit>=data.length;
 }
 async function entityDetail(){
-  if(!state.entity){$('entity-title').textContent='Selecione uma entidade na lista.';$('entity-table').innerHTML='';if(charts.has('entity-chart'))Plotly.purge('entity-chart');return;}
+  if(!state.entity){$('entity-title').textContent='Selecione uma entidade na lista.';$('entity-table').innerHTML='';$('cotistas-series').innerHTML='';$('cotistas-perfil').innerHTML='';if(charts.has('entity-chart'))Plotly.purge('entity-chart');return;}
   const ent=rows.find(d=>identity(d)===state.entity),cnpj=state.entity.split('|')[0];
   const hist=unpack(await json(`dados/historico_${cnpj.slice(12,14)}.json`)).filter(d=>identity(d)===state.entity&&within(d)).sort((a,b)=>a.data.localeCompare(b.data));
   $('entity-title').textContent=`${ent?.DENOM_SOCIAL||cnpj} · ${cnpj} · ${state.universe}. Histórico integral da entidade no período; administrador registrado em cada data. ${state.admin?`Período sob administrador ${state.admin} destacado na tabela.`:''}`;
   const all=meta.competencias.filter(data=>within({data})),byDate=new Map(hist.map(d=>[d.data,d]));
   const values=all.map(d=>byDate.get(d)?.pl??null);
   chart('entity-chart',[{type:'scatter',mode:'lines+markers',x:all,y:values,connectgaps:false,line:{color:'#00685f'},hovertemplate:'%{x|%d/%m/%Y}<br>PL original: %{y:,.2f}<extra></extra>'}],`PL original da entidade · ${monthLabel(state.start)} a ${monthLabel(state.end)}`,430,{xaxis:dateAxis(all),yaxis:moneyAxis(values)});
-  table('entity-table',['Competência','PL original','Administrador histórico','Sob administrador selecionado'],hist.map(d=>[esc(d.data),num(d.pl),`${esc(d.nome_admin||'Não identificado')}<small>${esc(d.cnpj_admin)}</small>`,state.admin?(d.cnpj_admin===state.admin?'Sim':'Não'):'Todos']));
+  table('entity-table',['Competência','PL original','Cotistas · TAB_X_1','Administrador histórico','Sob administrador selecionado'],hist.map(d=>[esc(d.data),num(d.pl),cotistasLabel(d),`${esc(d.nome_admin||'Não identificado')}<small>${esc(d.cnpj_admin)}</small>`,state.admin?(d.cnpj_admin===state.admin?'Sim':'Não'):'Todos']));
+  const entity=state.entity,month=state.month;
+  const counts=await json(`dados/cotistas_${month}.json`);
+  if(entity!==state.entity||month!==state.month)return;
+  const series=unpack(counts.series).filter(d=>identity(d)===entity);
+  const perfil=unpack(counts.perfil).filter(d=>identity(d)===entity);
+  $('cotistas-date').textContent=`Competência ${monthLabel(month)} · ${state.universe}`;
+  table('cotistas-series',['Classe/série · TAB_X_1','Quantidade de cotistas'],series.map(d=>[esc(d.TAB_X_CLASSE_SERIE||'Série não informada'),num(d.TAB_X_NR_COTST)]));
+  const dict=array(overview.dicionario);
+  const fields=counts.perfil.colunas.filter(c=>c.startsWith('TAB_X_NR_COTST_'));
+  table('cotistas-perfil',['Perfil · TAB_X_1_1','Quantidade de cotistas'],perfil.flatMap(d=>fields.map(c=>[`${esc(dict.find(v=>v.tabela==='X_1_1'&&v.campo===c)?.descricao||c)}<small>${esc(c)}</small>`,num(d[c])])));
 }
+function cotistasLabel(d){return d.series_cotistas>1?`Por série<small>${num(d.series_cotistas)} séries · veja o detalhe</small>`:num(d.cotistas);}
 function portfolio(){
   const data=selectedRows(),level=$('portfolio-level').value,mode=$('portfolio-mode').value;
   const chosen=new Set(data.map(identity));const rr=recs.filter(d=>d.tipo===state.universe&&chosen.has(identity(d)));
@@ -273,7 +284,7 @@ function fitDashboard(){
   }
   const value=height+'px';if(document.documentElement.style.getPropertyValue('--board-card-height')!==value)document.documentElement.style.setProperty('--board-card-height',value);
 }
-function resizeCharts(){fitDashboard();if(!window.Plotly)return;for(const id of charts){const el=$(id);if(el?.getBoundingClientRect().width>0&&el.data){if(compactChart(id)){const height=Math.max(160,parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--board-card-height'))-82);el.style.height=height+'px';if(el.layout?.height!==height)Plotly.relayout(el,{height});}Plotly.Plots.resize(el);}}}
+function resizeCharts(){fitDashboard();if(!window.Plotly)return;for(const id of charts){const el=$(id);if(el?.getBoundingClientRect().width>0&&el.data){const size={width:el.clientWidth};if(compactChart(id)){const height=Math.max(160,parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--board-card-height'))-82);el.style.height=height+'px';size.height=height;}if(el.layout?.width!==size.width||size.height!=null&&el.layout?.height!==size.height)Plotly.relayout(el,size);}}}
 function zoom(delta,reset=false){state.zoom=reset?1:Math.min(2,Math.max(.5,Math.round((state.zoom+delta)*10)/10));document.documentElement.style.zoom=state.zoom;$('zoom-level').textContent=`${Math.round(state.zoom*100)}%`;setTimeout(resizeCharts,100);}
 function expand(panel,button){if(expandedPanel===panel)return;if(expandedPanel)closeExpansion();expandedPanel=panel;focusReturn=button;placeholder=document.createComment('panel');panel.before(placeholder);panel.hidden=false;$('expanded-title').textContent=panel.querySelector('h2').textContent;$('expanded-scope').textContent=$('scope').textContent;$('expanded-body').append(panel);$('expanded').showModal();$('close-expanded').focus();render().catch(e=>{$('status').textContent=e.message;});if(panel.contains($('portfolio-evolution')))portfolioEvolution().catch(e=>{$('portfolio-evolution-table').textContent=e.message;});setTimeout(resizeCharts,80);}
 function closeExpansion(){if(!expandedPanel)return;const panel=expandedPanel;placeholder.replaceWith(panel);if(panel.id==='dashboard-support')panel.hidden=true;expandedPanel=null;$('expanded').close();focusReturn?.focus();render().catch(e=>{$('status').textContent=e.message;});setTimeout(resizeCharts,80);}
@@ -316,6 +327,7 @@ async function init(){
     $('version').textContent=`${meta.schema} · ${meta.assinatura.slice(0,12)}`;
     json('versao_publicacao.json').then(v=>{$('version').textContent+=` · commit ${v.sha.slice(0,12)}`;document.body.dataset.commit=v.sha;}).catch(()=>{});
     const files=[['estatisticas_por_competencia.csv','Estatísticas completas'],['estatisticas_por_administrador.csv','Estatísticas por administrador'],['ranking_por_competencia.csv','Ranking por competência'],['ranking_historico_completo.csv','Ranking histórico'],['posicoes_fundos_classes.csv','Posições de fundos/classes'],['dicionario_analitico.csv','Dicionário analítico'],['mapa_carteira.csv','Mapa da carteira'],['reconciliacao_carteira.csv','Reconciliação'],['carteira_por_administrador.csv','Carteira agregada'],['manifesto_publico.json','Manifesto e hashes'],['relatorio_analise_fidc.md','Relatório Markdown']];
+    files.push(['cotistas_tab_x_1.csv','Cotistas por classe/série · TAB_X_1'],['cotistas_tab_x_1_1.csv','Perfil de cotistas · TAB_X_1_1']);
     $('downloads').innerHTML=`<div class="download-row">${files.map(([f,n])=>`<a href="${f}" download>${esc(n)}</a>`).join('')}</div><p>Carteira longa completa: cada competência tem CSV próprio na página Carteira. Valores integrais sem arredondamento de apresentação. Identificadores devem ser importados como texto.</p>`;
     $('data-vintage').textContent='Série '+monthLabel(meta.competencias[0])+' a '+monthLabel(meta.competencias.at(-1))+' · '+meta.competencias.length+' competências';
     setup();await loadMonth();document.body.dataset.loadMs=Math.round(performance.now()-started);document.body.dataset.ready='true';
