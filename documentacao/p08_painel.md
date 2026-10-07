@@ -69,6 +69,10 @@ A comparação entre competências exige observar cobertura. Setembro de 2026 te
 
 ## Comunicação visual e navegação em celular — 07/10/2026
 
+O painel integrado reúne seis blocos na tela inicial: evolução do PL, administradores, composição da carteira, distribuição do PL, estatísticas e fundos/classes. Em 1920×1080, o conjunto e o rodapé cabem na mesma tela com zoom 100%. Larguras menores usam duas ou uma coluna; o zoom mantém a navegação proporcional. Cada bloco abre sua análise completa em Expandir, com fechamento por botão ou Esc e retorno do foco ao controle de origem.
+
+O ranking compacto mostra os cinco maiores administradores, preservando o denominador integral; a versão expandida mostra até 25. A distribuição compacta compara até três administradores e a expandida até oito. Filtros globais atualizam todos os blocos. A composição expandida inclui a evolução temporal e seus dez detalhes de carteira. O seletor de análises no celular abre o bloco correspondente; Dados, cobertura e metodologia reúne os detalhes complementares, definições e downloads. O clique em administrador ou fundo/classe abre seu detalhe e atualiza o recorte global.
+
 O cabeçalho informa o intervalo disponível e a quantidade de competências. Cada análise tem título e orientação próprios. Cartões distinguem PL original, identidades CNPJ/tipo, CNPJs distintos e P97,5; rótulos dos eixos monetários usam milhões da unidade da fonte e datas em mês/ano, conservando valores integrais para cálculo, tooltip e CSV. Tabelas alinham medidas numéricas e mantêm fontes e denominadores próximos da visualização.
 
 Em celular, um seletor reúne as análises e o relatório permanece acessível ao lado. Universo e competência ficam visíveis; Série e administrador abre os filtros secundários, com estado acessível. Controles de toque têm pelo menos 44px; tabelas reorganizam os valores em cartões. A navegação também responde à largura efetiva após zoom. Gráficos de barras abreviam rótulos quando necessário e mantêm os nomes nas tabelas. A evolução da carteira apresenta todas as categorias disponíveis do nível escolhido, incluindo as dez categorias de detalhes.

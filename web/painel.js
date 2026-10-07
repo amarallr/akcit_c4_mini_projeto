@@ -29,6 +29,35 @@ const unpack = x => x.formato==='colunas' ? array(x.valores[0]).map((_,j)=>Objec
 const state = {view:'overview',entity:null,admin:'',universe:'',month:'',start:'',end:'',preset:'all',limit:100,zoom:1};
 const cache = new Map(); let meta,overview,current,rows=[],recs=[],ticket=0,expandedPanel,placeholder,focusReturn;
 const charts = new Set();
+const boardPanels={};
+function compactChart(id){return $(id)?.closest('.dashboard-grid')!=null;}
+function assembleDashboard(){
+  document.body.classList.add('single-screen');
+  const top=document.createElement('section');top.className='dashboard-top';
+  top.setAttribute('aria-label','Indicadores e cobertura');
+  top.append($('kpis'),$('context-summary'));
+  const grid=document.createElement('section');grid.className='dashboard-grid';grid.id='dashboard-grid';
+  grid.setAttribute('aria-label','Painel integrado de análises');
+  const cards=[['overview','timeline','Evolução do PL'],['admins','ranking-chart','Administradores'],
+    ['portfolio','portfolio-chart','Composição do ativo'],['distribution','boxplot','Distribuição do PL'],
+    ['stats','stats','Estatísticas completas'],['funds','fund-table','Fundos e classes']];
+  for(const [view,id,label] of cards){
+    const panel=$(id).closest('.panel');panel.classList.add('dashboard-card');panel.dataset.card=view;
+    boardPanels[view]=panel;
+    const hint=document.createElement('p');hint.className='card-hint';
+    hint.textContent=view==='admins'?'Prévia dos 5 maiores · expandir para top 25':view==='distribution'?'Prévia de 3 administradores · expandir para comparar':label+' · conteúdo completo em Expandir';
+    panel.append(hint);grid.append(panel);
+  }
+  const support=document.createElement('section');support.id='dashboard-support';support.className='panel';support.hidden=true;
+  support.innerHTML='<h2>Detalhes, dados e metodologia</h2>';
+  support.append(document.querySelector('.pre-filter'));
+  for(const el of document.querySelectorAll('.view')){el.hidden=false;support.append(el);}
+  const evolution=$('portfolio-evolution-panel');evolution.classList.remove('panel');evolution.hidden=false;
+  boardPanels.portfolio.append(evolution);
+  const tools=document.createElement('div');tools.className='dashboard-tools';
+  tools.innerHTML='<span>Resumo integrado · expanda qualquer bloco para explorar</span><button id="more-analysis">Dados, cobertura e metodologia</button><a href="relatorio_analise_fidc.html">Relatório analítico ↗</a>';
+  document.querySelector('main').append(top,grid,tools,support);
+}
 async function json(path) { if(!cache.has(path)) cache.set(path,fetch(path).then(r=>{if(!r.ok)throw Error(`Falha HTTP ${r.status}: ${path}`);return r.json();}).catch(e=>{cache.delete(path);throw e;}));return cache.get(path); }
 function table(id,headers,records) {
   const numeric=headers.map(h=>/^(PL|Valor|Soma|Participação|Posição$|Resultado$|P25|P97|Percentil|Potenciais|Fundos|Meses|Cobertos|%)/.test(h));
@@ -41,10 +70,19 @@ function selectedRank(){return array(current.ranking).filter(d=>d.tipo===state.u
 function within(d){return d.data>=state.start&&d.data<=state.end&& (state.preset!=='q4'||(+d.data.slice(5,7)>=10&&+d.data.slice(0,4)<new Date().getFullYear()&&+d.data.slice(0,4)>=new Date().getFullYear()-5));}
 function chart(id,traces,title,height=430,extra={}) {
   if(!window.Plotly){$(id).innerHTML='<p>Gráfico indisponível; consulte a tabela equivalente abaixo.</p>';return;}
-  charts.add(id);$(id).style.height=`${height}px`;
+  charts.add(id);
+  if(compactChart(id)){
+    height=Math.max(160,Number(getComputedStyle(document.documentElement).getPropertyValue('--board-card-height').replace('px',''))-82||210);
+    extra={...extra,margin:{...extra.margin,l:id==='ranking-chart'||id==='portfolio-chart'?140:62,r:65,t:12,b:id==='boxplot'?62:45}};
+    title='';
+    if(traces.length===1&&traces[0].orientation==='h'){
+      const labels=traces[0].y;extra.yaxis={...extra.yaxis,tickvals:labels,ticktext:labels.map(v=>String(v).length>18?String(v).slice(0,17)+'…':v)};
+    }
+  }
+  $(id).style.height=`${height}px`;
   if($(id).getBoundingClientRect().width<500){
     const horizontal=traces.some(t=>t.type==='bar'&&t.orientation==='h');
-    extra={...extra,margin:{...extra.margin,l:horizontal?112:62,r:horizontal?72:18,t:80,b:extra.margin?.b||80}};
+    extra={...extra,margin:{...extra.margin,l:horizontal?112:62,r:horizontal?72:18,t:compactChart(id)?12:80,b:extra.margin?.b||80}};
     if(horizontal&&traces.length===1){const labels=traces[0].y;extra.yaxis={...extra.yaxis,tickvals:labels,ticktext:labels.map(v=>String(v).length>16?String(v).slice(0,15)+'…':v)};}
   }
   return Plotly.react($(id),traces,{title:{text:title,font:{size:15}},height,autosize:true,separators:',.',
@@ -63,6 +101,7 @@ function renderScope(){
   $('scope').textContent=`${state.universe} · competência ${state.month} · série ${state.start} a ${state.end} · ${state.preset==='q4'?'Histórico Q4 · ':''}${state.admin?`administrador: ${admin}`:'todos os administradores'}${ent?` · entidade: ${ent.DENOM_SOCIAL} (${ent.cnpj})`:''} · ${meta.unidade}. ${state.month.startsWith('2026')?'2026 incompleto.':''}`;
   $('breadcrumb').textContent=`Visão geral${state.admin?` → ${admin}`:''}${ent?` → ${ent.DENOM_SOCIAL}`:''}`;
   $('back').hidden=!state.admin&&!state.entity;
+  if(expandedPanel)$('expanded-scope').textContent=$('scope').textContent;
 }
 function statsTable(){
   const s=statForSelection();
@@ -105,7 +144,8 @@ async function rank(){
   const title=history?'Ranking histórico por soma de posições mensais winsorizadas':`Top 25 por PL na competência ${state.month}`;
   $('ranking-title').textContent=title;
   $('ranking-note').textContent=`${state.universe} · ${history?`${state.start} a ${state.end}${state.preset==='q4'?' · preset Q4 aplicado':''}. Soma de posições mensais; não é PL atual ou fluxo. Cobertura desigual pode influenciar o ranking.`:'PL original na mesma data para todas as entidades.'} Denominador integral antes do top25. Clique na barra ou no nome para abrir o administrador. O filtro de administrador não altera o universo do ranking.`;
-  const reversed=[...top].reverse(),max=Math.max(...top.map(d=>d.valor??0),0),min=Math.min(...top.map(d=>d.valor??0),0);
+  const preview=compactChart('ranking-chart')?top.slice(0,5):top;
+  const reversed=[...preview].reverse(),max=Math.max(...preview.map(d=>d.valor??0),0),min=Math.min(...preview.map(d=>d.valor??0),0);
   await chart('ranking-chart',[{type:'bar',orientation:'h',x:reversed.map(d=>d.valor),y:reversed.map(d=>`${d.posicao} · ${(d.administrador||d.cnpj_admin).slice(0,26)}`),customdata:reversed.map(d=>d.cnpj_admin),
     text:reversed.map(d=>millions(d.valor)),textposition:'outside',cliponaxis:false,marker:{color:reversed.map(d=>d.valor<0?'#9b6000':'#00685f')},hovertemplate:'%{y}<br>%{x:,.2f}<extra></extra>'}],`${history?'Soma winsorizada':'PL original'} · ${state.universe} · ${history?`${state.start} a ${state.end}`:state.month}`,
     Math.max(400,top.length*43+120),{margin:{l:180,r:90,t:65,b:65},xaxis:{...moneyAxis(top.map(d=>d.valor)),range:[min<0?min*1.15:0,max*1.25||1]},yaxis:{automargin:false,title:{text:''}}});
@@ -115,7 +155,7 @@ async function rank(){
   const detail=selectedRank().find(d=>d.cnpj_admin===state.admin);
   if(!state.admin){$('admin-detail').innerHTML='<p>Selecione um administrador no ranking ou filtro global.</p>';return;}
   $('admin-detail').innerHTML=detail?`<p><strong>${esc(detail.administrador)}</strong> · CNPJ ${esc(state.admin)} · ${state.month}</p><p>PL original ${num(detail.valor)} · participação ${percent(detail.participacao)} · ${num(detail.fundos_classes)} fundos/classes. Soma reconciliada da lista: ${num(sum(rows.filter(d=>d.tipo===state.universe&&d.cnpj_admin===state.admin).map(d=>d.pl)))}.</p><button id="admin-funds">Abrir todos os fundos/classes</button>`:'<p class="notice">Administrador sem posição nesta competência.</p>';
-  $('admin-funds')?.addEventListener('click',()=>show('funds'));
+  $('admin-funds')?.addEventListener('click',()=>show('funds',true));
 }
 function funds(){
   const query=$('fund-search').value.trim().toLocaleLowerCase('pt-BR');const all=selectedRows();
@@ -151,7 +191,7 @@ function portfolio(){
   table('portfolio-table',['Categoria','Valor observado','% da base comparável','Cobertos/elegíveis'],values.map(v=>[esc(v.rotulo),num(v.valor),percent(v.percentual),`${v.cobertos}/${data.length}${v.negativos?` · ${v.negativos} negativos`:''}`]));
   table('reconciliation',['Indicador','Resultado'],[['Posições com dados completos',num(rr.filter(d=>d.diferenca!=null).length)],['Posições reconciliadas',num(rr.filter(d=>d.reconciliado).length)],['Posições sem reconciliação',num(rr.filter(d=>d.diferenca!=null&&!d.reconciliado).length)],['Sem dados completos',num(rr.filter(d=>d.diferenca==null).length)],['Diferença somada · mesmas posições completas',num(sum(rr.map(d=>d.diferenca)))],['Ativo das posições completas',num(sum(rr.filter(d=>d.diferenca!=null).map(d=>d.ativo)))],['Tolerância absoluta por posição','0,05 unidade da fonte · 5 arredondamentos de centavos']]);
   $('portfolio-download').href=`dados/carteira_${state.month}.csv`;
-  portfolioEvolution().catch(e=>{$('portfolio-evolution-table').textContent=`Série indisponível: ${e.message}`;});
+  if(expandedPanel&&expandedPanel.contains($('portfolio-evolution')))portfolioEvolution().catch(e=>{$('portfolio-evolution-table').textContent=`Série indisponível: ${e.message}`;});
 }
 async function portfolioEvolution(){
   const level=$('portfolio-level').value,percentMode=$('portfolio-mode').value==='percent';let series;
@@ -170,7 +210,7 @@ function distribution(){
   if(state.entity)groups=[{...statForSelection(wins),cnpj_admin:state.admin,administrador:rows.find(d=>identity(d)===state.entity)?.DENOM_SOCIAL}];
   else groups=array(current[wins?'estatisticas_admin_wins':'estatisticas_admin']).filter(d=>d.tipo===state.universe&&(!state.admin||d.cnpj_admin===state.admin));
   const rankOrder=selectedRank().map(d=>d.cnpj_admin);groups.sort((a,b)=>rankOrder.indexOf(a.cnpj_admin)-rankOrder.indexOf(b.cnpj_admin));
-  const excluded=groups.filter(d=>log&&!(d.minimo>0)).length;groups=groups.filter(d=>!log||d.minimo>0).slice(0,8);
+  const excluded=groups.filter(d=>log&&!(d.minimo>0)).length;groups=groups.filter(d=>!log||d.minimo>0).slice(0,compactChart('boxplot')?3:8);
   const traces=[],colors=['#00685f','#397ea2','#945e00','#754b94'];
   groups.forEach((s,i)=>{
     const name=state.entity?s.administrador:selectedRank().find(d=>d.cnpj_admin===s.cnpj_admin)?.administrador||s.cnpj_admin;
@@ -193,7 +233,8 @@ function dictionary(){
 }
 async function render(){
   renderScope();statsTable();funds();
-  if(state.view==='overview')await temporal();if(state.view==='admins')await rank();if(state.view==='funds')await entityDetail();if(state.view==='portfolio')portfolio();if(state.view==='distribution')distribution();if(state.view==='method')dictionary();
+  await Promise.all([temporal(),rank(),entityDetail()]);portfolio();distribution();
+  if(expandedPanel?.id==='dashboard-support')dictionary();
   requestAnimationFrame(resizeCharts);
 }
 function renderViewHeading(){
@@ -210,9 +251,9 @@ function renderViewHeading(){
   $('mobile-view').value=state.view;
 }
 function urlState(){const p=new URLSearchParams();for(const k of ['view','universe','month','start','end','preset','admin','entity'])if(state[k])p.set(k,state[k]);history.replaceState(null,'',`#${p}`);}
-async function show(view){state.view=view;renderViewHeading();document.querySelectorAll('.view').forEach(el=>el.hidden=el.id!==view);$('portfolio-evolution-panel').hidden=view!=='portfolio';document.querySelectorAll('[data-view]').forEach(el=>el.setAttribute('aria-current',el.dataset.view===view?'page':'false'));urlState();await render();}
-async function openAdmin(id){state.admin=id;state.entity=null;$('administrator').value=id;await show('admins');}
-async function openEntity(id){state.entity=id;const ent=rows.find(d=>identity(d)===id);if(ent?.cnpj_admin){state.admin=ent.cnpj_admin;$('administrator').value=state.admin;}await show('funds');}
+async function show(view,open=false){state.view=view;renderViewHeading();document.querySelectorAll('[data-view]').forEach(el=>el.setAttribute('aria-current',el.dataset.view===view?'page':'false'));urlState();await render();if(open){const panel=view==='method'?$('dashboard-support'):boardPanels[view];expand(panel,view==='method'?$('more-analysis'):panel.querySelector('.expand'));}}
+async function openAdmin(id){closeExpansion();state.admin=id;state.entity=null;$('administrator').value=id;await show('admins');expand($('admin-detail').closest('.panel'),boardPanels.admins.querySelector('.expand'));}
+async function openEntity(id){closeExpansion();state.entity=id;const ent=rows.find(d=>identity(d)===id);if(ent?.cnpj_admin){state.admin=ent.cnpj_admin;$('administrator').value=state.admin;}await show('funds');expand($('entity-chart').closest('.panel'),boardPanels.funds.querySelector('.expand'));}
 async function loadMonth(){
   const t=++ticket;$('status').textContent='Carregando competência…';$('retry').hidden=true;
   try {const data=await json(`dados/${state.month}.json`);if(t!==ticket)return;current=data;rows=unpack(data.posicoes);recs=unpack(data.reconciliacao);
@@ -222,12 +263,24 @@ async function loadMonth(){
     $('status').textContent='';await show(state.view);
   }catch(e){$('status').textContent=`Não foi possível carregar: ${e.message}`;$('retry').hidden=false;}
 }
-function resizeCharts(){if(!window.Plotly)return;for(const id of charts){const el=$(id);if(el?.getBoundingClientRect().width>0&&el.data)Plotly.Plots.resize(el);}}
+function fitDashboard(){
+  const grid=$('dashboard-grid');if(!grid)return;
+  const width=grid.getBoundingClientRect().width;
+  let height=300;
+  if(width>=1150&&state.zoom===1){
+    const spare=window.innerHeight-grid.getBoundingClientRect().top-document.querySelector('.dashboard-tools').offsetHeight-document.querySelector('footer').offsetHeight-30;
+    height=Math.min(330,Math.max(210,Math.floor((spare-12)/2)));
+  }
+  const value=height+'px';if(document.documentElement.style.getPropertyValue('--board-card-height')!==value)document.documentElement.style.setProperty('--board-card-height',value);
+}
+function resizeCharts(){fitDashboard();if(!window.Plotly)return;for(const id of charts){const el=$(id);if(el?.getBoundingClientRect().width>0&&el.data){if(compactChart(id)){const height=Math.max(160,parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--board-card-height'))-82);el.style.height=height+'px';if(el.layout?.height!==height)Plotly.relayout(el,{height});}Plotly.Plots.resize(el);}}}
 function zoom(delta,reset=false){state.zoom=reset?1:Math.min(2,Math.max(.5,Math.round((state.zoom+delta)*10)/10));document.documentElement.style.zoom=state.zoom;$('zoom-level').textContent=`${Math.round(state.zoom*100)}%`;setTimeout(resizeCharts,100);}
-function expand(panel,button){if(expandedPanel)return;expandedPanel=panel;focusReturn=button;placeholder=document.createComment('panel');panel.before(placeholder);$('expanded-title').textContent=panel.querySelector('h2').textContent;$('expanded-scope').textContent=$('scope').textContent;$('expanded-body').append(panel);$('expanded').showModal();$('close-expanded').focus();setTimeout(resizeCharts,80);}
-function closeExpansion(){if(!expandedPanel)return;placeholder.replaceWith(expandedPanel);expandedPanel=null;$('expanded').close();focusReturn?.focus();setTimeout(resizeCharts,80);}
+function expand(panel,button){if(expandedPanel===panel)return;if(expandedPanel)closeExpansion();expandedPanel=panel;focusReturn=button;placeholder=document.createComment('panel');panel.before(placeholder);panel.hidden=false;$('expanded-title').textContent=panel.querySelector('h2').textContent;$('expanded-scope').textContent=$('scope').textContent;$('expanded-body').append(panel);$('expanded').showModal();$('close-expanded').focus();render().catch(e=>{$('status').textContent=e.message;});if(panel.contains($('portfolio-evolution')))portfolioEvolution().catch(e=>{$('portfolio-evolution-table').textContent=e.message;});setTimeout(resizeCharts,80);}
+function closeExpansion(){if(!expandedPanel)return;const panel=expandedPanel;placeholder.replaceWith(panel);if(panel.id==='dashboard-support')panel.hidden=true;expandedPanel=null;$('expanded').close();focusReturn?.focus();render().catch(e=>{$('status').textContent=e.message;});setTimeout(resizeCharts,80);}
 function setup(){
-  $('mobile-view').onchange=()=>show($('mobile-view').value);
+  assembleDashboard();
+  $('more-analysis').onclick=()=>expand($('dashboard-support'),$('more-analysis'));
+  $('mobile-view').onchange=()=>show($('mobile-view').value,true);
   $('filter-more').onclick=()=>{
     const open=document.querySelector('.filters').classList.toggle('advanced-open');
     $('filter-more').setAttribute('aria-expanded',String(open));
@@ -236,14 +289,14 @@ function setup(){
   document.querySelectorAll('.panel').forEach(panel=>{const b=document.createElement('button');b.textContent='Expandir';b.className='expand';b.setAttribute('aria-label',`Expandir ${panel.querySelector('h2').textContent}`);b.addEventListener('click',()=>expand(panel,b));panel.prepend(b);});
   $('close-expanded').addEventListener('click',closeExpansion);$('expanded').addEventListener('cancel',e=>{e.preventDefault();closeExpansion();});
   $('zoom-in').onclick=()=>zoom(.1);$('zoom-out').onclick=()=>zoom(-.1);$('zoom-reset').onclick=()=>zoom(0,true);
-  document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>show(b.dataset.view));
+  document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>show(b.dataset.view,true));
   document.addEventListener('click',e=>{const a=e.target.closest('[data-admin]'),f=e.target.closest('[data-entity]');if(a)openAdmin(a.dataset.admin);if(f)openEntity(f.dataset.entity);});
   $('month').onchange=()=>{state.month=$('month').value;state.entity=null;loadMonth();};
   $('universe').onchange=()=>{state.universe=$('universe').value;state.admin='';state.entity=null;loadMonth();};
   $('administrator').onchange=()=>{state.admin=$('administrator').value;state.entity=null;show(state.view);};
   for(const id of ['start','end','preset'])$(id).onchange=()=>{state[id]=$(id).value;if(state.start>state.end){state.end=state.start;$('end').value=state.end;}show(state.view);};
-  $('clear').onclick=()=>{state.admin='';state.entity=null;state.preset='all';state.start=meta.competencias[0];state.end=meta.competencias.at(-1);state.month=state.end;state.limit=100;$('fund-search').value='';for(const id of ['start','end','preset'])$(id).value=state[id];$('month').value=state.month;loadMonth();};
-  $('back').onclick=()=>{if(state.entity){state.entity=null;show('funds');}else{state.admin='';$('administrator').value='';show('admins');}};
+  $('clear').onclick=()=>{closeExpansion();state.admin='';state.entity=null;state.preset='all';state.start=meta.competencias[0];state.end=meta.competencias.at(-1);state.month=state.end;state.limit=100;$('fund-search').value='';for(const id of ['start','end','preset'])$(id).value=state[id];$('month').value=state.month;loadMonth();};
+  $('back').onclick=()=>{closeExpansion();if(state.entity){state.entity=null;show('funds');}else{state.admin='';$('administrator').value='';show('admins');}};
   $('retry').onclick=loadMonth;
   $('fund-search').oninput=()=>{state.limit=100;funds();};$('fund-sort').onchange=funds;$('more-funds').onclick=()=>{state.limit+=100;funds();};
   $('ranking-mode').onchange=rank;for(const id of ['portfolio-level','portfolio-mode'])$(id).onchange=portfolio;for(const id of ['distribution-mode','distribution-scale'])$(id).onchange=distribution;
