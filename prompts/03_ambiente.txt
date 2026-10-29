@@ -1,0 +1,33 @@
+P03 — Preparação e diagnóstico do ambiente
+Estado: implementado; conferir o código e os testes antes de qualquer alteração.
+
+C — CONTEXTO
+Lastro: módulos p03_*.R e p03_*.ps1 em src/validation/.
+O projeto usa R, RStudio opcional, dependências locais, Git e um encaminhador opcional ao GitHub CLI.
+Práticas SWEBOK: operações, configuração e segurança; regras comuns no README.md desta pasta.
+
+O — OBJETIVO
+P03-RF-001: verificar versão, locale, pacotes, executáveis e condições observadas da sessão.
+P03-RF-002: preparar somente os artefatos solicitados, preservando arquivos e ambiente existentes.
+P03-RF-003: verificar o repositório esperado e a autenticação sem exibir credenciais.
+P03-RNF-001: diagnóstico não instala ferramentas nem muda visibilidade ou remoto automaticamente.
+Não concluir que uma sessão RStudio ou virtualização está válida sem evidência correspondente.
+Preservar a separação entre verificar, preparar e instalar.
+
+S — ESTILO
+Procedimentos reproduzíveis em Windows e verificações portáveis quando aplicável.
+PowerShell usa caminhos relativos ao próprio script e restaura o ambiente do processo.
+
+T — TOM
+Diagnóstico factual, distinguindo condição ausente, não confirmada e validada.
+
+A — AUDIÊNCIA
+Pessoa que prepara a máquina e pessoa que reproduz a execução em outro ambiente.
+
+R — RESPOSTA ESPERADA
+Entregar módulos P03, comandos de uso e diagnóstico sem informações pessoais.
+Aceite: preparação preserva bytes, caminhos inválidos falham antes de criar arquivos e remotos divergentes são detectados.
+Teste: Rscript --vanilla src/utils/p02_testar.R P03
+Diagnóstico R: Rscript --vanilla src/validation/p03_diagnosticar_ambiente.R
+Diagnóstico Windows: powershell -File src/validation/p03_ambiente.ps1
+Não executar envio ao GitHub sem autorização explícita para o envio.

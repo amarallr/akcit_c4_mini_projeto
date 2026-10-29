@@ -1,0 +1,32 @@
+P01 — Orquestração explícita do pipeline FIDC
+Estado: implementado; conferir o código e os testes antes de qualquer alteração.
+
+C — CONTEXTO
+Projeto R com configuração, download, consolidação temporal e aceite separados.
+Lastro: src/orchestration/p01_executar.R e p01_pipeline_fidc.R, na mesma pasta.
+Práticas SWEBOK: arquitetura, construção e testes; escopo e regras comuns no README.md desta pasta.
+
+O — OBJETIVO
+Manter entradas explícitas para P03 e P04–P07, sem avançar automaticamente de etapa.
+P01-RF-001: aceitar uma etapa válida e delegar ao módulo responsável.
+P01-RF-002: comunicar resultado, pendências e falhas; preservar a assinatura das entradas.
+P01-RNF-001: carregar módulos em ambiente isolado e restaurar diretório e bibliotecas quando alterados.
+P01-RNF-002: source() deve definir interfaces sem executar ETL, Git ou rede.
+Respeitar os contratos atuais das funções executar_etapa e executar_pipeline_etapa.
+P05_02 e P06_02 têm entradas próprias; não apresentá-los como etapas da interface P01.
+
+S — ESTILO
+Funções pequenas, entradas e efeitos explícitos, caminhos relativos à raiz do projeto.
+Preservar IDs existentes de requisitos e funções; consultar comentários e testes.
+
+T — TOM
+Técnico e objetivo; distinguir erro, pendência e etapa concluída.
+
+A — AUDIÊNCIA
+Pessoa mantenedora e pessoa operadora do pipeline pelo terminal ou RStudio.
+
+R — RESPOSTA ESPERADA
+Entregar alterações nos módulos P01, documentação das entradas e evidência dos testes.
+Aceite: testes P01 aprovados, inclusive carregamento sem efeitos e falha que não publica sucesso.
+Teste: Rscript --vanilla src/utils/p02_testar.R P01
+Não alterar dados reais para demonstrar a orquestração.

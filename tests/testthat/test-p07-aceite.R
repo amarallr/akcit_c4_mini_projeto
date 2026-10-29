@@ -1,0 +1,180 @@
+source('helper-p02-pipeline.R')
+
+testthat::test_that('P07-TST-007: hash deve corresponder ao arquivo obrigatório da geração', {
+  raiz <- tempfile();dir.create(raiz);f <- fixture_piloto(raiz,'202607')
+  r <- pipeline$retomar_consolidacao_fidc(f$downloads,f$config,raiz,f$mapa)
+  outra <- file.path(raiz,basename(r$arquivos$IV_csv$caminho))
+  file.copy(r$arquivos$IV_csv$caminho,outra)
+  r$arquivos$IV_csv$caminho <- outra
+  e <- fixture_evidencias(r,f$config,raiz)
+  a <- pipeline$executar_aceite(r,f$config,evidencias=e,raiz=raiz)
+  testthat::expect_false(a$aceite_local)
+  testthat::expect_true('Hash não corresponde ao arquivo da geração'%in%a$pendencias)
+})
+
+testthat::test_that('P07-TST-007: tabela vazia é preservada; seleção toda vazia não aprova', {
+  raiz <- tempfile();dir.create(raiz);f <- fixture_piloto(raiz,'202607')
+  original <- pipeline$ler_padronizar_fidc; todas <- FALSE
+  on.exit({pipeline$ler_padronizar_fidc <- original},add=TRUE)
+  pipeline$ler_padronizar_fidc <- function(arquivo,tabela,...) {
+    x <- original(arquivo,tabela,...)
+    if(todas || tabela=='VIII') x$dados <- x$dados[0,]
+    x
+  }
+  r <- pipeline$retomar_consolidacao_fidc(f$downloads,f$config,raiz,f$mapa)
+  testthat::expect_equal(r$linhas_tabelas[['VIII']],0)
+  e <- fixture_evidencias(r,f$config,raiz)
+  testthat::expect_true(pipeline$executar_aceite(r,f$config,evidencias=e,raiz=raiz)$aceite_local)
+  todas <- TRUE;f$config$forcar_reprocessamento <- TRUE
+  r <- pipeline$retomar_consolidacao_fidc(f$downloads,f$config,raiz,f$mapa)
+  e <- fixture_evidencias(r,f$config,raiz)
+  a <- pipeline$executar_aceite(r,f$config,evidencias=e,raiz=raiz)
+  testthat::expect_false(a$aceite_local)
+  testthat::expect_true('Seleção sem registros: aceite pendente'%in%a$pendencias)
+})
+
+testthat::test_that('P07-TST-008: produtor isolado em processos reais e executor injetado não recursa', {
+  repo <- normalizePath('../..',winslash='/'); anterior <- getwd()
+  raiz <- tempfile();dir.create(raiz);f <- fixture_piloto(raiz,'202607')
+  arquivos <- list.files(file.path(repo,'src'),recursive=TRUE,full.names=TRUE)
+  arquivos <- arquivos[!grepl('/private/|/tools/github-cli/',gsub('\\\\','/',arquivos))]
+  relativos <- substring(arquivos,nchar(repo)+2L)
+  for (i in seq_along(arquivos)) {
+    destino <- file.path(raiz,relativos[i])
+    dir.create(dirname(destino),recursive=TRUE,showWarnings=FALSE)
+    file.copy(arquivos[i],destino)
+  }
+  f$config$usar_checkpoints <- FALSE;f$config$forcar_reprocessamento <- TRUE
+  r <- pipeline$retomar_consolidacao_fidc(f$downloads,f$config,raiz,f$mapa)
+  alvos <- c(file.path(raiz,'outputs/fidc/temporal/atual.rds'),file.path(raiz,'outputs/fidc/temporal/execucao.rds'),
+    list.files(file.path(raiz,'data/data_fidc/data_fidc_interim/checkpoints'),full.names=TRUE),vapply(r$arquivos,function(x)x$caminho,character(1)))
+  antes <- vapply(alvos,pipeline$calcular_hash_assinatura,character(1),arquivo=TRUE)
+  executor <- function() {
+    fixture_evidencias(r,f$config,raiz)
+    resumo <- file.path(raiz,'logs/testes_resumo.json')
+    x <- jsonlite::read_json(resumo,simplifyVector=TRUE); x$origem <- 'fixture'
+    jsonlite::write_json(x,resumo,auto_unbox=TRUE); 0L
+  }
+  setwd(raiz);on.exit(setwd(anterior),add=TRUE)
+  testthat::expect_error(pipeline$produzir_evidencias_aceite(f$config,raiz), 'recursiva')
+  evidencia <- pipeline$produzir_evidencias_aceite(f$config,raiz,executor_testes=executor)
+  testthat::expect_identical(evidencia$origem,'fixture')
+  testthat::expect_true(pipeline$validar_evidencias_aceite(evidencia,r,f$config,raiz))
+  testthat::expect_identical(antes,vapply(alvos,pipeline$calcular_hash_assinatura,character(1),arquivo=TRUE))
+  prova <- readRDS(file.path(raiz,evidencia$artefatos$retomada$caminho))
+  testthat::expect_equal(prova$processados_interrupcao,1)
+  testthat::expect_equal(prova$reutilizados,1)
+  testthat::expect_false(prova$config_usuario$usar_checkpoints)
+  testthat::expect_true(prova$config_demonstracao$usar_checkpoints)
+  testthat::expect_length(unique(c(prova$pid_usuario,prova$pid_interrupcao,prova$pid_retomada,prova$pid_repeticao)),4)
+})
+
+testthat::test_that('P07-TST-007: temporal rejeita chave vazia, data fora do período e esquema divergente', {
+  for (defeito in c('cnpj','data','esquema')) {
+    raiz <- tempfile();dir.create(raiz);f <- fixture_piloto(raiz,'202607')
+    r <- pipeline$retomar_consolidacao_fidc(f$downloads,f$config,raiz,f$mapa)
+    d <- readRDS(r$arquivos$IV_rds$caminho)
+    if(defeito=='cnpj') d$cnpj[1] <- ' . / - ' else if(defeito=='data') d$dt_comptc[1] <- as.Date('2026-08-31') else d$novo <- 'x'
+    r$arquivos$IV_csv <- pipeline$gravar_validado_atomico(d,r$arquivos$IV_csv$caminho,'csv')
+    e <- fixture_evidencias(r,f$config,raiz)
+    a <- pipeline$executar_aceite(r,f$config,evidencias=e,raiz=raiz)
+    testthat::expect_false(a$aceite_local)
+    testthat::expect_true(any(grepl('Identidade|Esquema|Chaves',a$pendencias)))
+  }
+})
+
+testthat::test_that('P07-TST-008: 16 políticas preservam dados e demonstram retomada separadamente', {
+  casos <- expand.grid(c=c(FALSE,TRUE),a=c(FALSE,TRUE),f=c(FALSE,TRUE))
+  for(i in seq_len(nrow(casos))) {
+    raiz <- tempfile();dir.create(raiz);f <- fixture_piloto(raiz,'202607')
+    f$config$usar_checkpoints <- casos$c[i];f$config$atualizar_downloads <- casos$a[i]
+    f$config$forcar_reprocessamento <- casos$f[i]
+    r <- pipeline$retomar_consolidacao_fidc(f$downloads,f$config,raiz,f$mapa)
+    testthat::expect_identical(r$estado,'concluido')
+    testthat::expect_equal(r$processados,4)
+    outra <- pipeline$retomar_consolidacao_fidc(f$downloads,f$config,raiz,f$mapa)
+    testthat::expect_equal(outra$reutilizados,if(casos$c[i]&&!casos$f[i]) 4 else 0)
+    e <- fixture_evidencias(outra,f$config,raiz)
+    testthat::expect_true(pipeline$executar_aceite(outra,f$config,evidencias=e,raiz=raiz)$aceite_local)
+  }
+})
+testthat::test_that('P07-TST-004: resultado, testes e retomada independem de push', {
+  r <- list(estado='concluido',incompleto=FALSE)
+  testthat::expect_false(pipeline$gerar_relatorio_aceite(r)$aceite_local)
+  a <- pipeline$gerar_relatorio_aceite(r,TRUE,TRUE,FALSE)
+  testthat::expect_true(a$aceite_local);testthat::expect_false(a$aceite_completo)
+  testthat::expect_true(pipeline$gerar_relatorio_aceite(r,TRUE,TRUE,TRUE)$aceite_completo)
+  r$incompleto <- TRUE
+  testthat::expect_false(pipeline$gerar_relatorio_aceite(r,TRUE,TRUE,TRUE)$aceite_local)
+})
+
+testthat::test_that('P07-TST-001/004: saída alterada reprova aceite observado', {
+  raiz <- tempfile();dir.create(raiz);f <- fixture_piloto(raiz,'202607')
+  r <- pipeline$retomar_consolidacao_fidc(f$downloads,f$config,raiz,f$mapa)
+  e <- fixture_evidencias(r,f$config,raiz)
+  testthat::expect_true(pipeline$executar_aceite(r,f$config,evidencias=e,raiz=raiz)$aceite_local)
+  writeLines('alterado',file.path(r$geracao,'inf_mensal_fidc_tab_IV.csv'))
+  a <- pipeline$executar_aceite(r,f$config,evidencias=e,raiz=raiz)
+  testthat::expect_false(a$aceite_local)
+  testthat::expect_true('Saída alterada após validação'%in%a$pendencias)
+})
+
+testthat::test_that('P07-TST-006: booleanos, prova adulterada e outro código reprovam', {
+  raiz <- tempfile();dir.create(raiz);f <- fixture_piloto(raiz,'202607')
+  r <- pipeline$retomar_consolidacao_fidc(f$downloads,f$config,raiz,f$mapa)
+  testthat::expect_false(pipeline$executar_aceite(r,f$config,TRUE,TRUE,TRUE,raiz=raiz)$aceite_local)
+  e <- fixture_evidencias(r,f$config,raiz)
+  testthat::expect_true(pipeline$validar_evidencias_aceite(e,r,f$config,raiz))
+  outro <- f$config; outro$exportar_parquet <- TRUE
+  testthat::expect_false(pipeline$validar_evidencias_aceite(e,r,outro,raiz))
+  e$codigo <- 'outro'
+  testthat::expect_false(pipeline$validar_evidencias_aceite(e,r,f$config,raiz))
+  e <- fixture_evidencias(r,f$config,raiz)
+  writeLines('adulterado',file.path(raiz,'logs/testes.rds'))
+  testthat::expect_false(pipeline$validar_evidencias_aceite(e,r,f$config,raiz))
+})
+
+testthat::test_that('P07-TST-006: modo temporal tem aceite próprio; marcador impede sucesso antigo', {
+  raiz <- tempfile();dir.create(raiz);f <- fixture_piloto(raiz,'202607')
+  r <- pipeline$retomar_consolidacao_fidc(f$downloads,f$config,raiz,f$mapa)
+  e <- fixture_evidencias(r,f$config,raiz)
+  aceite <- pipeline$executar_aceite(r,f$config,sincronizado=TRUE,evidencias=e,raiz=raiz)
+  testthat::expect_true(aceite$aceite_local)
+  testthat::expect_identical(aceite$modo,'temporal')
+  testthat::expect_true(aceite$aceite_piloto_completo)
+  saveRDS(list(estado='falhou'),file.path(raiz,'outputs/fidc/temporal/execucao.rds'))
+  testthat::expect_false(pipeline$executar_aceite(r,f$config,evidencias=e,raiz=raiz)$aceite_local)
+})
+testthat::test_that('P07-TST-002: exclusões são observadas no Git sem exibir segredos', {
+  repo <- normalizePath('../..',winslash='/')
+  paths <- c('.env','data/data_fidc/data_fidc_raw/a.zip','outputs/a.csv','data/data_fidc/data_fidc_interim/checkpoints/a.rds',
+    'data/interim/temporarios/a.txt','restricted/arquivo_ficticio.txt')
+  anteriores <- getwd();on.exit(setwd(anteriores));setwd(repo)
+  for (p in paths) testthat::expect_equal(system2('git',c('check-ignore','--quiet',shQuote(p))),0)
+  testthat::expect_false(system2('git',c('ls-files','--error-unmatch','.env'),
+    stdout=FALSE,stderr=FALSE)==0)
+  # P07-TST-002: arquivo fictício local, variável própria restaurada sem imprimir valor.
+  env <- tempfile();writeLines('FIDC_TESTE_ENV=valor_ficticio',env)
+  anterior_env <- Sys.getenv('FIDC_TESTE_ENV',unset=NA_character_)
+  on.exit({ if (is.na(anterior_env)) Sys.unsetenv('FIDC_TESTE_ENV') else
+    Sys.setenv(FIDC_TESTE_ENV=anterior_env);unlink(env) },add=TRUE)
+  dotenv::load_dot_env(env)
+  testthat::expect_true(identical(Sys.getenv('FIDC_TESTE_ENV'),'valor_ficticio'))
+})
+testthat::test_that('P07-TST-003: push falha sem perder commit, depois envia o mesmo commit', {
+  raiz <- tempfile();dir.create(raiz);local <- file.path(raiz,'local');dir.create(local)
+  remoto <- file.path(raiz,'remoto.git')
+  anterior <- getwd();on.exit(setwd(anterior));setwd(local)
+  system2('git',c('init','--quiet'))
+  system2('git',c('config','user.name','Simulado'));system2('git',c('config','user.email','simulado@example.com'))
+  writeLines('simulado','a.txt');system2('git',c('add','a.txt'))
+  system2('git',c('commit','--quiet','-m','simulado'))
+  head <- system2('git',c('rev-parse','HEAD'),stdout=TRUE)
+  erro <- suppressWarnings(system2('git',c('push',shQuote(remoto),'HEAD:refs/heads/main'),stdout=TRUE,stderr=TRUE))
+  testthat::expect_true(!is.null(attr(erro,'status')))
+  testthat::expect_identical(system2('git',c('rev-parse','HEAD'),stdout=TRUE),head)
+  system2('git',c('init','--bare','--quiet',shQuote(remoto)))
+  ok <- system2('git',c('push',shQuote(remoto),'HEAD:refs/heads/main'),stdout=TRUE,stderr=TRUE)
+  testthat::expect_true(is.null(attr(ok,'status')))
+  testthat::expect_identical(strsplit(system2('git',c('ls-remote',shQuote(remoto),'refs/heads/main'),stdout=TRUE),'\t')[[1]][1],head)
+})

@@ -1,0 +1,31 @@
+P07 — Aceite e evidências vinculados à execução
+Estado: implementado; a aprovação de uma execução exige evidência atual.
+
+C — CONTEXTO
+Lastro: src/acceptance/p07_aceite.R e p07_evidencias.R.
+O aceite considera configuração, entradas, código, testes, saídas e demonstração de retomada.
+Práticas SWEBOK: testes, qualidade e configuração; regras comuns no README.md desta pasta.
+
+O — OBJETIVO
+P07-RF-001: avaliar o resultado da consolidação e apresentar critérios e pendências.
+P07-RF-002: verificar testes e saídas com evidências ligadas às assinaturas correspondentes.
+P07-RF-004: invalidar evidências quando código, configuração, entradas ou saídas divergirem.
+P07-RNF-001: não equiparar declaração manual de sucesso a prova de execução.
+Gerar demonstração de interrupção e retomada em área própria, sem substituir produtos do usuário.
+Distinguir aceite local de sincronização remota; não fazer push como efeito do aceite.
+Manter dados, código privado e a pasta restricted/ fora do Git e de serviços externos.
+
+S — ESTILO
+Critérios objetivos, evidências locais e falhas que apontem qual vínculo divergiu.
+
+T — TOM
+Factual: aprovado, reprovado ou pendente conforme o que foi observado.
+
+A — AUDIÊNCIA
+Pessoa revisora, pessoa operadora e integração contínua.
+
+R — RESPOSTA ESPERADA
+Entregar avaliação de aceite e evidências reproduzíveis; publicar somente o que estiver autorizado.
+Aceite: provas antigas ou corrompidas são rejeitadas; demonstração não altera produtos correntes.
+Teste: Rscript --vanilla src/utils/p02_testar.R P07
+Antes de qualquer commit ou envio, revisar nomes e conteúdo do índice e do diff.

@@ -1,0 +1,138 @@
+# P01-TST-001/002 | P01-FUN-001 | sem rede, Git, instalação ou etapas futuras.
+testthat::test_that('P02-TST-013/P01-TST-002: estados por etapa e interrupção mantêm tentativas auditáveis', {
+  repo <- normalizePath('../..',winslash='/')
+  source('helper-p02-pipeline.R',local=TRUE)
+  raiz <- tempfile();dir.create(raiz);f <- fixture_piloto(raiz,'202607')
+  arquivos <- c('src/utils/p02_utilitarios.R','src/configuration/p04_configuracao_fidc.R',
+    'src/download/p05_01_download_fidc.R','src/consolidation/p06_01_consolidacao_fidc.R',
+    'src/acceptance/p07_aceite.R','src/acceptance/p07_evidencias.R')
+  for (arquivo in arquivos) {
+    dir.create(dirname(file.path(raiz,arquivo)),recursive=TRUE,showWarnings=FALSE)
+    file.copy(file.path(repo,arquivo),file.path(raiz,arquivo))
+  }
+  pages <- "inventariar_recursos_fidc <- function(config) data.frame(unidade='202607',arquivo='inf_mensal_fidc_202607.zip',url='simulado/202607',inicio=as.Date('2026-07-01'),fim=as.Date('2026-07-31'),tipo='mensal')"
+  cat(paste0('\n',pages,'\n'),file=file.path(raiz,'src/configuration/p04_configuracao_fidc.R'),append=TRUE)
+  e <- new.env(parent=globalenv());sys.source(file.path(repo,'src/orchestration/p01_pipeline_fidc.R'),envir=e)
+  e$executar_pipeline_etapa('P04',f$config,raiz)
+  estado <- readRDS(file.path(raiz,'outputs/fidc/temporal/execucao.rds'))
+  testthat::expect_identical(estado$estado,'etapa_concluida')
+  testthat::expect_identical(estado$etapa,'P04');testthat::expect_true(nzchar(estado$fim))
+  e$executar_pipeline_etapa('P05_01',f$config,raiz)
+  testthat::expect_identical(readRDS(file.path(raiz,'outputs/fidc/temporal/execucao.rds'))$etapa,'P05_01')
+  e$executar_pipeline_etapa('P05',f$config,raiz)
+  testthat::expect_identical(readRDS(file.path(raiz,'outputs/fidc/temporal/execucao.rds'))$etapa,'P05_01')
+  config <- f$config;config$fim <- '2026-08-31'
+  testthat::expect_error(e$executar_pipeline_etapa('P06_01',config,raiz),'Configuração mudou')
+  testthat::expect_error(e$executar_pipeline_etapa('P06',config,raiz),'Configuração mudou')
+  estado <- readRDS(file.path(raiz,'outputs/fidc/temporal/execucao.rds'))
+  testthat::expect_identical(estado$estado,'falhou')
+  testthat::expect_match(estado$motivo,'Configuração mudou')
+  fim <- pipeline$registrar_tentativa(f$config,raiz,'P06_01')
+  estado <- readRDS(file.path(raiz,'outputs/fidc/temporal/execucao.rds'))
+  testthat::expect_identical(estado$estado,'em_processamento');testthat::expect_null(estado$fim)
+  testthat::expect_true(file.exists(file.path(raiz,'outputs/fidc/temporal/tentativas',paste0(estado$id,'.rds'))))
+})
+testthat::test_that('P01-TST-001: dependências e uma única etapa autorizada', {
+  ambiente <- new.env(parent = globalenv())
+  diretorio <- getwd()
+  bibliotecas <- .libPaths()
+  sys.source('../../src/orchestration/p01_executar.R', envir = ambiente)
+  testthat::expect_identical(getwd(), diretorio)
+  testthat::expect_identical(.libPaths(), bibliotecas)
+  raiz <- tempfile('p01-')
+  dir.create(raiz)
+  on.exit(unlink(raiz, recursive = TRUE), add = TRUE)
+  config <- list(raiz = raiz, registrar = FALSE)
+  faltam <- ambiente$executar_etapa('P03', config)
+  testthat::expect_false(faltam$executada)
+  testthat::expect_identical(faltam$estado, 'pendente')
+  testthat::expect_true(any(grepl('Dependência ausente', faltam$pendencias)))
+  for (etapa in c('P04', 'P05_01', 'P06_01', 'P07', 'P05', 'P06')) {
+    futuro <- ambiente$executar_etapa(etapa, config)
+    testthat::expect_false(futuro$executada)
+    testthat::expect_identical(futuro$estado, 'nao_implementada')
+    testthat::expect_true(is.na(futuro$proxima_etapa))
+  }
+  testthat::expect_length(list.files(raiz, recursive = TRUE), 0)
+  testthat::expect_error(ambiente$executar_etapa(c('P03', 'P04'), config), 'única')
+  testthat::expect_error(ambiente$executar_etapa('P02', config), 'única')
+  dir.create(file.path(raiz, 'src/validation'),recursive=TRUE)
+  file.create(file.path(raiz, 'C4-Mini-projeto.Rproj'))
+  for (nome in c('p03_verificar_ambiente.R', 'p03_preparar_projeto.R'))
+    file.copy(file.path('../../src/validation', nome), file.path(raiz, 'src/validation', nome))
+  config$pacotes <- character()
+  config$observacoes <- list(r = 'R simulado', locale = 'simulado', utf8 = TRUE,
+    instalados = character(), carregados = logical(),
+    executaveis = c(Rscript = 'simulado', git = 'simulado'), rstudio_console = TRUE)
+  config$plano <- list('src/validation/p03_exemplo.R' = '# simulado')
+  pronto <- ambiente$executar_etapa('P03', config)
+  testthat::expect_true(pronto$executada)
+  testthat::expect_identical(pronto$estado, 'verificada')
+  testthat::expect_identical(pronto$proxima_etapa, 'P04')
+  testthat::expect_identical(pronto$arquivos$criados, 'src/validation/p03_exemplo.R')
+  testthat::expect_identical(pronto$sincronizacao_remota, 'nao_verificada')
+  testthat::expect_identical(pronto$testes, 'nao_executados_por_este_coordenador')
+  testthat::expect_false(dir.exists(file.path(raiz, 'logs')))
+  config$observacoes$rstudio_console <- FALSE
+  config$plano <- list('nao_criar.R' = '# pendente')
+  pendente <- ambiente$executar_etapa('P03', config)
+  testthat::expect_identical(pendente$estado, 'pendente')
+  testthat::expect_true(any(grepl('Console RStudio', pendente$pendencias)))
+  testthat::expect_false(file.exists(file.path(raiz, 'nao_criar.R')))
+  testthat::expect_identical(.libPaths(), bibliotecas)
+  testthat::expect_identical(getwd(), diretorio)
+})
+
+testthat::test_that('P01-TST-001: pipeline exige entrada anterior, sem efeito ao carregar', {
+  repo <- normalizePath('../..',winslash='/')
+  e <- new.env(parent=globalenv())
+  antes <- .libPaths();diretorio <- getwd()
+  sys.source(file.path(repo,'src/orchestration/p01_pipeline_fidc.R'),envir=e)
+  testthat::expect_identical(.libPaths(),antes)
+  testthat::expect_identical(getwd(),diretorio)
+  # Cópia temporária só com funções: executar P06_01 não inventa download/configuração.
+  raiz <- tempfile();dir.create(raiz)
+  arquivos <- c('src/utils/p02_utilitarios.R','src/configuration/p04_configuracao_fidc.R',
+    'src/download/p05_01_download_fidc.R','src/consolidation/p06_01_consolidacao_fidc.R',
+    'src/acceptance/p07_aceite.R','src/acceptance/p07_evidencias.R')
+  for (arquivo in arquivos) {
+    dir.create(dirname(file.path(raiz,arquivo)),recursive=TRUE,showWarnings=FALSE)
+    file.copy(file.path(repo,arquivo),file.path(raiz,arquivo))
+  }
+  testthat::expect_error(e$executar_pipeline_etapa('P06_01',raiz=raiz),'P04 primeiro')
+  testthat::expect_false(dir.exists(file.path(raiz,'data/data_fidc/data_fidc_raw')))
+})
+
+testthat::test_that('P01-TST-002: continuidade preserva bytes e pendências', {
+  ambiente <- new.env(parent = globalenv())
+  sys.source('../../src/orchestration/p01_executar.R', envir = ambiente)
+  raiz <- tempfile('p01-registro-')
+  dir.create(raiz)
+  on.exit(unlink(raiz, recursive = TRUE), add = TRUE)
+  # Uma execução sem artefatos prévios cria somente registros, não código.
+  config <- list(raiz = raiz)
+  primeiro <- ambiente$executar_etapa('P03', config)
+  testthat::expect_true(file.exists(primeiro$registro))
+  testthat::expect_true(file.exists(primeiro$matriz_execucoes))
+  bytes <- readBin(primeiro$registro, 'raw', n = file.info(primeiro$registro)$size)
+  matriz <- read.csv(primeiro$matriz_execucoes, stringsAsFactors = FALSE)
+  testthat::expect_identical(matriz$estado, 'pendente')
+  testthat::expect_identical(matriz$sincronizacao_remota, 'nao_verificada')
+  testthat::expect_true(is.na(matriz$commit))
+  config$commit <- 'commit_informado_nao_confirma_push'
+  segundo <- ambiente$executar_etapa('P06_01', config)
+  atual <- readBin(segundo$registro, 'raw', n = file.info(segundo$registro)$size)
+  testthat::expect_identical(atual[seq_along(bytes)], bytes)
+  matriz <- read.csv(segundo$matriz_execucoes, stringsAsFactors = FALSE)
+  testthat::expect_equal(nrow(matriz), 2L)
+  testthat::expect_identical(matriz$estado, c('pendente', 'nao_implementada'))
+  testthat::expect_identical(matriz$sincronizacao_remota, rep('nao_verificada', 2))
+  testthat::expect_identical(matriz$commit[2], config$commit)
+  testthat::expect_false(file.exists(file.path(raiz, 'src/consolidation/p06_01_consolidacao_fidc.R')))
+  # Uma matriz de formato desconhecido não é apagada nem substituída.
+  writeLines('cabecalho_incompativel', segundo$matriz_execucoes)
+  registro_antes <- readBin(segundo$registro, 'raw', n = length(atual))
+  testthat::expect_error(ambiente$executar_etapa('P03', config), 'incompatível')
+  testthat::expect_identical(readLines(segundo$matriz_execucoes), 'cabecalho_incompativel')
+  testthat::expect_identical(readBin(segundo$registro, 'raw', n = length(atual)), registro_antes)
+})

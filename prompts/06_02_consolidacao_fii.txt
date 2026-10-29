@@ -1,0 +1,41 @@
+P06_02 — Consolidação temporal dos informes mensais FII
+Estado: implementação independente do FIDC; validar pelos testes e fontes locais.
+
+C — CONTEXTO
+Lastro: src/consolidation/p06_02_consolidacao_fii.R e fontes adquiridas pelo P05_02.
+Três tabelas oficiais: geral, ativo_passivo e complemento; alterações históricas de campos.
+Aplicar as regras comuns de confidencialidade e rastreabilidade do README desta pasta.
+Práticas SWEBOK: requisitos, projeto, construção, testes e qualidade.
+
+O — OBJETIVO
+P06_02-RF-001: verificar hashes de ZIPs, membros e dicionário antes da leitura.
+P06_02-RF-002: consolidar separadamente cada tabela no período mensal solicitado;
+unir campos históricos por nome, sem aplicar join entre tabelas.
+Preservar campos e valores oficiais como texto, incluindo zeros e casas decimais.
+Adicionar cnpj, data_referencia, versao e origem sem eliminar os campos oficiais.
+P06_02-RF-003: preservar todas as linhas e versões; diagnosticar repetição de
+cnpj + data_referencia + versao, sem descartar nem somar valores.
+A chave técnica é hash_zip + arquivo_origem + linha_origem, por tabela.
+P06_02-RF-004: gravar CSV/RDS em outputs/fii/temporal/geracoes/<assinatura>/ e publicar
+atual.rds somente após validação de todos os artefatos.
+P06_02-RF-005: produzir qualidade, cobertura mensal, esquemas e origem das fontes.
+Ausência de linhas em um mês não comprova erro nem disponibilidade do informe.
+P06_02-RNF-001: fontes e produtos exclusivamente locais; nenhuma rede na consolidação.
+P06_02-RNF-002: não modificar fontes, configurações ou produtos FIDC.
+Não criar tabela flat, escolher automaticamente a última versão, calcular métricas,
+converter escalas financeiras ou integrar movimentações FIDC neste incremento.
+
+S — ESTILO
+Contratos explícitos e ordenação determinística; erros preservam o marcador anterior.
+
+T — TOM
+Factual, diferenciando cobertura do arquivo anual e competências observadas.
+
+A — AUDIÊNCIA
+Pessoa analista e manutenção do pipeline FII.
+
+R — RESPOSTA ESPERADA
+Entregar módulo, relatórios locais e testes com fixtures de mudança de leiaute,
+codificação, repetição de chaves, corrupção, período e recuperação de saída.
+Teste: Rscript --vanilla src/utils/p02_testar.R P06_02
+Documentar as limitações observadas e manter dados e resultados fora do Git.

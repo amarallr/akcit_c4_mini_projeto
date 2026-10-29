@@ -1,0 +1,34 @@
+P06_01 — Consolidação temporal por leiaute e medição
+Estado: implementado na versão inicial; o escopo exclui geração flat, detalhes e cedentes.
+
+C — CONTEXTO
+Lastro público: src/consolidation/p06_01_consolidacao_fidc.R e p06_01_medir_execucao.R.
+Entrada: registro de downloads e fontes locais validadas; referências em docs/references/cvm/.
+Práticas SWEBOK: projeto, construção, qualidade e manutenção; regras comuns no README.md desta pasta.
+
+O — OBJETIVO
+P06_01-RF-001: ler e padronizar cada leiaute preservando identificadores, valores originais e origem.
+P06_01-RF-002: consolidar no tempo uma tabela independente por leiaute, sem join que multiplique métricas.
+P06_01-RF-004: retomar o processamento por checkpoints vinculados às entradas e à transformação.
+P06_01-RF-005: exportar CSV/RDS e Parquet somente quando solicitado e disponível.
+P06_01-RF-013: medir tempo, tamanho e memória com método e limitações declarados.
+P06_01-RNF-001: preservar determinismo, isolamento de gerações e a última saída válida em caso de falha.
+Os demais IDs existentes no código e nos testes permanecem vigentes dentro desse escopo.
+Não inferir escala, completar zeros ou agregar granularidades sem regra explícita.
+As consolidações privadas de movimentações seguem instruções e testes locais, sem publicar código, dados ou resultados confidenciais.
+
+S — ESTILO
+Transformações rastreáveis, contratos explícitos e auditoria de chaves e multiplicidades.
+Preservar campos de origem e distinguir qualidade dos dados de falha operacional.
+
+T — TOM
+Analítico e verificável, sem prometer equivalência além dos casos demonstrados.
+
+A — AUDIÊNCIA
+Pessoa analista que consome os leiautes e pessoa mantenedora do pipeline.
+
+R — RESPOSTA ESPERADA
+Entregar tabelas por leiaute, auditoria local e evidência de testes com fixtures.
+Aceite: repetição e retomada mantêm conteúdo; entradas alteradas invalidam o reuso pertinente.
+Teste: Rscript --vanilla src/utils/p02_testar.R P06_01
+Não gerar produtos fora do escopo nem usar scripts exploratórios como insumo.

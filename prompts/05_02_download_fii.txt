@@ -1,0 +1,74 @@
+P05_02 — Download dos informes mensais de fundos de investimento imobiliário
+Estado: implementado; módulo independente e testes P05_02 integrados ao runner.
+
+C — CONTEXTO
+Ampliar o projeto com aquisição local dos informes mensais de FII publicados pela CVM.
+Diretório solicitado: https://dados.cvm.gov.br/dados/FII/DOC/INF_MENSAL/DADOS/
+Conjunto: https://dados.cvm.gov.br/dataset/fii-doc-inf_mensal
+Metadados: https://dados.cvm.gov.br/dados/FII/DOC/INF_MENSAL/META/
+Consulta das fontes: 29/10/2026. O índice apresenta ZIPs anuais inf_mensal_fii_AAAA.zip;
+o catálogo informa histórico desde 2016 e atualização semanal sujeita a reapresentações.
+Revalidar índice, dicionário e política no momento de implementar; não fixar a lista de anos.
+Práticas SWEBOK: requisitos, projeto, construção, testes, configuração e segurança.
+Aplicam-se as regras comuns do README.md desta pasta.
+
+O — OBJETIVO
+Implementar uma etapa própria de download FII, reutilizando contratos seguros do projeto
+sem aplicar a semântica ou o leiaute FIDC aos arquivos FII.
+
+REQUISITOS FUNCIONAIS
+P05_02-RF-001: receber período válido e inventariar somente recursos oficiais disponíveis.
+P05_02-RF-002: selecionar os ZIPs anuais que intersectem o período; informar cobertura e lacunas.
+P05_02-RF-003: baixar com timeout, tentativas limitadas e classificação de erros HTTP.
+P05_02-RF-004: validar tamanho, integridade e nomes de membros, rejeitando caminhos inseguros.
+P05_02-RF-005: registrar URL, unidade, hash, bytes, estado, tentativas e instante da aquisição.
+P05_02-RF-006: reutilizar ZIP válido quando a atualização estiver desativada; permitir atualização
+explícita para reapresentações, preservando a versão anterior até validar a nova.
+P05_02-RF-007: extrair por ano/hash e verificar os membros; nenhuma mistura entre versões.
+P05_02-RF-008: obter e versionar localmente a referência do dicionário com URL e hash.
+Não inferir nomes de campos, granularidades, codificação ou separadores antes de verificar fontes.
+P05_02-RF-009: produzir inventário de membros e relatório de cobertura, sem consolidar tabelas
+nem filtrar linhas implicitamente. Um ZIP anual pode conter competências fora do intervalo.
+P05_02-RF-010: isolar todos os artefatos em namespace FII: data/data_fii/data_fii_raw/ para
+originais, extrações e registro; config/fii_configuracao.rds para configuração;
+logs/fii/ para registros.
+Esses caminhos são criados durante a execução, sem efeito ao carregar o módulo.
+P05_02-RF-011: oferecer entrada própria em src/download/p05_02_download_fii.R,
+sem alterar os comandos P04–P07 ou a restrição dataset='FIDC' do validador existente.
+P05_02-RF-012: permitir interrupção e retomada; indisponibilidade não equivale a conjunto vazio válido.
+
+REQUISITOS NÃO FUNCIONAIS
+P05_02-RNF-001: nenhuma rede ou escrita ao carregar o módulo; transporte substituível em testes.
+P05_02-RNF-002: publicação atômica e manifestos recuperáveis; hash SHA-256 das versões locais.
+P05_02-RNF-003: arquivos e logs locais ignorados; nunca acessar restricted/ ou dados pessoais.
+P05_02-RNF-004: ordem determinística do plano e limites explícitos de bytes, membros e tentativas.
+P05_02-RNF-005: origem, política de atualização e lacunas documentadas; nenhuma promessa de
+imutabilidade do conteúdo publicado pela CVM ou de completude sem evidência.
+
+S — ESTILO
+Separar inventário, seleção, transporte, validação, extração e persistência.
+Usar utilitários P02 quando seus contratos forem compatíveis; evitar copiar o ETL FIDC.
+
+T — TOM
+Técnico e preciso, distinguindo especificação, implementação e validação observada.
+
+A — AUDIÊNCIA
+Pessoa desenvolvedora da integração FII e pessoa operadora dos downloads.
+
+R — RESPOSTA ESPERADA
+Manter módulo, interface documentada e testes em tests/testthat/test-p05_02-download-fii.R,
+integrados ao runner e à CI. Fonte de lastro: src/download/p05_02_download_fii.R.
+
+CRITÉRIOS DE ACEITE E TESTES
+P05_02-TST-001: índice fictício seleciona anos corretos, ordena e informa anos ausentes.
+P05_02-TST-002: período inválido e destino fora da raiz falham antes de qualquer aquisição.
+P05_02-TST-003: ZIP inválido, membro com travessia de diretório e limite excedido são rejeitados.
+P05_02-TST-004: simular falha transitória, erro definitivo e interrupção sem perder o original válido.
+P05_02-TST-005: repetição reutiliza conteúdo válido; atualização com hash diferente cria nova versão.
+P05_02-TST-006: manifesto e extração corrompidos não são aceitos; retomada recupera o estado.
+P05_02-TST-007: aquisição FII não altera configuração, fontes ou saídas FIDC.
+P05_02-TST-008: dicionário e cobertura têm origem e hash; testes usam fixtures, sem rede real.
+P05_02-TST-009: carregamento sem efeitos e restauração do ambiente do chamador.
+Validação real posterior deve ser explicitamente autorizada e registrar fonte e instante.
+Consolidação FII pertence ao P06_02; integração com movimentações e mudança regulatória
+ficam fora do incremento de aquisição P05_02.

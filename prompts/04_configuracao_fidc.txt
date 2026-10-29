@@ -1,0 +1,33 @@
+P04 — Configuração, inventário e seleção das fontes FIDC
+Estado: implementado para FIDC; FII possui configuração independente no P05_02.
+
+C — CONTEXTO
+Lastro: src/configuration/p04_configuracao_fidc.R.
+Datas, leiautes, políticas e filtros definem o plano antes do download.
+Práticas SWEBOK: requisitos, projeto e configuração; regras comuns no README.md desta pasta.
+
+O — OBJETIVO
+P04-RF-001: validar configuração, datas, conjunto FIDC, limites, booleanos e destinos.
+P04-RF-002: inventariar recursos oficiais sem assumir que uma unidade existe.
+P04-RF-003: selecionar unidades que cubram o período solicitado, segundo a granularidade publicada.
+P04-RF-004: manter plano e assinatura vinculados à configuração.
+P04-RF-008: validar e explicar filtros de interesse, exclusividade, condomínio e número de cotistas.
+P04-RNF-001: rejeitar parâmetros desconhecidos e preservar o significado de ausente ou desconhecido.
+Não interpretar indicador ausente como Não ou zero; preservar E/OU e a política explícita de desconhecidos.
+Não introduzir CNPJs selecionados ou parâmetros pessoais em arquivos públicos.
+
+S — ESTILO
+Separar validação, inventário, seleção e avaliação de filtros.
+Os valores padrão existentes são apenas padrões do código; não representam toda a cobertura disponível.
+
+T — TOM
+Objetivo, informando critérios, limitações e inconsistências.
+
+A — AUDIÊNCIA
+Pessoa operadora que escolhe o período e pessoa desenvolvedora que mantém as fontes.
+
+R — RESPOSTA ESPERADA
+Entregar configuração validada e plano rastreável, sem download nesta etapa.
+Aceite: datas inválidas, períodos invertidos, tabelas desconhecidas e filtros inconsistentes rejeitados.
+Teste: Rscript --vanilla src/utils/p02_testar.R P04
+A execução real de P04 usa a entrada P01 e pode consultar o inventário oficial.

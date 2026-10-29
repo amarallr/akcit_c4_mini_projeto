@@ -1,0 +1,33 @@
+P05_01 — Download e extração recuperáveis de FIDC
+Estado: implementado para FIDC; não é o downloader FII.
+
+C — CONTEXTO
+Lastro: src/download/p05_01_download_fidc.R; entrada: plano e configuração validados por P04.
+Saída local: ZIPs, manifestos, registro de downloads e extrações segregadas por unidade e hash.
+Práticas SWEBOK: construção, operações, segurança e testes; regras comuns no README.md desta pasta.
+
+O — OBJETIVO
+P05_01-RF-001: baixar unidades oficiais com tentativas e timeout configuráveis.
+P05_01-RF-002: reutilizar originais válidos conforme política, sem confundir checkpoint com atualização.
+P05_01-RF-003: extrair por unidade/hash e conferir o conteúdo com o manifesto.
+P05_01-RF-004: validar ZIP, tamanho, membros, caminhos e integridade antes de publicar.
+P05_01-RF-005: permitir transporte substituível em testes, classificando falhas transitórias.
+P05_01-RNF-001: registrar falha ou interrupção sem promover execução incompleta a sucesso.
+Uma atualização deve preservar a versão anterior até a nova estar validada.
+Não misturar membros homônimos de versões distintas nem eliminar histórico automaticamente.
+
+S — ESTILO
+Transações explícitas, hashes SHA-256 e recuperação de rollback.
+Usar fixtures locais nos testes; não depender de disponibilidade da CVM para testar.
+
+T — TOM
+Mensagens operacionais curtas, sem credenciais ou dados confidenciais.
+
+A — AUDIÊNCIA
+Pessoa operadora de downloads e pessoa mantenedora da integração CVM.
+
+R — RESPOSTA ESPERADA
+Entregar downloader, manifestos coerentes e testes de interrupção, corrupção e reuso.
+Aceite: ZIP inseguro não é publicado; falha preserva o original válido e registra o estado real.
+Teste: Rscript --vanilla src/utils/p02_testar.R P05_01
+Download real somente pela etapa P05_01 explicitamente solicitada.
